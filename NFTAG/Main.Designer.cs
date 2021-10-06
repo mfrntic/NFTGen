@@ -50,6 +50,7 @@ namespace NFTAG
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.btnMakeRoot = new System.Windows.Forms.ToolStripButton();
             this.imlFolders = new System.Windows.Forms.ImageList(this.components);
+            this.imlPrev = new System.Windows.Forms.ImageList(this.components);
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -208,7 +209,7 @@ namespace NFTAG
             // statusInfo
             // 
             this.statusInfo.Name = "statusInfo";
-            this.statusInfo.Size = new System.Drawing.Size(991, 17);
+            this.statusInfo.Size = new System.Drawing.Size(1174, 17);
             this.statusInfo.Spring = true;
             this.statusInfo.Text = "...";
             this.statusInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -217,6 +218,7 @@ namespace NFTAG
             // 
             this.lvPreview.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvPreview.HideSelection = false;
+            this.lvPreview.LargeImageList = this.imlFolders;
             this.lvPreview.Location = new System.Drawing.Point(3, 3);
             this.lvPreview.Name = "lvPreview";
             this.lvPreview.Size = new System.Drawing.Size(880, 716);
@@ -245,6 +247,12 @@ namespace NFTAG
             this.imlFolders.TransparentColor = System.Drawing.Color.Transparent;
             this.imlFolders.Images.SetKeyName(0, "Folder-icon.png");
             this.imlFolders.Images.SetKeyName(1, "Folder-Open-icon.png");
+            // 
+            // imlPrev
+            // 
+            this.imlPrev.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.imlPrev.ImageSize = new System.Drawing.Size(100, 100);
+            this.imlPrev.TransparentColor = System.Drawing.Color.Transparent;
             // 
             // Main
             // 
@@ -298,5 +306,6 @@ namespace NFTAG
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton btnMakeRoot;
         private System.Windows.Forms.ImageList imlFolders;
+        private System.Windows.Forms.ImageList imlPrev;
     }
 }
