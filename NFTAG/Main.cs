@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevExpress.XtraBars.Ribbon;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -17,9 +18,44 @@ namespace NFTAG
             InitializeComponent();
         }
 
-        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        private void addNode(string fld, TreeNode parentNode = null)
         {
+            string[] dirs = System.IO.Directory.GetDirectories(fld);
+            if (dirs.Length > 0)
+            {
+                foreach (var dir in dirs)
+                {
+                    TreeNode nd;
+                    string folderName = System.IO.Path.GetFileName(dir);
+                    if (parentNode == null)
+                    {
+                        nd = treeView1.Nodes.Add(folderName);
+                    }
+                    else
+                    {
+                        nd = parentNode.Nodes.Add(folderName);
+                    }
+                    nd.Tag = dir;
+                    nd.ImageIndex = 0;
+                    nd.SelectedImageIndex = 1;
 
+                    //recursive
+                    addNode(dir, nd);
+
+                    //add files
+                    string[] fls = System.IO.Directory.GetFiles(dir, "*.png");
+                    foreach (var fl in fls)
+                    {
+                        string fileName = System.IO.Path.GetFileNameWithoutExtension(fl);
+                        TreeNode ndFile = nd.Nodes.Add(fileName);
+                        ndFile.ImageIndex = 2;
+                        ndFile.SelectedImageIndex = 2;
+                        ndFile.Tag = fl;
+                    }
+
+
+                }
+            }
         }
 
         private void btnAddFolder_Click(object sender, EventArgs e)
@@ -29,84 +65,67 @@ namespace NFTAG
             if (folderBrowse.ShowDialog(this) == DialogResult.OK)
             {
                 statusInfo.Text = "Loading trait folders...";
-
-                string fld = folderBrowse.SelectedPath;
-                //učitaj sve foldere
-                string[] dirs = System.IO.Directory.GetDirectories(fld);
-                foreach (var dir in dirs)
-                {
-                    var nd = treeView1.Nodes.Add(System.IO.Path.GetFileName(dir));
-                    nd.Tag = dir;
-                }
+                addNode(folderBrowse.SelectedPath);
 
             }
             statusInfo.Text = "Ready";
-
         }
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
 
-            btnRemoveFolder.Enabled = e.Node != null;
-            btnMakeRoot.Enabled = e.Node != null;
+            btnUp.Enabled = btnDown.Enabled = btnRemoveFolder.Enabled = e.Node != null;
 
-        }
+            gallery1.Gallery.Groups.Clear();
 
-        private void NormalizeTreeview()
-        {
-            List<TreeNode> nodes = new List<TreeNode>();
-            //flatten treeview folder structure (remove root)
-            foreach (TreeNode item in treeView1.Nodes)
+            if (e.Node.ImageIndex < 2) //ako je folder
             {
-                if (item.Nodes.Count > 0)
+                picPrev.Visible = false;
+                gallery1.Visible = true;
+                //load images
+                GalleryItemGroup group = new GalleryItemGroup();
+                group.Caption = e.Node.Text;
+
+                gallery1.Gallery.Groups.Add(group);
+
+                foreach (TreeNode tn in e.Node.Nodes)
                 {
-                    foreach (TreeNode child in item.Nodes)
+                    if (tn.ImageIndex == 2)
                     {
-                        nodes.Add(child);
+                        string fl = tn.Tag.ToString();
+
+                        var gi = new GalleryItem(Image.FromFile(fl).GetThumbnailImage(100, 100, null, new IntPtr()), tn.Text, "");
+                        gi.Tag = tn;
+                        group.Items.Add(gi);
+
                     }
-                    item.Nodes.Clear();
-                    nodes.Insert(0, item);
                 }
             }
-            if (nodes.Count > 0)
+            else
             {
-                treeView1.Nodes.Clear();
-                treeView1.Nodes.AddRange(nodes.ToArray());
-            }
-        }
+                picPrev.Visible = true;
+                gallery1.Visible = false;
+                string fl = e.Node.Tag.ToString();
+                picPrev.Image = Image.FromFile(fl);
 
-        private void btnMakeRoot_Click(object sender, EventArgs e)
-        {
-
-            var node = treeView1.SelectedNode;
-            if (node != null)
-            {
-                NormalizeTreeview();
-
-                var nodes = new List<TreeNode>();
-                foreach (TreeNode item in treeView1.Nodes)
-                {
-                    if (item != node)
-                    {
-                        nodes.Add(item);
-                    }
-
-                }
-
-
-
-                foreach (TreeNode item in nodes)
-                {
-                    treeView1.Nodes.Remove(item);
-                    node.Nodes.Add(item);
-                }
-                treeView1.ExpandAll();
             }
         }
 
         private void btnRemoveFolder_Click(object sender, EventArgs e)
         {
             treeView1.Nodes.Remove(treeView1.SelectedNode);
+        }
+
+        private void btnUp_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void gallery1_Gallery_ItemClick(object sender, GalleryItemClickEventArgs e)
+        {
+            TreeNode tn = e.Item.Tag as TreeNode;
+            treeView1.SelectedNode = tn;
+ 
         }
     }
 }

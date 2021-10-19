@@ -30,27 +30,40 @@ namespace NFTAG
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            DevExpress.XtraSplashScreen.SplashScreenManager splashScreenManager1 = new DevExpress.XtraSplashScreen.SplashScreenManager(this, null, true, true);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuExit = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.treeView1 = new System.Windows.Forms.TreeView();
+            this.imlFolders = new System.Windows.Forms.ImageList(this.components);
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnAddFolder = new System.Windows.Forms.ToolStripButton();
             this.btnRemoveFolder = new System.Windows.Forms.ToolStripButton();
-            this.treeView1 = new System.Windows.Forms.TreeView();
-            this.folderBrowse = new System.Windows.Forms.FolderBrowserDialog();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnUp = new System.Windows.Forms.ToolStripButton();
+            this.btnDown = new System.Windows.Forms.ToolStripButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.gallery1 = new DevExpress.XtraBars.Ribbon.GalleryControl();
+            this.galleryControlClient1 = new DevExpress.XtraBars.Ribbon.GalleryControlClient();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.treeList1 = new DevExpress.XtraTreeList.TreeList();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.folderBrowse = new System.Windows.Forms.FolderBrowserDialog();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.statusInfo = new System.Windows.Forms.ToolStripStatusLabel();
-            this.lvPreview = new System.Windows.Forms.ListView();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.btnMakeRoot = new System.Windows.Forms.ToolStripButton();
-            this.imlFolders = new System.Windows.Forms.ImageList(this.components);
-            this.imlPrev = new System.Windows.Forms.ImageList(this.components);
+            this.picPrev = new System.Windows.Forms.PictureBox();
+            this.treeListColumn1 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.treeListColumn2 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.treeListColumn3 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.treeListColumn4 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.toolStrip2 = new System.Windows.Forms.ToolStrip();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -59,8 +72,18 @@ namespace NFTAG
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gallery1)).BeginInit();
+            this.gallery1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.treeList1)).BeginInit();
             this.statusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picPrev)).BeginInit();
+            this.toolStrip2.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // splashScreenManager1
+            // 
+            splashScreenManager1.ClosingDelay = 500;
             // 
             // menuStrip1
             // 
@@ -84,9 +107,8 @@ namespace NFTAG
             // 
             this.mnuExit.Name = "mnuExit";
             this.mnuExit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.mnuExit.Size = new System.Drawing.Size(180, 22);
+            this.mnuExit.Size = new System.Drawing.Size(135, 22);
             this.mnuExit.Text = "E&xit";
-            this.mnuExit.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // splitContainer1
             // 
@@ -106,13 +128,36 @@ namespace NFTAG
             this.splitContainer1.SplitterDistance = 291;
             this.splitContainer1.TabIndex = 1;
             // 
+            // treeView1
+            // 
+            this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeView1.HideSelection = false;
+            this.treeView1.ImageIndex = 0;
+            this.treeView1.ImageList = this.imlFolders;
+            this.treeView1.Location = new System.Drawing.Point(0, 25);
+            this.treeView1.Name = "treeView1";
+            this.treeView1.SelectedImageIndex = 1;
+            this.treeView1.ShowLines = false;
+            this.treeView1.Size = new System.Drawing.Size(291, 723);
+            this.treeView1.TabIndex = 1;
+            this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
+            // 
+            // imlFolders
+            // 
+            this.imlFolders.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imlFolders.ImageStream")));
+            this.imlFolders.TransparentColor = System.Drawing.Color.Transparent;
+            this.imlFolders.Images.SetKeyName(0, "Folder-icon.png");
+            this.imlFolders.Images.SetKeyName(1, "Folder-Open-icon.png");
+            this.imlFolders.Images.SetKeyName(2, "Layer-Backward-icon.png");
+            // 
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnAddFolder,
             this.btnRemoveFolder,
             this.toolStripSeparator1,
-            this.btnMakeRoot});
+            this.btnUp,
+            this.btnDown});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(291, 25);
@@ -126,7 +171,7 @@ namespace NFTAG
             this.btnAddFolder.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnAddFolder.Name = "btnAddFolder";
             this.btnAddFolder.Size = new System.Drawing.Size(23, 22);
-            this.btnAddFolder.Text = "Add Traits Folder";
+            this.btnAddFolder.Text = "Add Folders";
             this.btnAddFolder.Click += new System.EventHandler(this.btnAddFolder_Click);
             // 
             // btnRemoveFolder
@@ -140,18 +185,31 @@ namespace NFTAG
             this.btnRemoveFolder.Text = "Remove Folder";
             this.btnRemoveFolder.Click += new System.EventHandler(this.btnRemoveFolder_Click);
             // 
-            // treeView1
+            // toolStripSeparator1
             // 
-            this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeView1.HideSelection = false;
-            this.treeView1.ImageIndex = 0;
-            this.treeView1.ImageList = this.imlFolders;
-            this.treeView1.Location = new System.Drawing.Point(0, 25);
-            this.treeView1.Name = "treeView1";
-            this.treeView1.SelectedImageIndex = 1;
-            this.treeView1.Size = new System.Drawing.Size(291, 723);
-            this.treeView1.TabIndex = 1;
-            this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // btnUp
+            // 
+            this.btnUp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnUp.Enabled = false;
+            this.btnUp.Image = ((System.Drawing.Image)(resources.GetObject("btnUp.Image")));
+            this.btnUp.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnUp.Name = "btnUp";
+            this.btnUp.Size = new System.Drawing.Size(23, 22);
+            this.btnUp.Text = "Move Up";
+            this.btnUp.Click += new System.EventHandler(this.btnUp_Click);
+            // 
+            // btnDown
+            // 
+            this.btnDown.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnDown.Enabled = false;
+            this.btnDown.Image = ((System.Drawing.Image)(resources.GetObject("btnDown.Image")));
+            this.btnDown.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnDown.Name = "btnDown";
+            this.btnDown.Size = new System.Drawing.Size(23, 22);
+            this.btnDown.Text = "Move Down";
             // 
             // tabControl1
             // 
@@ -167,7 +225,8 @@ namespace NFTAG
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.lvPreview);
+            this.tabPage1.Controls.Add(this.gallery1);
+            this.tabPage1.Controls.Add(this.picPrev);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -176,22 +235,59 @@ namespace NFTAG
             this.tabPage1.Text = "Preview";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // gallery1
+            // 
+            this.gallery1.Controls.Add(this.galleryControlClient1);
+            this.gallery1.Dock = System.Windows.Forms.DockStyle.Fill;
+            // 
+            // 
+            // 
+            this.gallery1.Gallery.ImageSize = new System.Drawing.Size(100, 100);
+            this.gallery1.Gallery.ItemImageLayout = DevExpress.Utils.Drawing.ImageLayoutMode.ZoomInside;
+            this.gallery1.Gallery.ItemClick += new DevExpress.XtraBars.Ribbon.GalleryItemClickEventHandler(this.gallery1_Gallery_ItemClick);
+            this.gallery1.Location = new System.Drawing.Point(3, 3);
+            this.gallery1.Name = "gallery1";
+            this.gallery1.Size = new System.Drawing.Size(880, 716);
+            this.gallery1.TabIndex = 0;
+            this.gallery1.Text = "galleryControl1";
+            // 
+            // galleryControlClient1
+            // 
+            this.galleryControlClient1.GalleryControl = this.gallery1;
+            this.galleryControlClient1.Location = new System.Drawing.Point(2, 2);
+            this.galleryControlClient1.Size = new System.Drawing.Size(859, 712);
+            // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.treeList1);
+            this.tabPage2.Controls.Add(this.toolStrip2);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(747, 666);
+            this.tabPage2.Size = new System.Drawing.Size(886, 722);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Rarity Table";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // treeList1
+            // 
+            this.treeList1.Columns.AddRange(new DevExpress.XtraTreeList.Columns.TreeListColumn[] {
+            this.treeListColumn1,
+            this.treeListColumn2,
+            this.treeListColumn3,
+            this.treeListColumn4});
+            this.treeList1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeList1.Location = new System.Drawing.Point(3, 28);
+            this.treeList1.Name = "treeList1";
+            this.treeList1.Size = new System.Drawing.Size(880, 691);
+            this.treeList1.TabIndex = 0;
             // 
             // tabPage3
             // 
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(747, 666);
+            this.tabPage3.Size = new System.Drawing.Size(886, 722);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Results";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -214,45 +310,96 @@ namespace NFTAG
             this.statusInfo.Text = "...";
             this.statusInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // lvPreview
+            // picPrev
             // 
-            this.lvPreview.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lvPreview.HideSelection = false;
-            this.lvPreview.LargeImageList = this.imlFolders;
-            this.lvPreview.Location = new System.Drawing.Point(3, 3);
-            this.lvPreview.Name = "lvPreview";
-            this.lvPreview.Size = new System.Drawing.Size(880, 716);
-            this.lvPreview.TabIndex = 0;
-            this.lvPreview.UseCompatibleStateImageBehavior = false;
+            this.picPrev.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.picPrev.Location = new System.Drawing.Point(3, 3);
+            this.picPrev.Name = "picPrev";
+            this.picPrev.Size = new System.Drawing.Size(880, 716);
+            this.picPrev.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picPrev.TabIndex = 1;
+            this.picPrev.TabStop = false;
+            this.picPrev.Visible = false;
             // 
-            // toolStripSeparator1
+            // treeListColumn1
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            this.treeListColumn1.Caption = "Trait name";
+            this.treeListColumn1.FieldName = "Trait name";
+            this.treeListColumn1.Name = "treeListColumn1";
+            this.treeListColumn1.Visible = true;
+            this.treeListColumn1.VisibleIndex = 0;
             // 
-            // btnMakeRoot
+            // treeListColumn2
             // 
-            this.btnMakeRoot.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnMakeRoot.Enabled = false;
-            this.btnMakeRoot.Image = ((System.Drawing.Image)(resources.GetObject("btnMakeRoot.Image")));
-            this.btnMakeRoot.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnMakeRoot.Name = "btnMakeRoot";
-            this.btnMakeRoot.Size = new System.Drawing.Size(23, 22);
-            this.btnMakeRoot.Text = "Make root";
-            this.btnMakeRoot.Click += new System.EventHandler(this.btnMakeRoot_Click);
+            this.treeListColumn2.Caption = "Trait ID";
+            this.treeListColumn2.FieldName = "Trait ID";
+            this.treeListColumn2.MaxWidth = 100;
+            this.treeListColumn2.Name = "treeListColumn2";
+            this.treeListColumn2.Visible = true;
+            this.treeListColumn2.VisibleIndex = 1;
             // 
-            // imlFolders
+            // treeListColumn3
             // 
-            this.imlFolders.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imlFolders.ImageStream")));
-            this.imlFolders.TransparentColor = System.Drawing.Color.Transparent;
-            this.imlFolders.Images.SetKeyName(0, "Folder-icon.png");
-            this.imlFolders.Images.SetKeyName(1, "Folder-Open-icon.png");
+            this.treeListColumn3.Caption = "Rarity";
+            this.treeListColumn3.FieldName = "Rarity";
+            this.treeListColumn3.MaxWidth = 100;
+            this.treeListColumn3.Name = "treeListColumn3";
+            this.treeListColumn3.Visible = true;
+            this.treeListColumn3.VisibleIndex = 2;
             // 
-            // imlPrev
+            // treeListColumn4
             // 
-            this.imlPrev.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
-            this.imlPrev.ImageSize = new System.Drawing.Size(100, 100);
-            this.imlPrev.TransparentColor = System.Drawing.Color.Transparent;
+            this.treeListColumn4.Caption = "Rarity %";
+            this.treeListColumn4.FieldName = "Rarity %";
+            this.treeListColumn4.MaxWidth = 100;
+            this.treeListColumn4.Name = "treeListColumn4";
+            this.treeListColumn4.Visible = true;
+            this.treeListColumn4.VisibleIndex = 3;
+            // 
+            // toolStrip2
+            // 
+            this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButton1,
+            this.toolStripButton2,
+            this.toolStripSeparator2,
+            this.toolStripButton3});
+            this.toolStrip2.Location = new System.Drawing.Point(3, 3);
+            this.toolStrip2.Name = "toolStrip2";
+            this.toolStrip2.Size = new System.Drawing.Size(880, 25);
+            this.toolStrip2.TabIndex = 1;
+            this.toolStrip2.Text = "toolStrip2";
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton1.Text = "toolStripButton1";
+            // 
+            // toolStripButton2
+            // 
+            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
+            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton2.Name = "toolStripButton2";
+            this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton2.Text = "toolStripButton2";
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripButton3
+            // 
+            this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
+            this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton3.Name = "toolStripButton3";
+            this.toolStripButton3.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton3.Text = "toolStripButton3";
             // 
             // Main
             // 
@@ -278,8 +425,16 @@ namespace NFTAG
             this.toolStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gallery1)).EndInit();
+            this.gallery1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.treeList1)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picPrev)).EndInit();
+            this.toolStrip2.ResumeLayout(false);
+            this.toolStrip2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -302,10 +457,22 @@ namespace NFTAG
         private System.Windows.Forms.FolderBrowserDialog folderBrowse;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel statusInfo;
-        private System.Windows.Forms.ListView lvPreview;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripButton btnMakeRoot;
         private System.Windows.Forms.ImageList imlFolders;
-        private System.Windows.Forms.ImageList imlPrev;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripButton btnUp;
+        private System.Windows.Forms.ToolStripButton btnDown;
+        private DevExpress.XtraBars.Ribbon.GalleryControl gallery1;
+        private DevExpress.XtraBars.Ribbon.GalleryControlClient galleryControlClient1;
+        private DevExpress.XtraTreeList.TreeList treeList1;
+        private System.Windows.Forms.PictureBox picPrev;
+        private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn1;
+        private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn2;
+        private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn3;
+        private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn4;
+        private System.Windows.Forms.ToolStrip toolStrip2;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripButton toolStripButton2;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripButton toolStripButton3;
     }
 }
