@@ -34,7 +34,13 @@ namespace NFTAG
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuNewProject = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuSaveProject = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuOpenProject = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuExit = new System.Windows.Forms.ToolStripMenuItem();
+            this.projectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuSetProjectName = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.imlFolders = new System.Windows.Forms.ImageList(this.components);
@@ -48,7 +54,6 @@ namespace NFTAG
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.gallery1 = new DevExpress.XtraBars.Ribbon.GalleryControl();
             this.galleryControlClient1 = new DevExpress.XtraBars.Ribbon.GalleryControlClient();
-            this.picPrev = new System.Windows.Forms.PictureBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tlRT = new DevExpress.XtraTreeList.TreeList();
             this.treeListColumn1 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
@@ -60,14 +65,15 @@ namespace NFTAG
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.btnReloadRarityTable = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.txtTotalItems = new System.Windows.Forms.ToolStripTextBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.folderBrowse = new System.Windows.Forms.FolderBrowserDialog();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.statusInfo = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.mnuSaveProject = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuOpenProject = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuNewProject = new System.Windows.Forms.ToolStripMenuItem();
+            this.dlgSave = new System.Windows.Forms.SaveFileDialog();
+            this.picPrev = new DevExpress.XtraEditors.PictureEdit();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -78,11 +84,11 @@ namespace NFTAG
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gallery1)).BeginInit();
             this.gallery1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picPrev)).BeginInit();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tlRT)).BeginInit();
             this.toolStrip2.SuspendLayout();
             this.statusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picPrev.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // splashScreenManager1
@@ -92,7 +98,8 @@ namespace NFTAG
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
+            this.fileToolStripMenuItem,
+            this.projectToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1189, 24);
@@ -111,12 +118,55 @@ namespace NFTAG
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "&File";
             // 
+            // mnuNewProject
+            // 
+            this.mnuNewProject.Name = "mnuNewProject";
+            this.mnuNewProject.Size = new System.Drawing.Size(195, 22);
+            this.mnuNewProject.Text = "&New Project...";
+            this.mnuNewProject.Click += new System.EventHandler(this.mnuNewProject_Click);
+            // 
+            // mnuSaveProject
+            // 
+            this.mnuSaveProject.Name = "mnuSaveProject";
+            this.mnuSaveProject.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.mnuSaveProject.Size = new System.Drawing.Size(195, 22);
+            this.mnuSaveProject.Text = "&Save Project...";
+            this.mnuSaveProject.Click += new System.EventHandler(this.mnuSaveProject_Click);
+            // 
+            // mnuOpenProject
+            // 
+            this.mnuOpenProject.Name = "mnuOpenProject";
+            this.mnuOpenProject.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.mnuOpenProject.Size = new System.Drawing.Size(195, 22);
+            this.mnuOpenProject.Text = "&Open Project...";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(192, 6);
+            // 
             // mnuExit
             // 
             this.mnuExit.Name = "mnuExit";
             this.mnuExit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
             this.mnuExit.Size = new System.Drawing.Size(195, 22);
             this.mnuExit.Text = "E&xit";
+            this.mnuExit.Click += new System.EventHandler(this.mnuExit_Click);
+            // 
+            // projectToolStripMenuItem
+            // 
+            this.projectToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuSetProjectName});
+            this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
+            this.projectToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
+            this.projectToolStripMenuItem.Text = "&Project";
+            // 
+            // mnuSetProjectName
+            // 
+            this.mnuSetProjectName.Name = "mnuSetProjectName";
+            this.mnuSetProjectName.Size = new System.Drawing.Size(174, 22);
+            this.mnuSetProjectName.Text = "Set Project &Name...";
+            this.mnuSetProjectName.Click += new System.EventHandler(this.mnuSetProjectName_Click);
             // 
             // splitContainer1
             // 
@@ -132,7 +182,7 @@ namespace NFTAG
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
-            this.splitContainer1.Size = new System.Drawing.Size(1189, 748);
+            this.splitContainer1.Size = new System.Drawing.Size(1189, 726);
             this.splitContainer1.SplitterDistance = 291;
             this.splitContainer1.TabIndex = 1;
             // 
@@ -147,7 +197,7 @@ namespace NFTAG
             this.treeView1.Name = "treeView1";
             this.treeView1.SelectedImageIndex = 1;
             this.treeView1.ShowLines = false;
-            this.treeView1.Size = new System.Drawing.Size(291, 723);
+            this.treeView1.Size = new System.Drawing.Size(291, 701);
             this.treeView1.TabIndex = 1;
             this.treeView1.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.treeView1_ItemDrag);
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
@@ -227,24 +277,24 @@ namespace NFTAG
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(894, 748);
+            this.tabControl1.Size = new System.Drawing.Size(894, 726);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.gallery1);
             this.tabPage1.Controls.Add(this.picPrev);
+            this.tabPage1.Controls.Add(this.gallery1);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(886, 722);
+            this.tabPage1.Size = new System.Drawing.Size(886, 700);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Preview";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -261,7 +311,7 @@ namespace NFTAG
             this.gallery1.Gallery.ItemClick += new DevExpress.XtraBars.Ribbon.GalleryItemClickEventHandler(this.gallery1_Gallery_ItemClick);
             this.gallery1.Location = new System.Drawing.Point(3, 3);
             this.gallery1.Name = "gallery1";
-            this.gallery1.Size = new System.Drawing.Size(880, 716);
+            this.gallery1.Size = new System.Drawing.Size(880, 694);
             this.gallery1.TabIndex = 0;
             this.gallery1.Text = "galleryControl1";
             // 
@@ -269,18 +319,7 @@ namespace NFTAG
             // 
             this.galleryControlClient1.GalleryControl = this.gallery1;
             this.galleryControlClient1.Location = new System.Drawing.Point(2, 2);
-            this.galleryControlClient1.Size = new System.Drawing.Size(859, 712);
-            // 
-            // picPrev
-            // 
-            this.picPrev.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picPrev.Location = new System.Drawing.Point(3, 3);
-            this.picPrev.Name = "picPrev";
-            this.picPrev.Size = new System.Drawing.Size(880, 716);
-            this.picPrev.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picPrev.TabIndex = 1;
-            this.picPrev.TabStop = false;
-            this.picPrev.Visible = false;
+            this.galleryControlClient1.Size = new System.Drawing.Size(859, 690);
             // 
             // tabPage2
             // 
@@ -289,7 +328,7 @@ namespace NFTAG
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(886, 722);
+            this.tabPage2.Size = new System.Drawing.Size(886, 700);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Rarity Table";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -304,7 +343,7 @@ namespace NFTAG
             this.tlRT.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlRT.Location = new System.Drawing.Point(3, 28);
             this.tlRT.Name = "tlRT";
-            this.tlRT.Size = new System.Drawing.Size(880, 691);
+            this.tlRT.Size = new System.Drawing.Size(880, 669);
             this.tlRT.TabIndex = 0;
             // 
             // treeListColumn1
@@ -348,7 +387,10 @@ namespace NFTAG
             this.toolStripButton1,
             this.toolStripButton2,
             this.toolStripSeparator2,
-            this.btnReloadRarityTable});
+            this.btnReloadRarityTable,
+            this.toolStripSeparator3,
+            this.toolStripLabel1,
+            this.txtTotalItems});
             this.toolStrip2.Location = new System.Drawing.Point(3, 3);
             this.toolStrip2.Name = "toolStrip2";
             this.toolStrip2.Size = new System.Drawing.Size(880, 25);
@@ -388,14 +430,33 @@ namespace NFTAG
             this.btnReloadRarityTable.Text = "toolStripButton3";
             this.btnReloadRarityTable.Click += new System.EventHandler(this.btnReloadRarityTable_Click);
             // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripLabel1
+            // 
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(98, 22);
+            this.toolStripLabel1.Text = "Total Item Count:";
+            // 
+            // txtTotalItems
+            // 
+            this.txtTotalItems.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtTotalItems.Name = "txtTotalItems";
+            this.txtTotalItems.Size = new System.Drawing.Size(100, 25);
+            this.txtTotalItems.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTotalItems_KeyPress);
+            this.txtTotalItems.TextChanged += new System.EventHandler(this.txtTotalItems_TextChanged);
+            // 
             // tabPage3
             // 
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(886, 722);
+            this.tabPage3.Size = new System.Drawing.Size(886, 700);
             this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Results";
+            this.tabPage3.Text = "Settings";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // statusStrip1
@@ -416,44 +477,35 @@ namespace NFTAG
             this.statusInfo.Text = "...";
             this.statusInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // toolStripMenuItem1
+            // dlgSave
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(192, 6);
+            this.dlgSave.Filter = "NFT Collection|*.nftc|All Files|*.*";
+            this.dlgSave.Title = "Save Project";
             // 
-            // mnuSaveProject
+            // picPrev
             // 
-            this.mnuSaveProject.Name = "mnuSaveProject";
-            this.mnuSaveProject.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.mnuSaveProject.Size = new System.Drawing.Size(195, 22);
-            this.mnuSaveProject.Text = "&Save Project...";
-            // 
-            // mnuOpenProject
-            // 
-            this.mnuOpenProject.Name = "mnuOpenProject";
-            this.mnuOpenProject.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.mnuOpenProject.Size = new System.Drawing.Size(195, 22);
-            this.mnuOpenProject.Text = "&Open Project...";
-            // 
-            // mnuNewProject
-            // 
-            this.mnuNewProject.Name = "mnuNewProject";
-            this.mnuNewProject.Size = new System.Drawing.Size(195, 22);
-            this.mnuNewProject.Text = "&New Project...";
+            this.picPrev.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.picPrev.Location = new System.Drawing.Point(3, 3);
+            this.picPrev.Name = "picPrev";
+            this.picPrev.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
+            this.picPrev.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Squeeze;
+            this.picPrev.Size = new System.Drawing.Size(880, 694);
+            this.picPrev.TabIndex = 1;
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1189, 772);
-            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.splitContainer1);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Main";
-            this.Text = "Main";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "NFTGen";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -467,7 +519,6 @@ namespace NFTAG
             this.tabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gallery1)).EndInit();
             this.gallery1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.picPrev)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tlRT)).EndInit();
@@ -475,6 +526,7 @@ namespace NFTAG
             this.toolStrip2.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picPrev.Properties)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -504,7 +556,6 @@ namespace NFTAG
         private DevExpress.XtraBars.Ribbon.GalleryControl gallery1;
         private DevExpress.XtraBars.Ribbon.GalleryControlClient galleryControlClient1;
         private DevExpress.XtraTreeList.TreeList tlRT;
-        private System.Windows.Forms.PictureBox picPrev;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn1;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn2;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn3;
@@ -518,5 +569,12 @@ namespace NFTAG
         private System.Windows.Forms.ToolStripMenuItem mnuSaveProject;
         private System.Windows.Forms.ToolStripMenuItem mnuOpenProject;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.SaveFileDialog dlgSave;
+        private System.Windows.Forms.ToolStripMenuItem projectToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mnuSetProjectName;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
+        private System.Windows.Forms.ToolStripTextBox txtTotalItems;
+        private DevExpress.XtraEditors.PictureEdit picPrev;
     }
 }

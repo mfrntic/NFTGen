@@ -1,4 +1,5 @@
 ﻿using DevExpress.XtraBars.Ribbon;
+using DevExpress.XtraEditors;
 using DevExpress.XtraTreeList.Nodes;
 using System;
 using System.Collections.Generic;
@@ -17,9 +18,14 @@ namespace NFTAG
         public Main()
         {
             InitializeComponent();
+            CurrentProject = new Lib.Project();
+            txtTotalItems.Text = this.CurrentProject.TotalItems.ToString();
         }
 
+        public Lib.Project CurrentProject { get; set; }
+
         #region ADD FOLDER TO TREEVIEW
+
         private void addNode(string fld, TreeNode parentNode = null)
         {
             string[] dirs = System.IO.Directory.GetDirectories(fld);
@@ -65,10 +71,14 @@ namespace NFTAG
             //browse folders
             if (folderBrowse.ShowDialog(this) == DialogResult.OK)
             {
+
                 statusInfo.Text = "Loading trait folders...";
                 addNode(folderBrowse.SelectedPath);
 
                 btnReloadRarityTable_Click(null, null);
+
+                //set base project folder
+                CurrentProject.BaseFolder = folderBrowse.SelectedPath;
 
             }
             statusInfo.Text = "Ready";
@@ -82,16 +92,15 @@ namespace NFTAG
             treeView1.Nodes.Remove(treeView1.SelectedNode);
         }
 
-        //Odabir foldera u treeview kontroli
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
-
+            //Odabir foldera u treeview kontroli
+            //omogući/onemogući gumbe
             btnUp.Enabled = btnDown.Enabled = btnRemoveFolder.Enabled = e.Node != null;
-
+            //očisti galeriju
             gallery1.Gallery.Groups.Clear();
-
-            if (e.Node.ImageIndex < 2) //ako je folder
+            if (e.Node.ImageIndex < 2) //ako je folder prikaži galeriju
             {
                 picPrev.Visible = false;
                 gallery1.Visible = true;
@@ -113,7 +122,7 @@ namespace NFTAG
                     }
                 }
             }
-            else
+            else //ako je file prikaži sliku
             {
                 picPrev.Visible = true;
                 gallery1.Visible = false;
@@ -126,12 +135,28 @@ namespace NFTAG
 
         private void btnUp_Click(object sender, EventArgs e)
         {
+            treeView1.BeginUpdate();
             //move item up the tree
+            TreeNode sel = treeView1.SelectedNode;
+            if (sel != null)
+            {
+                treeView1.SelectedNode.MoveUp();
+                treeView1.SelectedNode = sel;
+            }
+            treeView1.EndUpdate();
         }
 
         private void btnDown_Click(object sender, EventArgs e)
         {
+            treeView1.BeginUpdate();
             //move item down the tree
+            TreeNode sel = treeView1.SelectedNode;
+            if (sel != null)
+            {
+                treeView1.SelectedNode.MoveDown();
+                treeView1.SelectedNode = sel;
+            }
+            treeView1.EndUpdate();
         }
 
         #region RARITY TABLE
@@ -149,10 +174,12 @@ namespace NFTAG
         private void LoadRarityTableFromFolders(TreeNode tn = null, TreeListNode parent = null)
         {
             var nodes = (tn == null ? treeView1.Nodes : tn.Nodes);
-            
+
             foreach (TreeNode node in nodes)
             {
                 TreeListNode tln = tlRT.AppendNode(new object[] { node.Text }, parent);
+                tln.Tag = node;
+
                 if (node.Nodes.Count > 0)
                 {
                     LoadRarityTableFromFolders(node, tln);
@@ -258,5 +285,59 @@ namespace NFTAG
         }
         #endregion
 
+        private void mnuSaveProject_Click(object sender, EventArgs e)
+        {
+            //spremi
+            if (dlgSave.ShowDialog(this) == DialogResult.OK)
+            {
+                //spremi projekt
+                dlgSave.FileName = this.CurrentProject.ProjectName;
+
+
+            }
+        }
+ 
+
+        private void mnuSetProjectName_Click(object sender, EventArgs e)
+        {
+            //set project name
+            this.CurrentProject.ProjectName = XtraInputBox.Show("Set project name", "Project Name", "");
+            this.Text = $"NFTGen :: { this.CurrentProject.ProjectName}";
+        }
+
+        private void mnuExit_Click(object sender, EventArgs e)
+        {
+            //exit
+            this.Close();
+        }
+
+        private void mnuNewProject_Click(object sender, EventArgs e)
+        {
+            //new project
+            this.CurrentProject = new Lib.Project();
+            this.Text = $"NFTGen";
+            treeView1.Nodes.Clear();
+            txtTotalItems.Text = this.CurrentProject.TotalItems.ToString();
+        }
+
+        private void txtTotalItems_TextChanged(object sender, EventArgs e)
+        {
+            this.CurrentProject.TotalItems = int.Parse(txtTotalItems.Text);
+        }
+
+        private void txtTotalItems_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //allow numbers only
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+
+            //// only allow one decimal point
+            //if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
+            //{
+            //    e.Handled = true;
+            //}
+        }
     }
 }
