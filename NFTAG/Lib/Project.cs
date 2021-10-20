@@ -34,6 +34,21 @@ namespace NFTAG.Lib
             }
         }
 
+        public string ToJSON()
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+
+        public static Project FromJSON(string json)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Lib.Project>(json);
+        }
+
+        public static Project Load(string fileName)
+        {
+            string json = System.IO.File.ReadAllText(fileName);
+            return Project.FromJSON(json);
+        }
     }
 
 

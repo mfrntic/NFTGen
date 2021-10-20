@@ -26,7 +26,7 @@ namespace NFTAG
 
         #region ADD FOLDER TO TREEVIEW
 
-        private void addNode(string fld, TreeNode parentNode = null)
+        private void addNode(string fld, ref int numOfGroups, TreeNode parentNode = null)
         {
             string[] dirs = System.IO.Directory.GetDirectories(fld);
             if (dirs.Length > 0)
@@ -34,6 +34,7 @@ namespace NFTAG
                 foreach (var dir in dirs)
                 {
                     TreeNode nd;
+                    numOfGroups++;
                     string folderName = System.IO.Path.GetFileName(dir);
                     if (parentNode == null)
                     {
@@ -43,22 +44,36 @@ namespace NFTAG
                     {
                         nd = parentNode.Nodes.Add(folderName);
                     }
-                    nd.Tag = dir;
+
+                    Lib.ProjectLayer projectGroup = new Lib.ProjectLayer();
+                    projectGroup.IsGroup = true;
+                    projectGroup.Path = dir;
+                    projectGroup.Name = folderName;
+                    projectGroup.ID = $"{(char)(65 + (numOfGroups - 1))}";
+                    nd.Tag = projectGroup;
                     nd.ImageIndex = 0;
                     nd.SelectedImageIndex = 1;
 
                     //recursive
-                    addNode(dir, nd);
+                    addNode(dir, ref numOfGroups, nd);
 
                     //add files
                     string[] fls = System.IO.Directory.GetFiles(dir, "*.png");
+                    int j = 0;
                     foreach (var fl in fls)
                     {
+                        j++;
                         string fileName = System.IO.Path.GetFileNameWithoutExtension(fl);
                         TreeNode ndFile = nd.Nodes.Add(fileName);
                         ndFile.ImageIndex = 2;
                         ndFile.SelectedImageIndex = 2;
-                        ndFile.Tag = fl;
+
+                        Lib.ProjectLayer projectLayer = new Lib.ProjectLayer();
+                        projectLayer.IsGroup = false;
+                        projectLayer.Path = fl;
+                        projectLayer.Name = fileName;
+                        projectLayer.ID = $"{(char)(65 + (numOfGroups - 1))}{j}";
+                        ndFile.Tag = projectLayer;
                     }
                 }
             }
@@ -73,15 +88,21 @@ namespace NFTAG
             {
 
                 statusInfo.Text = "Loading trait folders...";
-                addNode(folderBrowse.SelectedPath);
-
-                btnReloadRarityTable_Click(null, null);
+                LoadFolder(folderBrowse.SelectedPath);
 
                 //set base project folder
                 CurrentProject.BaseFolder = folderBrowse.SelectedPath;
 
             }
             statusInfo.Text = "Ready";
+        }
+
+        private void LoadFolder(string fn)
+        {
+            int numOfFolders = 0;
+            addNode(fn, ref numOfFolders);
+
+            btnReloadRarityTable_Click(null, null);
         }
 
         #endregion
@@ -100,23 +121,27 @@ namespace NFTAG
             btnUp.Enabled = btnDown.Enabled = btnRemoveFolder.Enabled = e.Node != null;
             //očisti galeriju
             gallery1.Gallery.Groups.Clear();
-            if (e.Node.ImageIndex < 2) //ako je folder prikaži galeriju
+
+            Lib.ProjectLayer lay = e.Node.Tag as Lib.ProjectLayer;
+
+            pgProjLay.SelectedObject = lay;
+
+            if (lay.IsGroup) //ako je folder prikaži galeriju
             {
                 picPrev.Visible = false;
                 gallery1.Visible = true;
                 //load images
                 GalleryItemGroup group = new GalleryItemGroup();
-                group.Caption = e.Node.Text;
+                group.Caption = lay.Name;
 
                 gallery1.Gallery.Groups.Add(group);
 
                 foreach (TreeNode tn in e.Node.Nodes)
                 {
-                    if (tn.ImageIndex == 2)
+                    Lib.ProjectLayer overlay = tn.Tag as Lib.ProjectLayer;
+                    if (!overlay.IsGroup)
                     {
-                        string fl = tn.Tag.ToString();
-
-                        var gi = new GalleryItem(Image.FromFile(fl).GetThumbnailImage(100, 100, null, new IntPtr()), tn.Text, "");
+                        var gi = new GalleryItem(Image.FromFile(overlay.Path).GetThumbnailImage(100, 100, null, new IntPtr()), overlay.Name, "");
                         gi.Tag = tn;
                         group.Items.Add(gi);
                     }
@@ -126,8 +151,8 @@ namespace NFTAG
             {
                 picPrev.Visible = true;
                 gallery1.Visible = false;
-                string fl = e.Node.Tag.ToString();
-                picPrev.Image = Image.FromFile(fl);
+                Lib.ProjectLayer overlay = e.Node.Tag as Lib.ProjectLayer;
+                picPrev.Image = Image.FromFile(overlay.Path);
 
             }
         }
@@ -171,29 +196,29 @@ namespace NFTAG
         /// <summary>
         /// Load Rarity table from treeview folder structure
         /// </summary>
-        private void LoadRarityTableFromFolders(TreeNode tn = null, TreeListNode parent = null)
+        private void CreateRarityTableFromFolders(TreeNode tn = null, TreeListNode parent = null)
         {
             var nodes = (tn == null ? treeView1.Nodes : tn.Nodes);
-
             foreach (TreeNode node in nodes)
             {
-                TreeListNode tln = tlRT.AppendNode(new object[] { node.Text }, parent);
+                Lib.ProjectLayer lay = node.Tag as Lib.ProjectLayer;
+
+                TreeListNode tln = tlRT.AppendNode(new object[] { lay.Name, lay.ID, lay.Rarity }, parent);
                 tln.Tag = node;
 
                 if (node.Nodes.Count > 0)
                 {
-                    LoadRarityTableFromFolders(node, tln);
+                    CreateRarityTableFromFolders(node, tln);
                 }
             }
         }
-
 
         private void btnReloadRarityTable_Click(object sender, EventArgs e)
         {
             //Osvježi rarity table
             tlRT.BeginUnboundLoad();
             tlRT.Nodes.Clear();
-            LoadRarityTableFromFolders();
+            CreateRarityTableFromFolders();
             tlRT.EndUnboundLoad();
         }
         #endregion
@@ -287,16 +312,37 @@ namespace NFTAG
 
         private void mnuSaveProject_Click(object sender, EventArgs e)
         {
+            statusInfo.Text = "Saving project data...";
+            dlgSave.FileName = this.CurrentProject.ProjectName;
+
             //spremi
-            if (dlgSave.ShowDialog(this) == DialogResult.OK)
+            if (string.IsNullOrEmpty(currentFileName) || !System.IO.File.Exists(currentFileName))
             {
-                //spremi projekt
-                dlgSave.FileName = this.CurrentProject.ProjectName;
-
-
+                if (dlgSave.ShowDialog(this) == DialogResult.OK)
+                {
+                    //spremi projekt
+                     currentFileName = dlgSave.FileName;
+                }
             }
+            SaveProject(currentFileName);
         }
- 
+
+        private void SaveProject(string fileName)
+        {
+
+            FillProjectStructure();
+            if (string.IsNullOrEmpty(this.CurrentProject.ProjectName))
+            {
+                this.CurrentProject.ProjectName = System.IO.Path.GetFileName(fileName);
+            }
+
+            System.IO.File.WriteAllText(fileName, CurrentProject.ToJSON());
+
+            this.Text = $"NFTGen :: { this.CurrentProject.ProjectName}";
+
+            statusInfo.Text = "Project is saved to disk... Ready...";
+
+        }
 
         private void mnuSetProjectName_Click(object sender, EventArgs e)
         {
@@ -313,11 +359,15 @@ namespace NFTAG
 
         private void mnuNewProject_Click(object sender, EventArgs e)
         {
+            statusInfo.Text = "Creating new project...";
             //new project
             this.CurrentProject = new Lib.Project();
             this.Text = $"NFTGen";
             treeView1.Nodes.Clear();
+            tlRT.Nodes.Clear();
             txtTotalItems.Text = this.CurrentProject.TotalItems.ToString();
+            statusInfo.Text = "New project created...";
+
         }
 
         private void txtTotalItems_TextChanged(object sender, EventArgs e)
@@ -338,6 +388,103 @@ namespace NFTAG
             //{
             //    e.Handled = true;
             //}
+        }
+
+        private void tlRT_CellValueChanged(object sender, DevExpress.XtraTreeList.CellValueChangedEventArgs e)
+        {
+            //promjena vrijednosti u rarity table
+            Lib.ProjectLayer lay = ((TreeNode)e.Node.Tag).Tag as Lib.ProjectLayer;
+            if (e.Column.FieldName == "Name")
+            {
+                lay.Name = e.Value.ToString();
+            }
+            else if (e.Column.FieldName == "Rarity")
+            {
+                lay.Rarity = int.Parse(e.Value.ToString());
+            }
+        }
+
+        private void FillProjectStructure(TreeNode tn = null)
+        {
+            var nodes = (tn == null ? treeView1.Nodes : tn.Nodes);
+            List<Lib.ProjectLayer> overlays = null;
+            if (tn == null)
+            {
+                CurrentProject.Overlays.Clear();
+                overlays = CurrentProject.Overlays;
+            }
+            else
+            {
+                var l = tn.Tag as Lib.ProjectLayer;
+                overlays = l.Overlays;
+            }
+
+            foreach (TreeNode node in nodes)
+            {
+                Lib.ProjectLayer lay = node.Tag as Lib.ProjectLayer;
+                if (lay.IsGroup)
+                {
+                    overlays.Add(lay);
+                }
+                else
+                {
+                    Lib.ProjectLayer parentLay = node.Parent.Tag as Lib.ProjectLayer;
+                    parentLay.Overlays.Add(lay);
+                }
+
+                FillProjectStructure(node);
+            }
+        }
+
+        private void LoadProject(Lib.ProjectLayer layer = null, TreeNode parent = null)
+        {
+            var overlays = (layer != null ? layer.Overlays : CurrentProject.Overlays);
+            var nodes = (parent != null ? parent.Nodes : treeView1.Nodes);
+
+            foreach (var item in overlays)
+            {
+                TreeNode tn = nodes.Add(item.Name);
+                if (item.IsGroup)
+                {
+                    tn.ImageIndex = 0;
+                    tn.SelectedImageIndex = 1;
+                }
+                else
+                {
+                    tn.ImageIndex = 2;
+                    tn.SelectedImageIndex = 2;
+                }
+                tn.Tag = item;
+                if (item.Overlays.Count > 0)
+                {
+                    LoadProject(item, tn);
+                }
+            }
+        }
+
+        string currentFileName = "";
+        private void mnuOpenProject_Click(object sender, EventArgs e)
+        {
+            statusInfo.Text = "Loading project from disk...";
+
+            //open project
+            if (dlgOpen.ShowDialog(this) == DialogResult.OK)
+            {
+                mnuNewProject_Click(null, null);
+                currentFileName = dlgOpen.FileName;
+                CurrentProject = Lib.Project.Load(currentFileName);
+                LoadProject();
+                btnReloadRarityTable_Click(null, null);
+                txtTotalItems.Text = this.CurrentProject.TotalItems.ToString();
+                this.Text = $"NFTGen :: { this.CurrentProject.ProjectName}";
+                statusInfo.Text = "Project loaded...";
+
+            }
+            else
+            {
+                statusInfo.Text = "Ready...";
+            }
+
         }
     }
 }

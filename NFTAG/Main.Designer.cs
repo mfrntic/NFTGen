@@ -44,6 +44,7 @@ namespace NFTAG
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.imlFolders = new System.Windows.Forms.ImageList(this.components);
+            this.pgProjLay = new System.Windows.Forms.PropertyGrid();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnAddFolder = new System.Windows.Forms.ToolStripButton();
             this.btnRemoveFolder = new System.Windows.Forms.ToolStripButton();
@@ -51,29 +52,28 @@ namespace NFTAG
             this.btnUp = new System.Windows.Forms.ToolStripButton();
             this.btnDown = new System.Windows.Forms.ToolStripButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.gallery1 = new DevExpress.XtraBars.Ribbon.GalleryControl();
-            this.galleryControlClient1 = new DevExpress.XtraBars.Ribbon.GalleryControlClient();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tlRT = new DevExpress.XtraTreeList.TreeList();
             this.treeListColumn1 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListColumn2 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListColumn3 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.repositoryItemSpinEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
             this.treeListColumn4 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.toolStrip2 = new System.Windows.Forms.ToolStrip();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.btnReloadRarityTable = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.txtTotalItems = new System.Windows.Forms.ToolStripTextBox();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.picPrev = new DevExpress.XtraEditors.PictureEdit();
+            this.gallery1 = new DevExpress.XtraBars.Ribbon.GalleryControl();
+            this.galleryControlClient1 = new DevExpress.XtraBars.Ribbon.GalleryControlClient();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.folderBrowse = new System.Windows.Forms.FolderBrowserDialog();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.statusInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.dlgSave = new System.Windows.Forms.SaveFileDialog();
-            this.picPrev = new DevExpress.XtraEditors.PictureEdit();
+            this.dlgOpen = new System.Windows.Forms.OpenFileDialog();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -81,14 +81,15 @@ namespace NFTAG
             this.splitContainer1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gallery1)).BeginInit();
-            this.gallery1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tlRT)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit1)).BeginInit();
             this.toolStrip2.SuspendLayout();
-            this.statusStrip1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picPrev.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gallery1)).BeginInit();
+            this.gallery1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // splashScreenManager1
@@ -102,7 +103,7 @@ namespace NFTAG
             this.projectToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1189, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1157, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -139,6 +140,7 @@ namespace NFTAG
             this.mnuOpenProject.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             this.mnuOpenProject.Size = new System.Drawing.Size(195, 22);
             this.mnuOpenProject.Text = "&Open Project...";
+            this.mnuOpenProject.Click += new System.EventHandler(this.mnuOpenProject_Click);
             // 
             // toolStripMenuItem1
             // 
@@ -177,13 +179,14 @@ namespace NFTAG
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.treeView1);
+            this.splitContainer1.Panel1.Controls.Add(this.pgProjLay);
             this.splitContainer1.Panel1.Controls.Add(this.toolStrip1);
             // 
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
-            this.splitContainer1.Size = new System.Drawing.Size(1189, 726);
-            this.splitContainer1.SplitterDistance = 291;
+            this.splitContainer1.Size = new System.Drawing.Size(1157, 687);
+            this.splitContainer1.SplitterDistance = 283;
             this.splitContainer1.TabIndex = 1;
             // 
             // treeView1
@@ -197,7 +200,7 @@ namespace NFTAG
             this.treeView1.Name = "treeView1";
             this.treeView1.SelectedImageIndex = 1;
             this.treeView1.ShowLines = false;
-            this.treeView1.Size = new System.Drawing.Size(291, 701);
+            this.treeView1.Size = new System.Drawing.Size(283, 453);
             this.treeView1.TabIndex = 1;
             this.treeView1.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.treeView1_ItemDrag);
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
@@ -213,6 +216,14 @@ namespace NFTAG
             this.imlFolders.Images.SetKeyName(1, "Folder-Open-icon.png");
             this.imlFolders.Images.SetKeyName(2, "Layer-Backward-icon.png");
             // 
+            // pgProjLay
+            // 
+            this.pgProjLay.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pgProjLay.Location = new System.Drawing.Point(0, 478);
+            this.pgProjLay.Name = "pgProjLay";
+            this.pgProjLay.Size = new System.Drawing.Size(283, 209);
+            this.pgProjLay.TabIndex = 2;
+            // 
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -223,7 +234,7 @@ namespace NFTAG
             this.btnDown});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(291, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(283, 25);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -284,42 +295,8 @@ namespace NFTAG
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(894, 726);
+            this.tabControl1.Size = new System.Drawing.Size(870, 687);
             this.tabControl1.TabIndex = 0;
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.picPrev);
-            this.tabPage1.Controls.Add(this.gallery1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(886, 700);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Preview";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // gallery1
-            // 
-            this.gallery1.Controls.Add(this.galleryControlClient1);
-            this.gallery1.Dock = System.Windows.Forms.DockStyle.Fill;
-            // 
-            // 
-            // 
-            this.gallery1.Gallery.ImageSize = new System.Drawing.Size(100, 100);
-            this.gallery1.Gallery.ItemImageLayout = DevExpress.Utils.Drawing.ImageLayoutMode.ZoomInside;
-            this.gallery1.Gallery.ItemClick += new DevExpress.XtraBars.Ribbon.GalleryItemClickEventHandler(this.gallery1_Gallery_ItemClick);
-            this.gallery1.Location = new System.Drawing.Point(3, 3);
-            this.gallery1.Name = "gallery1";
-            this.gallery1.Size = new System.Drawing.Size(880, 694);
-            this.gallery1.TabIndex = 0;
-            this.gallery1.Text = "galleryControl1";
-            // 
-            // galleryControlClient1
-            // 
-            this.galleryControlClient1.GalleryControl = this.gallery1;
-            this.galleryControlClient1.Location = new System.Drawing.Point(2, 2);
-            this.galleryControlClient1.Size = new System.Drawing.Size(859, 690);
             // 
             // tabPage2
             // 
@@ -328,7 +305,7 @@ namespace NFTAG
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(886, 700);
+            this.tabPage2.Size = new System.Drawing.Size(862, 661);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Rarity Table";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -343,13 +320,16 @@ namespace NFTAG
             this.tlRT.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlRT.Location = new System.Drawing.Point(3, 28);
             this.tlRT.Name = "tlRT";
-            this.tlRT.Size = new System.Drawing.Size(880, 669);
+            this.tlRT.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
+            this.repositoryItemSpinEdit1});
+            this.tlRT.Size = new System.Drawing.Size(856, 630);
             this.tlRT.TabIndex = 0;
+            this.tlRT.CellValueChanged += new DevExpress.XtraTreeList.CellValueChangedEventHandler(this.tlRT_CellValueChanged);
             // 
             // treeListColumn1
             // 
             this.treeListColumn1.Caption = "Trait name";
-            this.treeListColumn1.FieldName = "Trait name";
+            this.treeListColumn1.FieldName = "Name";
             this.treeListColumn1.Name = "treeListColumn1";
             this.treeListColumn1.Visible = true;
             this.treeListColumn1.VisibleIndex = 0;
@@ -357,68 +337,56 @@ namespace NFTAG
             // treeListColumn2
             // 
             this.treeListColumn2.Caption = "Trait ID";
-            this.treeListColumn2.FieldName = "Trait ID";
+            this.treeListColumn2.FieldName = "ID";
             this.treeListColumn2.MaxWidth = 100;
             this.treeListColumn2.Name = "treeListColumn2";
+            this.treeListColumn2.OptionsColumn.AllowEdit = false;
             this.treeListColumn2.Visible = true;
             this.treeListColumn2.VisibleIndex = 1;
             // 
             // treeListColumn3
             // 
             this.treeListColumn3.Caption = "Rarity";
+            this.treeListColumn3.ColumnEdit = this.repositoryItemSpinEdit1;
             this.treeListColumn3.FieldName = "Rarity";
             this.treeListColumn3.MaxWidth = 100;
             this.treeListColumn3.Name = "treeListColumn3";
+            this.treeListColumn3.SummaryFooter = DevExpress.XtraTreeList.SummaryItemType.Sum;
             this.treeListColumn3.Visible = true;
             this.treeListColumn3.VisibleIndex = 2;
+            // 
+            // repositoryItemSpinEdit1
+            // 
+            this.repositoryItemSpinEdit1.AutoHeight = false;
+            this.repositoryItemSpinEdit1.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.repositoryItemSpinEdit1.IsFloatValue = false;
+            this.repositoryItemSpinEdit1.Mask.EditMask = "N00";
+            this.repositoryItemSpinEdit1.Name = "repositoryItemSpinEdit1";
             // 
             // treeListColumn4
             // 
             this.treeListColumn4.Caption = "Rarity %";
-            this.treeListColumn4.FieldName = "Rarity %";
+            this.treeListColumn4.FieldName = "RarityPerc";
             this.treeListColumn4.MaxWidth = 100;
             this.treeListColumn4.Name = "treeListColumn4";
+            this.treeListColumn4.OptionsColumn.AllowEdit = false;
+            this.treeListColumn4.SummaryFooter = DevExpress.XtraTreeList.SummaryItemType.Sum;
             this.treeListColumn4.Visible = true;
             this.treeListColumn4.VisibleIndex = 3;
             // 
             // toolStrip2
             // 
             this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButton1,
-            this.toolStripButton2,
-            this.toolStripSeparator2,
             this.btnReloadRarityTable,
             this.toolStripSeparator3,
             this.toolStripLabel1,
             this.txtTotalItems});
             this.toolStrip2.Location = new System.Drawing.Point(3, 3);
             this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Size = new System.Drawing.Size(880, 25);
+            this.toolStrip2.Size = new System.Drawing.Size(856, 25);
             this.toolStrip2.TabIndex = 1;
             this.toolStrip2.Text = "toolStrip2";
-            // 
-            // toolStripButton1
-            // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton1.Text = "toolStripButton1";
-            // 
-            // toolStripButton2
-            // 
-            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
-            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton2.Text = "toolStripButton2";
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
             // btnReloadRarityTable
             // 
@@ -449,12 +417,56 @@ namespace NFTAG
             this.txtTotalItems.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTotalItems_KeyPress);
             this.txtTotalItems.TextChanged += new System.EventHandler(this.txtTotalItems_TextChanged);
             // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.picPrev);
+            this.tabPage1.Controls.Add(this.gallery1);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(862, 661);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Preview";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // picPrev
+            // 
+            this.picPrev.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.picPrev.Location = new System.Drawing.Point(3, 3);
+            this.picPrev.Name = "picPrev";
+            this.picPrev.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
+            this.picPrev.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Squeeze;
+            this.picPrev.Size = new System.Drawing.Size(856, 655);
+            this.picPrev.TabIndex = 1;
+            // 
+            // gallery1
+            // 
+            this.gallery1.Controls.Add(this.galleryControlClient1);
+            this.gallery1.Dock = System.Windows.Forms.DockStyle.Fill;
+            // 
+            // 
+            // 
+            this.gallery1.Gallery.ImageSize = new System.Drawing.Size(100, 100);
+            this.gallery1.Gallery.ItemImageLayout = DevExpress.Utils.Drawing.ImageLayoutMode.ZoomInside;
+            this.gallery1.Gallery.ItemClick += new DevExpress.XtraBars.Ribbon.GalleryItemClickEventHandler(this.gallery1_Gallery_ItemClick);
+            this.gallery1.Location = new System.Drawing.Point(3, 3);
+            this.gallery1.Name = "gallery1";
+            this.gallery1.Size = new System.Drawing.Size(856, 655);
+            this.gallery1.TabIndex = 0;
+            this.gallery1.Text = "galleryControl1";
+            // 
+            // galleryControlClient1
+            // 
+            this.galleryControlClient1.GalleryControl = this.gallery1;
+            this.galleryControlClient1.Location = new System.Drawing.Point(2, 2);
+            this.galleryControlClient1.Size = new System.Drawing.Size(835, 651);
+            // 
             // tabPage3
             // 
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(886, 700);
+            this.tabPage3.Size = new System.Drawing.Size(862, 661);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Settings";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -463,16 +475,16 @@ namespace NFTAG
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusInfo});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 750);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 711);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1189, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1157, 22);
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
             // 
             // statusInfo
             // 
             this.statusInfo.Name = "statusInfo";
-            this.statusInfo.Size = new System.Drawing.Size(1174, 17);
+            this.statusInfo.Size = new System.Drawing.Size(1142, 17);
             this.statusInfo.Spring = true;
             this.statusInfo.Text = "...";
             this.statusInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -482,21 +494,16 @@ namespace NFTAG
             this.dlgSave.Filter = "NFT Collection|*.nftc|All Files|*.*";
             this.dlgSave.Title = "Save Project";
             // 
-            // picPrev
+            // dlgOpen
             // 
-            this.picPrev.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picPrev.Location = new System.Drawing.Point(3, 3);
-            this.picPrev.Name = "picPrev";
-            this.picPrev.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
-            this.picPrev.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Squeeze;
-            this.picPrev.Size = new System.Drawing.Size(880, 694);
-            this.picPrev.TabIndex = 1;
+            this.dlgOpen.Filter = "NFT Collection|*.nftc|All Files|*.*";
+            this.dlgOpen.Title = "Open Project";
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1189, 772);
+            this.ClientSize = new System.Drawing.Size(1157, 733);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
@@ -516,17 +523,18 @@ namespace NFTAG
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.gallery1)).EndInit();
-            this.gallery1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tlRT)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit1)).EndInit();
             this.toolStrip2.ResumeLayout(false);
             this.toolStrip2.PerformLayout();
+            this.tabPage1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.picPrev.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gallery1)).EndInit();
+            this.gallery1.ResumeLayout(false);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picPrev.Properties)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -561,9 +569,6 @@ namespace NFTAG
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn3;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn4;
         private System.Windows.Forms.ToolStrip toolStrip2;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
-        private System.Windows.Forms.ToolStripButton toolStripButton2;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripButton btnReloadRarityTable;
         private System.Windows.Forms.ToolStripMenuItem mnuNewProject;
         private System.Windows.Forms.ToolStripMenuItem mnuSaveProject;
@@ -576,5 +581,8 @@ namespace NFTAG
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
         private System.Windows.Forms.ToolStripTextBox txtTotalItems;
         private DevExpress.XtraEditors.PictureEdit picPrev;
+        private System.Windows.Forms.PropertyGrid pgProjLay;
+        private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit repositoryItemSpinEdit1;
+        private System.Windows.Forms.OpenFileDialog dlgOpen;
     }
 }
