@@ -69,6 +69,12 @@ namespace NFTAG
             this.gallery1 = new DevExpress.XtraBars.Ribbon.GalleryControl();
             this.galleryControlClient1 = new DevExpress.XtraBars.Ribbon.GalleryControlClient();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.output = new System.Windows.Forms.TextBox();
+            this.toolStrip3 = new System.Windows.Forms.ToolStrip();
+            this.btnGenerate = new System.Windows.Forms.ToolStripButton();
+            this.prg1 = new System.Windows.Forms.ToolStripProgressBar();
             this.folderBrowse = new System.Windows.Forms.FolderBrowserDialog();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.statusInfo = new System.Windows.Forms.ToolStripStatusLabel();
@@ -89,6 +95,9 @@ namespace NFTAG
             ((System.ComponentModel.ISupportInitialize)(this.picPrev.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gallery1)).BeginInit();
             this.gallery1.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            this.tabPage4.SuspendLayout();
+            this.toolStrip3.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -291,12 +300,14 @@ namespace NFTAG
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(870, 687);
             this.tabControl1.TabIndex = 0;
+            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // tabPage2
             // 
@@ -320,6 +331,7 @@ namespace NFTAG
             this.tlRT.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlRT.Location = new System.Drawing.Point(3, 28);
             this.tlRT.Name = "tlRT";
+            this.tlRT.OptionsView.ShowRowFooterSummary = true;
             this.tlRT.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemSpinEdit1});
             this.tlRT.Size = new System.Drawing.Size(856, 630);
@@ -351,7 +363,7 @@ namespace NFTAG
             this.treeListColumn3.FieldName = "Rarity";
             this.treeListColumn3.MaxWidth = 100;
             this.treeListColumn3.Name = "treeListColumn3";
-            this.treeListColumn3.SummaryFooter = DevExpress.XtraTreeList.SummaryItemType.Sum;
+            this.treeListColumn3.RowFooterSummary = DevExpress.XtraTreeList.SummaryItemType.Sum;
             this.treeListColumn3.Visible = true;
             this.treeListColumn3.VisibleIndex = 2;
             // 
@@ -371,7 +383,7 @@ namespace NFTAG
             this.treeListColumn4.MaxWidth = 100;
             this.treeListColumn4.Name = "treeListColumn4";
             this.treeListColumn4.OptionsColumn.AllowEdit = false;
-            this.treeListColumn4.SummaryFooter = DevExpress.XtraTreeList.SummaryItemType.Sum;
+            this.treeListColumn4.RowFooterSummary = DevExpress.XtraTreeList.SummaryItemType.Sum;
             this.treeListColumn4.Visible = true;
             this.treeListColumn4.VisibleIndex = 3;
             // 
@@ -463,13 +475,75 @@ namespace NFTAG
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.webBrowser1);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage3.Size = new System.Drawing.Size(862, 661);
             this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Settings";
+            this.tabPage3.Text = "JSON Result";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // webBrowser1
+            // 
+            this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.webBrowser1.Location = new System.Drawing.Point(3, 3);
+            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowser1.Name = "webBrowser1";
+            this.webBrowser1.Size = new System.Drawing.Size(856, 655);
+            this.webBrowser1.TabIndex = 0;
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.output);
+            this.tabPage4.Controls.Add(this.toolStrip3);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(862, 661);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Generate";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // output
+            // 
+            this.output.BackColor = System.Drawing.Color.Black;
+            this.output.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.output.Font = new System.Drawing.Font("Courier New", 10.25F);
+            this.output.ForeColor = System.Drawing.Color.White;
+            this.output.Location = new System.Drawing.Point(3, 28);
+            this.output.Multiline = true;
+            this.output.Name = "output";
+            this.output.ReadOnly = true;
+            this.output.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.output.Size = new System.Drawing.Size(856, 630);
+            this.output.TabIndex = 3;
+            // 
+            // toolStrip3
+            // 
+            this.toolStrip3.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.btnGenerate,
+            this.prg1});
+            this.toolStrip3.Location = new System.Drawing.Point(3, 3);
+            this.toolStrip3.Name = "toolStrip3";
+            this.toolStrip3.Size = new System.Drawing.Size(856, 25);
+            this.toolStrip3.TabIndex = 2;
+            this.toolStrip3.Text = "toolStrip3";
+            // 
+            // btnGenerate
+            // 
+            this.btnGenerate.Image = ((System.Drawing.Image)(resources.GetObject("btnGenerate.Image")));
+            this.btnGenerate.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnGenerate.Name = "btnGenerate";
+            this.btnGenerate.Size = new System.Drawing.Size(74, 22);
+            this.btnGenerate.Text = "Generate";
+            this.btnGenerate.Click += new System.EventHandler(this.btnGenerate_Click);
+            // 
+            // prg1
+            // 
+            this.prg1.Name = "prg1";
+            this.prg1.Size = new System.Drawing.Size(300, 22);
+            this.prg1.Visible = false;
             // 
             // statusStrip1
             // 
@@ -533,6 +607,11 @@ namespace NFTAG
             ((System.ComponentModel.ISupportInitialize)(this.picPrev.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gallery1)).EndInit();
             this.gallery1.ResumeLayout(false);
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage4.ResumeLayout(false);
+            this.tabPage4.PerformLayout();
+            this.toolStrip3.ResumeLayout(false);
+            this.toolStrip3.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -584,5 +663,11 @@ namespace NFTAG
         private System.Windows.Forms.PropertyGrid pgProjLay;
         private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit repositoryItemSpinEdit1;
         private System.Windows.Forms.OpenFileDialog dlgOpen;
+        private System.Windows.Forms.WebBrowser webBrowser1;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.ToolStrip toolStrip3;
+        private System.Windows.Forms.ToolStripButton btnGenerate;
+        private System.Windows.Forms.TextBox output;
+        private System.Windows.Forms.ToolStripProgressBar prg1;
     }
 }

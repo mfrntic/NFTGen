@@ -8,6 +8,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -111,6 +112,7 @@ namespace NFTAG
         private void btnRemoveFolder_Click(object sender, EventArgs e)
         {
             treeView1.Nodes.Remove(treeView1.SelectedNode);
+            btnReloadRarityTable_Click(null, null);
         }
 
 
@@ -169,6 +171,7 @@ namespace NFTAG
                 treeView1.SelectedNode = sel;
             }
             treeView1.EndUpdate();
+            btnReloadRarityTable_Click(null, null);
         }
 
         private void btnDown_Click(object sender, EventArgs e)
@@ -182,6 +185,7 @@ namespace NFTAG
                 treeView1.SelectedNode = sel;
             }
             treeView1.EndUpdate();
+            btnReloadRarityTable_Click(null, null);
         }
 
         #region RARITY TABLE
@@ -203,7 +207,7 @@ namespace NFTAG
             {
                 Lib.ProjectLayer lay = node.Tag as Lib.ProjectLayer;
 
-                TreeListNode tln = tlRT.AppendNode(new object[] { lay.Name, lay.ID, lay.Rarity }, parent);
+                TreeListNode tln = tlRT.AppendNode(new object[] { lay.Name, lay.ID, lay.Rarity, lay.RarityPerc }, parent);
                 tln.Tag = node;
 
                 if (node.Nodes.Count > 0)
@@ -219,6 +223,8 @@ namespace NFTAG
             tlRT.BeginUnboundLoad();
             tlRT.Nodes.Clear();
             CreateRarityTableFromFolders();
+            //calcPerc();
+
             tlRT.EndUnboundLoad();
         }
         #endregion
@@ -291,6 +297,7 @@ namespace NFTAG
                 // Expand the node at the location 
                 // to show the dropped node.
                 targetNode.Expand();
+                btnReloadRarityTable_Click(null, null);
             }
         }
 
@@ -321,7 +328,7 @@ namespace NFTAG
                 if (dlgSave.ShowDialog(this) == DialogResult.OK)
                 {
                     //spremi projekt
-                     currentFileName = dlgSave.FileName;
+                    currentFileName = dlgSave.FileName;
                 }
             }
             SaveProject(currentFileName);
@@ -329,6 +336,10 @@ namespace NFTAG
 
         private void SaveProject(string fileName)
         {
+            if (string.IsNullOrEmpty(fileName))
+            {
+                return;
+            }
 
             FillProjectStructure();
             if (string.IsNullOrEmpty(this.CurrentProject.ProjectName))
@@ -390,6 +401,21 @@ namespace NFTAG
             //}
         }
 
+        //private void calcPerc(TreeListNode tln = null)
+        //{
+        //    var nodes = (tln != null ? tln.Nodes : tlRT.Nodes);
+        //    foreach (TreeListNode item in nodes)
+        //    {
+        //        Lib.ProjectLayer lyCurr = (item.Tag as TreeNode).Tag as Lib.ProjectLayer;
+        //        if (!lyCurr.IsGroup)
+        //        {
+        //            Lib.ProjectLayer lyParent = (item.ParentNode.Tag as TreeNode).Tag as Lib.ProjectLayer;
+        //            item.SetValue(3, Math.Round(lyCurr.Rarity * 1.0 / lyParent.Rarity * 100, 2));
+        //        }
+        //        calcPerc(item);
+        //    }
+        //}
+
         private void tlRT_CellValueChanged(object sender, DevExpress.XtraTreeList.CellValueChangedEventArgs e)
         {
             //promjena vrijednosti u rarity table
@@ -401,6 +427,23 @@ namespace NFTAG
             else if (e.Column.FieldName == "Rarity")
             {
                 lay.Rarity = int.Parse(e.Value.ToString());
+                if (lay.IsGroup)
+                {
+                    //update svih childova
+                    foreach (TreeListNode item in e.Node.Nodes)
+                    {
+                        Lib.ProjectLayer l = ((TreeNode)item.Tag).Tag as Lib.ProjectLayer;
+                        l.RarityPerc = Math.Round(l.Rarity * 1.0 / lay.Rarity * 100, 2);
+                        item.SetValue(3, l.RarityPerc);
+                    }
+                }
+                else
+                {
+                    Lib.ProjectLayer l = ((TreeNode)e.Node.ParentNode.Tag).Tag as Lib.ProjectLayer;
+                    lay.RarityPerc = Math.Round(lay.Rarity * 1.0 / l.Rarity * 100, 2);
+                    e.Node.SetValue(3, lay.RarityPerc);
+                }
+                // calcPerc();
             }
         }
 
@@ -416,7 +459,9 @@ namespace NFTAG
             else
             {
                 var l = tn.Tag as Lib.ProjectLayer;
+                l.Overlays.Clear();
                 overlays = l.Overlays;
+
             }
 
             foreach (TreeNode node in nodes)
@@ -475,16 +520,105 @@ namespace NFTAG
                 CurrentProject = Lib.Project.Load(currentFileName);
                 LoadProject();
                 btnReloadRarityTable_Click(null, null);
+                //calcPerc();
+
                 txtTotalItems.Text = this.CurrentProject.TotalItems.ToString();
                 this.Text = $"NFTGen :: { this.CurrentProject.ProjectName}";
-                statusInfo.Text = "Project loaded...";
 
+                statusInfo.Text = "Project loaded...";
             }
             else
             {
                 statusInfo.Text = "Ready...";
             }
 
+        }
+
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tabControl1.SelectedIndex == 2)
+            {
+                FillProjectStructure();
+                var style = "<style>body{ background-color: 'black'; font-family: 'Courier New'; font-size: '11pt'; color: 'white'; } .key{ color: 'CornflowerBlue'; } .string {color: 'Lime'} .number { color: 'Yellow'; } .boolean { color: 'magenta' } .null { color: 'gray'; }</style>";
+                webBrowser1.DocumentText = style + SyntaxHighlightJson(CurrentProject.ToJSON().Replace("\n", "<br>").Replace(" ", "&nbsp;"));
+            }
+        }
+
+        private string SyntaxHighlightJson(string original)
+        {
+            return Regex.Replace(
+              original,
+              @"(¤(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\¤])*¤(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)".Replace('¤', '"'),
+              match =>
+              {
+                  var cls = "number";
+                  if (Regex.IsMatch(match.Value, @"^¤".Replace('¤', '"')))
+                  {
+                      if (Regex.IsMatch(match.Value, ":$"))
+                      {
+                          cls = "key";
+                      }
+                      else
+                      {
+                          cls = "string";
+                      }
+                  }
+                  else if (Regex.IsMatch(match.Value, "true|false"))
+                  {
+                      cls = "boolean";
+                  }
+                  else if (Regex.IsMatch(match.Value, "null"))
+                  {
+                      cls = "null";
+                  }
+                  return "<span class=\"" + cls + "\">" + match + "</span>";
+              });
+        }
+
+        private async void btnGenerate_Click(object sender, EventArgs e)
+        {
+            btnGenerate.Enabled = false;
+
+
+            string outputPath = "H:\\Results";
+
+            if (System.IO.Directory.Exists(outputPath))
+            {
+                System.IO.Directory.Delete(outputPath, true);
+            }
+            System.IO.Directory.CreateDirectory(outputPath);
+
+            var files = Lib.NFTCollectionItem.CreateCollection(CurrentProject);
+
+            prg1.Minimum = 0;
+            prg1.Maximum = files.Count;
+            prg1.Value = 0;
+            prg1.Step = 1;
+            prg1.Visible = true;
+
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var item in files)
+            {
+                await item.GenerateImageAsync(outputPath);
+                sb.AppendLine($"> DONE!\t[{item.FileName}]");
+
+
+                prg1.PerformStep();
+                output.Text = sb.ToString();
+                output.SelectionStart = sb.Length;
+                output.ScrollToCaret();
+            }
+
+            sb.AppendLine("--------------");
+            sb.AppendLine($"> TOTAL FILE COUNT: {files.Count}");
+
+            output.Text = sb.ToString();
+            output.SelectionStart = sb.Length;
+            output.ScrollToCaret();
+
+            prg1.Visible = false;
+            btnGenerate.Enabled = true;
         }
     }
 }

@@ -16,6 +16,7 @@ namespace NFTAG.Lib
         public string ID { get; set; }
         public string Name { get; set; }
         public int Rarity { get; set; }
+        public double RarityPerc { get; set; }
         public string Path { get; set; }
         public bool IsGroup { get; set; }
 

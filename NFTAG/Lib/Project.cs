@@ -36,7 +36,7 @@ namespace NFTAG.Lib
 
         public string ToJSON()
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, Newtonsoft.Json.Formatting.Indented);
         }
 
         public static Project FromJSON(string json)
