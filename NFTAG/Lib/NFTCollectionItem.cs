@@ -71,6 +71,10 @@ namespace NFTAG.Lib
                     //    }
                     //}
                     Random rng = new Random();
+                    if (proj.Settings.ShuffleSeed > 0)
+                    {
+                        rng = new Random(proj.Settings.ShuffleSeed);
+                    }
 
                     var temp_fls = files
                         .Where(x => !x.Traits.ContainsKey(group.ID))
@@ -86,7 +90,7 @@ namespace NFTAG.Lib
             return files;
         }
 
-        public void GenerateImage(string outputPath)
+        public void GenerateImage(Project proj)
         {
             ImageMagick.MagickImageCollection images = new ImageMagick.MagickImageCollection();
             foreach (var trait in this.Traits)
@@ -97,14 +101,17 @@ namespace NFTAG.Lib
             using (var res = images.Merge())
             {
                 res.VirtualPixelMethod = ImageMagick.VirtualPixelMethod.Transparent;
-                res.FilterType = ImageMagick.FilterType.Point;
-                res.Resize(500, 500);
-                res.Write(System.IO.Path.Combine(outputPath, this.FileName + ".png"));
+                res.FilterType = proj.Settings.ResizeAlgorithm;
+                res.Resize(proj.Settings.OutputSize.Width, proj.Settings.OutputSize.Height);
+
+                var pth = System.IO.Path.Combine(proj.Settings.GetOutputPath(proj), this.FileName + ".png");
+
+                res.Write(System.IO.Path.Combine(pth));
             }
 
         }
 
-        public async Task GenerateImageAsync(string outputPath)
+        public async Task GenerateImageAsync(Project proj)
         {
             await Task.Run(() =>
             {
@@ -117,9 +124,12 @@ namespace NFTAG.Lib
                 using (var res = images.Merge())
                 {
                     res.VirtualPixelMethod = ImageMagick.VirtualPixelMethod.Transparent;
-                    res.FilterType = ImageMagick.FilterType.Point;
-                    res.Resize(500, 500);
-                    res.Write(System.IO.Path.Combine(outputPath, this.FileName + ".png"));
+                    res.FilterType = proj.Settings.ResizeAlgorithm;
+                    res.Resize(proj.Settings.OutputSize.Width, proj.Settings.OutputSize.Height);
+
+                    var pth = System.IO.Path.Combine(proj.Settings.GetOutputPath(proj), this.FileName + ".png");
+
+                    res.Write(System.IO.Path.Combine(pth));
                 }
 
             });

@@ -41,6 +41,7 @@ namespace NFTAG
             this.mnuExit = new System.Windows.Forms.ToolStripMenuItem();
             this.projectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSetProjectName = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuProjectSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.imlFolders = new System.Windows.Forms.ImageList(this.components);
@@ -81,6 +82,8 @@ namespace NFTAG
             this.btnGenerate = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.lblGenProgress = new System.Windows.Forms.ToolStripLabel();
+            this.btnProjectSettings = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.txtSearch = new System.Windows.Forms.ToolStripTextBox();
             this.folderBrowse = new System.Windows.Forms.FolderBrowserDialog();
@@ -143,6 +146,7 @@ namespace NFTAG
             // 
             // mnuNewProject
             // 
+            this.mnuNewProject.Image = global::NFTAG.Properties.Resources.script_code_red_icon;
             this.mnuNewProject.Name = "mnuNewProject";
             this.mnuNewProject.Size = new System.Drawing.Size(195, 22);
             this.mnuNewProject.Text = "&New Project...";
@@ -150,6 +154,7 @@ namespace NFTAG
             // 
             // mnuSaveProject
             // 
+            this.mnuSaveProject.Image = global::NFTAG.Properties.Resources.disk_icon;
             this.mnuSaveProject.Name = "mnuSaveProject";
             this.mnuSaveProject.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
             this.mnuSaveProject.Size = new System.Drawing.Size(195, 22);
@@ -158,6 +163,7 @@ namespace NFTAG
             // 
             // mnuOpenProject
             // 
+            this.mnuOpenProject.Image = global::NFTAG.Properties.Resources.folder_page_icon;
             this.mnuOpenProject.Name = "mnuOpenProject";
             this.mnuOpenProject.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             this.mnuOpenProject.Size = new System.Drawing.Size(195, 22);
@@ -180,7 +186,8 @@ namespace NFTAG
             // projectToolStripMenuItem
             // 
             this.projectToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuSetProjectName});
+            this.mnuSetProjectName,
+            this.mnuProjectSettings});
             this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
             this.projectToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
             this.projectToolStripMenuItem.Text = "&Project";
@@ -191,6 +198,14 @@ namespace NFTAG
             this.mnuSetProjectName.Size = new System.Drawing.Size(174, 22);
             this.mnuSetProjectName.Text = "Set Project &Name...";
             this.mnuSetProjectName.Click += new System.EventHandler(this.mnuSetProjectName_Click);
+            // 
+            // mnuProjectSettings
+            // 
+            this.mnuProjectSettings.Image = global::NFTAG.Properties.Resources.settings_icon1;
+            this.mnuProjectSettings.Name = "mnuProjectSettings";
+            this.mnuProjectSettings.Size = new System.Drawing.Size(174, 22);
+            this.mnuProjectSettings.Text = "Project &Settings...";
+            this.mnuProjectSettings.Click += new System.EventHandler(this.mnuProjectSettings_Click);
             // 
             // splitContainer1
             // 
@@ -428,7 +443,7 @@ namespace NFTAG
             // btnReloadRarityTable
             // 
             this.btnReloadRarityTable.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnReloadRarityTable.Image = ((System.Drawing.Image)(resources.GetObject("btnReloadRarityTable.Image")));
+            this.btnReloadRarityTable.Image = global::NFTAG.Properties.Resources.arrow_refresh_icon;
             this.btnReloadRarityTable.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnReloadRarityTable.Name = "btnReloadRarityTable";
             this.btnReloadRarityTable.Size = new System.Drawing.Size(23, 22);
@@ -564,14 +579,14 @@ namespace NFTAG
             // gridColumn1
             // 
             this.gridColumn1.Caption = "Timestamp";
-            this.gridColumn1.DisplayFormat.FormatString = "g";
+            this.gridColumn1.DisplayFormat.FormatString = "yyyy-MM-dd HH\\:mm\\:ss.fffffff";
             this.gridColumn1.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.gridColumn1.FieldName = "CreationTime";
             this.gridColumn1.Name = "gridColumn1";
             this.gridColumn1.OptionsColumn.FixedWidth = true;
             this.gridColumn1.Visible = true;
             this.gridColumn1.VisibleIndex = 0;
-            this.gridColumn1.Width = 129;
+            this.gridColumn1.Width = 179;
             // 
             // gridColumn2
             // 
@@ -580,7 +595,7 @@ namespace NFTAG
             this.gridColumn2.Name = "gridColumn2";
             this.gridColumn2.Visible = true;
             this.gridColumn2.VisibleIndex = 1;
-            this.gridColumn2.Width = 208;
+            this.gridColumn2.Width = 221;
             // 
             // gridColumn3
             // 
@@ -591,7 +606,7 @@ namespace NFTAG
             new DevExpress.XtraGrid.GridColumnSummaryItem(DevExpress.Data.SummaryItemType.Count, "FullName", "Ukupno datoteka: {0}")});
             this.gridColumn3.Visible = true;
             this.gridColumn3.VisibleIndex = 2;
-            this.gridColumn3.Width = 494;
+            this.gridColumn3.Width = 431;
             // 
             // toolStrip3
             // 
@@ -599,6 +614,8 @@ namespace NFTAG
             this.btnGenerate,
             this.toolStripSeparator1,
             this.lblGenProgress,
+            this.btnProjectSettings,
+            this.toolStripSeparator4,
             this.toolStripLabel2,
             this.txtSearch});
             this.toolStrip3.Location = new System.Drawing.Point(3, 3);
@@ -626,6 +643,21 @@ namespace NFTAG
             this.lblGenProgress.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.lblGenProgress.Name = "lblGenProgress";
             this.lblGenProgress.Size = new System.Drawing.Size(0, 22);
+            // 
+            // btnProjectSettings
+            // 
+            this.btnProjectSettings.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnProjectSettings.Image = global::NFTAG.Properties.Resources.settings_icon1;
+            this.btnProjectSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnProjectSettings.Name = "btnProjectSettings";
+            this.btnProjectSettings.Size = new System.Drawing.Size(23, 22);
+            this.btnProjectSettings.Text = "Project Settings";
+            this.btnProjectSettings.Click += new System.EventHandler(this.mnuProjectSettings_Click);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
             // 
             // toolStripLabel2
             // 
@@ -795,5 +827,8 @@ namespace NFTAG
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn1;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn2;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn3;
+        private System.Windows.Forms.ToolStripMenuItem mnuProjectSettings;
+        private System.Windows.Forms.ToolStripButton btnProjectSettings;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
     }
 }

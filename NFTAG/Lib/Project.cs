@@ -10,16 +10,23 @@ namespace NFTAG.Lib
     {
         public Project()
         {
+            Settings = new ProjectSettings();
             overlays = new List<ProjectLayer>();
         }
 
         public string ProjectName { get; set; }
         //public string ProjectDecription { get; set; }
-        public string BaseFolder { get; set; }
+
         /// <summary>
         /// Total expected number of items in the collection
         /// </summary>
         public int TotalItems { get; set; }
+
+        public ProjectSettings Settings
+        {
+            get;set;
+        }
+
 
         private List<ProjectLayer> overlays = null;
         public List<ProjectLayer> Overlays

@@ -91,8 +91,8 @@ namespace NFTAG
                 statusInfo.Text = "Loading trait folders...";
                 LoadFolder(folderBrowse.SelectedPath);
 
-                //set base project folder
-                CurrentProject.BaseFolder = folderBrowse.SelectedPath;
+                ////set base project folder
+                //CurrentProject.Settings.InitialFolder = folderBrowse.SelectedPath;
 
             }
             statusInfo.Text = "Ready";
@@ -143,9 +143,17 @@ namespace NFTAG
                     Lib.ProjectLayer overlay = tn.Tag as Lib.ProjectLayer;
                     if (!overlay.IsGroup)
                     {
-                        var gi = new GalleryItem(Image.FromFile(overlay.Path).GetThumbnailImage(100, 100, null, new IntPtr()), overlay.Name, "");
-                        gi.Tag = tn;
-                        group.Items.Add(gi);
+                        if (System.IO.File.Exists(overlay.Path))
+                        {
+                            var gi = new GalleryItem(Image.FromFile(overlay.Path).GetThumbnailImage(100, 100, null, new IntPtr()), overlay.Name, "");
+                            gi.Tag = tn;
+                            group.Items.Add(gi);
+                        }
+                        else
+                        {
+                            MessageBox.Show($"Odabrana datoteka [{overlay.Path}] više ne postoji na zadanoj putanji", "Datoteka ne postoji!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            break;
+                        }
                     }
                 }
             }
@@ -154,7 +162,14 @@ namespace NFTAG
                 picPrev.Visible = true;
                 gallery1.Visible = false;
                 Lib.ProjectLayer overlay = e.Node.Tag as Lib.ProjectLayer;
-                picPrev.Image = Image.FromFile(overlay.Path);
+                if (System.IO.File.Exists(overlay.Path))
+                {
+                    picPrev.Image = Image.FromFile(overlay.Path);
+                }
+                else
+                {
+                    MessageBox.Show($"Odabrana datoteka [{overlay.Path}] više ne postoji na zadanoj putanji", "Datoteka ne postoji!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
 
             }
         }
@@ -607,7 +622,7 @@ namespace NFTAG
 
         private async void btnGenerate_Click(object sender, EventArgs e)
         {
-            string outputPath = "D:\\CryptoWeb_Processed";
+            string outputPath = CurrentProject.Settings.GetOutputPath(CurrentProject);
 
             generatedFiles = new List<System.IO.FileInfo>();
             outputGrid.DataSource = generatedFiles;
@@ -616,11 +631,24 @@ namespace NFTAG
             timerGen.Enabled = true;
             
 
-            if (System.IO.Directory.Exists(outputPath))
+            if (!System.IO.Directory.Exists(outputPath))
             {
-                System.IO.Directory.Delete(outputPath, true);
+                System.IO.Directory.CreateDirectory(outputPath);
             }
-            System.IO.Directory.CreateDirectory(outputPath);
+            else
+            {
+                //check if empty
+                if (System.IO.Directory.GetFileSystemEntries(outputPath).Length > 0)
+                {
+                    //nije prazno
+                    if (MessageBox.Show("Continuing to generate will delete the contents of the entire output folder.\nDo you want to continue?", "The output folder is not empty",  MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
+                    {
+                        return;
+                    }
+                }
+                System.IO.Directory.Delete(outputPath, true);
+                System.IO.Directory.CreateDirectory(outputPath);
+            }
 
             var files = Lib.NFTCollectionItem.CreateCollection(CurrentProject);
 
@@ -631,15 +659,11 @@ namespace NFTAG
             prg1.Visible = true;
             lblGenProgress.Text = $"{0}/{files.Count} ({Math.Round(0 * 1.0 / files.Count * 100, 2)}%)";
 
-            StringBuilder sb = new StringBuilder();
-
-
-
             await Task.Run(() =>
              {
                  Parallel.ForEach(files, async item =>
                 {
-                    await item.GenerateImageAsync(outputPath);
+                    await item.GenerateImageAsync(CurrentProject);
                 });
              });
 
@@ -669,7 +693,7 @@ namespace NFTAG
         private void timerGen_Tick(object sender, EventArgs e)
         {
             //generate progress for 
-            string outputPath = "D:\\CryptoWeb_Processed";
+            string outputPath = CurrentProject.Settings.GetOutputPath(CurrentProject);
             //get files
             var processed = System.IO.Directory.GetFiles(outputPath, "*.png");
             prg1.Value = processed.Length;
@@ -686,6 +710,8 @@ namespace NFTAG
             }
             outputGrid.RefreshDataSource();
 
+            var view = ((DevExpress.XtraGrid.Views.Base.ColumnView)outputGrid.DefaultView);
+            view.MoveLast();
 
             lblGenProgress.Text = $"{processed.Length}/{CurrentProject.TotalItems} ({Math.Round(processed.Length * 1.0 / CurrentProject.TotalItems * 100, 2)}%)";
 
@@ -714,6 +740,21 @@ namespace NFTAG
 
 
         }
- 
+
+        private void mnuProjectSettings_Click(object sender, EventArgs e)
+        {
+            //show setting
+            SettingsForm sett = new SettingsForm();
+            sett.Settings = (Lib.ProjectSettings)CurrentProject.Settings.Clone();
+            if (sett.ShowDialog(this) == DialogResult.OK)
+            {
+                CurrentProject.Settings.CreateProjectFolderInOutputDirectory = sett.Settings.CreateProjectFolderInOutputDirectory;
+                //CurrentProject.Settings.InitialFolder = sett.Settings.InitialFolder;
+                CurrentProject.Settings.OutputDirectory = sett.Settings.OutputDirectory;
+                CurrentProject.Settings.OutputSize = sett.Settings.OutputSize;
+                CurrentProject.Settings.ResizeAlgorithm = sett.Settings.ResizeAlgorithm;
+                CurrentProject.Settings.ShuffleSeed = sett.Settings.ShuffleSeed;
+            }
+        }
     }
 }
