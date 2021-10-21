@@ -15,7 +15,6 @@ namespace NFTAG.Lib
 
         public int TokenID { get; set; }
         //public Project Project { get; set; }
-        public Dictionary<string, ProjectLayer> Traits { get; set; }
         public string FileName
         {
             get
@@ -29,6 +28,21 @@ namespace NFTAG.Lib
             }
         }
 
+        public string HashName
+        {
+            get
+            {
+                return FileName.HashString();
+            }
+        }
+
+        public DateTime GeneratedTimestamp { get; private set; }
+
+        public string ImagePath { get; private set; }
+
+        public Dictionary<string, ProjectLayer> Traits { get; set; }
+
+
         public static List<NFTCollectionItem> CreateCollection(Project proj)
         {
             List<NFTCollectionItem> files = new List<NFTCollectionItem>();
@@ -41,7 +55,7 @@ namespace NFTAG.Lib
 
             int id = 0;
 
-            //create base collection
+            //create base collection without traits
             foreach (var layer in baseLayer.Overlays)
             {
                 if (!layer.IsGroup) //ako je overlay
@@ -104,9 +118,10 @@ namespace NFTAG.Lib
                 res.FilterType = proj.Settings.ResizeAlgorithm;
                 res.Resize(proj.Settings.OutputSize.Width, proj.Settings.OutputSize.Height);
 
-                var pth = System.IO.Path.Combine(proj.Settings.GetOutputPath(proj), this.FileName + ".png");
+                this.ImagePath = System.IO.Path.Combine(proj.Settings.GetOutputPath(proj), this.FileName + ".png");
+                this.GeneratedTimestamp = DateTime.Now;
 
-                res.Write(System.IO.Path.Combine(pth));
+                res.Write(this.ImagePath);
             }
 
         }
@@ -127,9 +142,10 @@ namespace NFTAG.Lib
                     res.FilterType = proj.Settings.ResizeAlgorithm;
                     res.Resize(proj.Settings.OutputSize.Width, proj.Settings.OutputSize.Height);
 
-                    var pth = System.IO.Path.Combine(proj.Settings.GetOutputPath(proj), this.FileName + ".png");
+                    this.ImagePath = System.IO.Path.Combine(proj.Settings.GetOutputPath(proj), this.FileName + ".png");
+                    this.GeneratedTimestamp = DateTime.Now;
 
-                    res.Write(System.IO.Path.Combine(pth));
+                    res.Write(this.ImagePath);
                 }
 
             });

@@ -551,7 +551,7 @@ namespace NFTAG
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (tabControl1.SelectedIndex == 2)
+            if (tabControl1.SelectedIndex == 3)
             {
                 FillProjectStructure();
                 var style = "<style>body{ background-color: 'black'; font-family: 'Courier New'; font-size: '11pt'; color: 'white'; } .key{ color: 'CornflowerBlue'; } .string {color: 'Lime'} .number { color: 'Yellow'; } .boolean { color: 'magenta' } .null { color: 'gray'; }</style>";
@@ -624,12 +624,8 @@ namespace NFTAG
         {
             string outputPath = CurrentProject.Settings.GetOutputPath(CurrentProject);
 
-            generatedFiles = new List<System.IO.FileInfo>();
-            outputGrid.DataSource = generatedFiles;
 
-            btnGenerate.Enabled = false;
-            timerGen.Enabled = true;
-            
+
 
             if (!System.IO.Directory.Exists(outputPath))
             {
@@ -641,8 +637,9 @@ namespace NFTAG
                 if (System.IO.Directory.GetFileSystemEntries(outputPath).Length > 0)
                 {
                     //nije prazno
-                    if (MessageBox.Show("Continuing to generate will delete the contents of the entire output folder.\nDo you want to continue?", "The output folder is not empty",  MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
+                    if (MessageBox.Show("Continuing to generate will delete the contents of the entire output folder.\nDo you want to continue?", "The output folder is not empty", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
                     {
+
                         return;
                     }
                 }
@@ -650,18 +647,22 @@ namespace NFTAG
                 System.IO.Directory.CreateDirectory(outputPath);
             }
 
-            var files = Lib.NFTCollectionItem.CreateCollection(CurrentProject);
+            generatedFiles = new List<Lib.NFTCollectionItem>();
+            outputGrid.DataSource = generatedFiles;
+            btnGenerate.Enabled = false;
+            timerGen.Enabled = true;
+            allFiles = Lib.NFTCollectionItem.CreateCollection(CurrentProject);
 
             prg1.Minimum = 0;
-            prg1.Maximum = files.Count;
+            prg1.Maximum = allFiles.Count;
             prg1.Value = 0;
             prg1.Step = 1;
             prg1.Visible = true;
-            lblGenProgress.Text = $"{0}/{files.Count} ({Math.Round(0 * 1.0 / files.Count * 100, 2)}%)";
+            lblGenProgress.Text = $"{0}/{allFiles.Count} ({Math.Round(0 * 1.0 / allFiles.Count * 100, 2)}%)";
 
             await Task.Run(() =>
              {
-                 Parallel.ForEach(files, async item =>
+                 Parallel.ForEach(allFiles, async item =>
                 {
                     await item.GenerateImageAsync(CurrentProject);
                 });
@@ -682,13 +683,14 @@ namespace NFTAG
             //    //}));
 
             //}
-          
+
 
 
         }
 
 
-        public List<System.IO.FileInfo> generatedFiles;
+        public List<Lib.NFTCollectionItem> allFiles;
+        public List<Lib.NFTCollectionItem> generatedFiles;
 
         private void timerGen_Tick(object sender, EventArgs e)
         {
@@ -700,12 +702,12 @@ namespace NFTAG
 
             if (prg1.Value == 0) return;
 
-           
+
             foreach (var item in processed)
             {
-                if (generatedFiles.Where(a=> a.FullName == item).Count() == 0)
+                if (generatedFiles.Where(a => a.ImagePath == item).Count() == 0)
                 {
-                    generatedFiles.Add(new System.IO.FileInfo(item));
+                    generatedFiles.Add(allFiles.Where(x => x.ImagePath == item).Single());
                 }
             }
             outputGrid.RefreshDataSource();
@@ -722,12 +724,22 @@ namespace NFTAG
                 btnGenerate.Enabled = true;
                 timerGen.Enabled = false;
                 lblGenProgress.Text = "";
+
+                //save final json
+                var json = Newtonsoft.Json.JsonConvert.SerializeObject(allFiles, Newtonsoft.Json.Formatting.Indented);
+                System.IO.File.WriteAllText(
+                    System.IO.Path.Combine(outputPath, $"{CurrentProject.ProjectName}_db.json"),
+                    json
+                );
+                var style = "<style>body{ background-color: 'black'; font-family: 'Courier New'; font-size: '11pt'; color: 'white'; } .key{ color: 'CornflowerBlue'; } .string {color: 'Lime'} .number { color: 'Yellow'; } .boolean { color: 'magenta' } .null { color: 'gray'; }</style>";
+                webBrowser2.DocumentText = style + SyntaxHighlightJson(json.Replace("\n", "<br>").Replace(" ", "&nbsp;"));
+
             }
         }
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            
+
             var view = ((DevExpress.XtraGrid.Views.Base.ColumnView)outputGrid.DefaultView);
             if (!string.IsNullOrEmpty(txtSearch.Text))
             {
