@@ -120,7 +120,7 @@ namespace NFTAG
         {
             //Odabir foldera u treeview kontroli
             //omogući/onemogući gumbe
-            btnUp.Enabled = btnDown.Enabled = btnRemoveFolder.Enabled = e.Node != null;
+            btnAddFile.Enabled = btnUp.Enabled = btnDown.Enabled = btnRemoveFolder.Enabled = e.Node != null;
             //očisti galeriju
             gallery1.Gallery.Groups.Clear();
 
@@ -575,12 +575,46 @@ namespace NFTAG
               });
         }
 
+        private void btnAddFile_Click(object sender, EventArgs e)
+        {
+            //add file
+            if (dlgAddFile.ShowDialog(this) == DialogResult.OK)
+            {
+                TreeNode nd = treeView1.SelectedNode;
+                if (nd.ImageIndex == 2)
+                {
+                    nd = nd.Parent;
+                }
+
+                string fl = dlgAddFile.FileName;
+                string fileName = System.IO.Path.GetFileNameWithoutExtension(fl);
+
+
+                TreeNode ndFile = nd.Nodes.Add(fileName);
+                ndFile.ImageIndex = 2;
+                ndFile.SelectedImageIndex = 2;
+
+                Lib.ProjectLayer parentLayer = nd.Tag as Lib.ProjectLayer;
+
+                Lib.ProjectLayer projectLayer = new Lib.ProjectLayer();
+                projectLayer.IsGroup = false;
+                projectLayer.Path = fl;
+                projectLayer.Name = fileName;
+                projectLayer.ID = $"{parentLayer.ID}{nd.Nodes.Count}";
+                ndFile.Tag = projectLayer;
+            }
+        }
+
         private async void btnGenerate_Click(object sender, EventArgs e)
         {
+            string outputPath = "D:\\CryptoWeb_Processed";
+
+            generatedFiles = new List<System.IO.FileInfo>();
+            outputGrid.DataSource = generatedFiles;
+
             btnGenerate.Enabled = false;
-
-
-            string outputPath = "H:\\Results";
+            timerGen.Enabled = true;
+            
 
             if (System.IO.Directory.Exists(outputPath))
             {
@@ -595,30 +629,91 @@ namespace NFTAG
             prg1.Value = 0;
             prg1.Step = 1;
             prg1.Visible = true;
+            lblGenProgress.Text = $"{0}/{files.Count} ({Math.Round(0 * 1.0 / files.Count * 100, 2)}%)";
 
             StringBuilder sb = new StringBuilder();
 
-            foreach (var item in files)
+
+
+            await Task.Run(() =>
+             {
+                 Parallel.ForEach(files, async item =>
+                {
+                    await item.GenerateImageAsync(outputPath);
+                });
+             });
+
+            //foreach (var item in files)
+            //{
+            //    await item.GenerateImageAsync(outputPath);
+            //    sb.AppendLine($"> DONE!\t[{item.FileName}]");
+
+            //    //this.Invoke(new Action(() =>
+            //    //{
+            //    //    sb.AppendLine($"> DONE!\t[{item.FileName}]");
+            //    //    prg1.Increment(1);
+            //    //    output.Text = sb.ToString();
+            //    //    output.SelectionStart = sb.Length;
+            //    //    output.ScrollToCaret();
+            //    //}));
+
+            //}
+          
+
+
+        }
+
+
+        public List<System.IO.FileInfo> generatedFiles;
+
+        private void timerGen_Tick(object sender, EventArgs e)
+        {
+            //generate progress for 
+            string outputPath = "D:\\CryptoWeb_Processed";
+            //get files
+            var processed = System.IO.Directory.GetFiles(outputPath, "*.png");
+            prg1.Value = processed.Length;
+
+            if (prg1.Value == 0) return;
+
+           
+            foreach (var item in processed)
             {
-                await item.GenerateImageAsync(outputPath);
-                sb.AppendLine($"> DONE!\t[{item.FileName}]");
+                if (generatedFiles.Where(a=> a.FullName == item).Count() == 0)
+                {
+                    generatedFiles.Add(new System.IO.FileInfo(item));
+                }
+            }
+            outputGrid.RefreshDataSource();
 
 
-                prg1.PerformStep();
-                output.Text = sb.ToString();
-                output.SelectionStart = sb.Length;
-                output.ScrollToCaret();
+            lblGenProgress.Text = $"{processed.Length}/{CurrentProject.TotalItems} ({Math.Round(processed.Length * 1.0 / CurrentProject.TotalItems * 100, 2)}%)";
+
+            if (processed.Length == CurrentProject.TotalItems)
+            {
+                //GOTOVO!
+                prg1.Visible = false;
+                btnGenerate.Enabled = true;
+                timerGen.Enabled = false;
+                lblGenProgress.Text = "";
+            }
+        }
+
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            
+            var view = ((DevExpress.XtraGrid.Views.Base.ColumnView)outputGrid.DefaultView);
+            if (!string.IsNullOrEmpty(txtSearch.Text))
+            {
+                view.ActiveFilterCriteria = DevExpress.Data.Filtering.CriteriaOperator.Parse("Contains([Name], '" + txtSearch.Text + "')");
+            }
+            else
+            {
+                view.ActiveFilter.Clear();
             }
 
-            sb.AppendLine("--------------");
-            sb.AppendLine($"> TOTAL FILE COUNT: {files.Count}");
 
-            output.Text = sb.ToString();
-            output.SelectionStart = sb.Length;
-            output.ScrollToCaret();
-
-            prg1.Visible = false;
-            btnGenerate.Enabled = true;
         }
+ 
     }
 }

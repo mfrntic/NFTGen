@@ -47,8 +47,9 @@ namespace NFTAG
             this.pgProjLay = new System.Windows.Forms.PropertyGrid();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnAddFolder = new System.Windows.Forms.ToolStripButton();
+            this.btnAddFile = new System.Windows.Forms.ToolStripButton();
             this.btnRemoveFolder = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.btnUp = new System.Windows.Forms.ToolStripButton();
             this.btnDown = new System.Windows.Forms.ToolStripButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -71,15 +72,25 @@ namespace NFTAG
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.output = new System.Windows.Forms.TextBox();
+            this.outputGrid = new DevExpress.XtraGrid.GridControl();
+            this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.toolStrip3 = new System.Windows.Forms.ToolStrip();
             this.btnGenerate = new System.Windows.Forms.ToolStripButton();
-            this.prg1 = new System.Windows.Forms.ToolStripProgressBar();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.lblGenProgress = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
+            this.txtSearch = new System.Windows.Forms.ToolStripTextBox();
             this.folderBrowse = new System.Windows.Forms.FolderBrowserDialog();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.statusInfo = new System.Windows.Forms.ToolStripStatusLabel();
+            this.prg1 = new System.Windows.Forms.ToolStripProgressBar();
             this.dlgSave = new System.Windows.Forms.SaveFileDialog();
             this.dlgOpen = new System.Windows.Forms.OpenFileDialog();
+            this.dlgAddFile = new System.Windows.Forms.OpenFileDialog();
+            this.timerGen = new System.Windows.Forms.Timer(this.components);
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -97,6 +108,8 @@ namespace NFTAG
             this.gallery1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.outputGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             this.toolStrip3.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -209,7 +222,7 @@ namespace NFTAG
             this.treeView1.Name = "treeView1";
             this.treeView1.SelectedImageIndex = 1;
             this.treeView1.ShowLines = false;
-            this.treeView1.Size = new System.Drawing.Size(283, 453);
+            this.treeView1.Size = new System.Drawing.Size(283, 435);
             this.treeView1.TabIndex = 1;
             this.treeView1.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.treeView1_ItemDrag);
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
@@ -228,17 +241,18 @@ namespace NFTAG
             // pgProjLay
             // 
             this.pgProjLay.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pgProjLay.Location = new System.Drawing.Point(0, 478);
+            this.pgProjLay.Location = new System.Drawing.Point(0, 460);
             this.pgProjLay.Name = "pgProjLay";
-            this.pgProjLay.Size = new System.Drawing.Size(283, 209);
+            this.pgProjLay.Size = new System.Drawing.Size(283, 227);
             this.pgProjLay.TabIndex = 2;
             // 
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnAddFolder,
+            this.btnAddFile,
             this.btnRemoveFolder,
-            this.toolStripSeparator1,
+            this.toolStripSeparator2,
             this.btnUp,
             this.btnDown});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
@@ -254,8 +268,19 @@ namespace NFTAG
             this.btnAddFolder.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnAddFolder.Name = "btnAddFolder";
             this.btnAddFolder.Size = new System.Drawing.Size(23, 22);
-            this.btnAddFolder.Text = "Add Folders";
+            this.btnAddFolder.Text = "Add Folder";
             this.btnAddFolder.Click += new System.EventHandler(this.btnAddFolder_Click);
+            // 
+            // btnAddFile
+            // 
+            this.btnAddFile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnAddFile.Enabled = false;
+            this.btnAddFile.Image = ((System.Drawing.Image)(resources.GetObject("btnAddFile.Image")));
+            this.btnAddFile.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnAddFile.Name = "btnAddFile";
+            this.btnAddFile.Size = new System.Drawing.Size(23, 22);
+            this.btnAddFile.Text = "Add File";
+            this.btnAddFile.Click += new System.EventHandler(this.btnAddFile_Click);
             // 
             // btnRemoveFolder
             // 
@@ -265,13 +290,13 @@ namespace NFTAG
             this.btnRemoveFolder.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnRemoveFolder.Name = "btnRemoveFolder";
             this.btnRemoveFolder.Size = new System.Drawing.Size(23, 22);
-            this.btnRemoveFolder.Text = "Remove Folder";
+            this.btnRemoveFolder.Text = "Remove Item";
             this.btnRemoveFolder.Click += new System.EventHandler(this.btnRemoveFolder_Click);
             // 
-            // toolStripSeparator1
+            // toolStripSeparator2
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
             // btnUp
             // 
@@ -495,7 +520,7 @@ namespace NFTAG
             // 
             // tabPage4
             // 
-            this.tabPage4.Controls.Add(this.output);
+            this.tabPage4.Controls.Add(this.outputGrid);
             this.tabPage4.Controls.Add(this.toolStrip3);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
@@ -505,25 +530,77 @@ namespace NFTAG
             this.tabPage4.Text = "Generate";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
-            // output
+            // outputGrid
             // 
-            this.output.BackColor = System.Drawing.Color.Black;
-            this.output.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.output.Font = new System.Drawing.Font("Courier New", 10.25F);
-            this.output.ForeColor = System.Drawing.Color.White;
-            this.output.Location = new System.Drawing.Point(3, 28);
-            this.output.Multiline = true;
-            this.output.Name = "output";
-            this.output.ReadOnly = true;
-            this.output.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.output.Size = new System.Drawing.Size(856, 630);
-            this.output.TabIndex = 3;
+            this.outputGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.outputGrid.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.outputGrid.Location = new System.Drawing.Point(3, 28);
+            this.outputGrid.MainView = this.gridView1;
+            this.outputGrid.Name = "outputGrid";
+            this.outputGrid.Size = new System.Drawing.Size(856, 630);
+            this.outputGrid.TabIndex = 3;
+            this.outputGrid.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gridView1});
+            // 
+            // gridView1
+            // 
+            this.gridView1.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.gridColumn1,
+            this.gridColumn2,
+            this.gridColumn3});
+            this.gridView1.GridControl = this.outputGrid;
+            this.gridView1.Name = "gridView1";
+            this.gridView1.OptionsBehavior.AlignGroupSummaryInGroupRow = DevExpress.Utils.DefaultBoolean.False;
+            this.gridView1.OptionsBehavior.AllowAddRows = DevExpress.Utils.DefaultBoolean.False;
+            this.gridView1.OptionsBehavior.AllowDeleteRows = DevExpress.Utils.DefaultBoolean.False;
+            this.gridView1.OptionsBehavior.AllowFixedGroups = DevExpress.Utils.DefaultBoolean.True;
+            this.gridView1.OptionsBehavior.AllowGroupExpandAnimation = DevExpress.Utils.DefaultBoolean.False;
+            this.gridView1.OptionsBehavior.AllowIncrementalSearch = true;
+            this.gridView1.OptionsBehavior.AllowPartialGroups = DevExpress.Utils.DefaultBoolean.False;
+            this.gridView1.OptionsBehavior.Editable = false;
+            this.gridView1.OptionsView.ShowFooter = true;
+            this.gridView1.OptionsView.ShowGroupPanel = false;
+            // 
+            // gridColumn1
+            // 
+            this.gridColumn1.Caption = "Timestamp";
+            this.gridColumn1.DisplayFormat.FormatString = "g";
+            this.gridColumn1.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            this.gridColumn1.FieldName = "CreationTime";
+            this.gridColumn1.Name = "gridColumn1";
+            this.gridColumn1.OptionsColumn.FixedWidth = true;
+            this.gridColumn1.Visible = true;
+            this.gridColumn1.VisibleIndex = 0;
+            this.gridColumn1.Width = 129;
+            // 
+            // gridColumn2
+            // 
+            this.gridColumn2.Caption = "FileName";
+            this.gridColumn2.FieldName = "Name";
+            this.gridColumn2.Name = "gridColumn2";
+            this.gridColumn2.Visible = true;
+            this.gridColumn2.VisibleIndex = 1;
+            this.gridColumn2.Width = 208;
+            // 
+            // gridColumn3
+            // 
+            this.gridColumn3.Caption = "Path";
+            this.gridColumn3.FieldName = "FullName";
+            this.gridColumn3.Name = "gridColumn3";
+            this.gridColumn3.Summary.AddRange(new DevExpress.XtraGrid.GridSummaryItem[] {
+            new DevExpress.XtraGrid.GridColumnSummaryItem(DevExpress.Data.SummaryItemType.Count, "FullName", "Ukupno datoteka: {0}")});
+            this.gridColumn3.Visible = true;
+            this.gridColumn3.VisibleIndex = 2;
+            this.gridColumn3.Width = 494;
             // 
             // toolStrip3
             // 
             this.toolStrip3.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnGenerate,
-            this.prg1});
+            this.toolStripSeparator1,
+            this.lblGenProgress,
+            this.toolStripLabel2,
+            this.txtSearch});
             this.toolStrip3.Location = new System.Drawing.Point(3, 3);
             this.toolStrip3.Name = "toolStrip3";
             this.toolStrip3.Size = new System.Drawing.Size(856, 25);
@@ -539,16 +616,35 @@ namespace NFTAG
             this.btnGenerate.Text = "Generate";
             this.btnGenerate.Click += new System.EventHandler(this.btnGenerate_Click);
             // 
-            // prg1
+            // toolStripSeparator1
             // 
-            this.prg1.Name = "prg1";
-            this.prg1.Size = new System.Drawing.Size(300, 22);
-            this.prg1.Visible = false;
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // lblGenProgress
+            // 
+            this.lblGenProgress.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.lblGenProgress.Name = "lblGenProgress";
+            this.lblGenProgress.Size = new System.Drawing.Size(0, 22);
+            // 
+            // toolStripLabel2
+            // 
+            this.toolStripLabel2.Name = "toolStripLabel2";
+            this.toolStripLabel2.Size = new System.Drawing.Size(45, 22);
+            this.toolStripLabel2.Text = "Search:";
+            // 
+            // txtSearch
+            // 
+            this.txtSearch.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.Size = new System.Drawing.Size(200, 25);
+            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.statusInfo});
+            this.statusInfo,
+            this.prg1});
             this.statusStrip1.Location = new System.Drawing.Point(0, 711);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(1157, 22);
@@ -563,15 +659,32 @@ namespace NFTAG
             this.statusInfo.Text = "...";
             this.statusInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // prg1
+            // 
+            this.prg1.Name = "prg1";
+            this.prg1.Size = new System.Drawing.Size(180, 16);
+            this.prg1.ToolTipText = "Generating items...";
+            this.prg1.Visible = false;
+            // 
             // dlgSave
             // 
-            this.dlgSave.Filter = "NFT Collection|*.nftc|All Files|*.*";
+            this.dlgSave.Filter = "NFT Collection (*.nftc)|*.nftc|All Files (*.*)|*.*";
             this.dlgSave.Title = "Save Project";
             // 
             // dlgOpen
             // 
-            this.dlgOpen.Filter = "NFT Collection|*.nftc|All Files|*.*";
+            this.dlgOpen.Filter = "NFT Collection (*.nftc)|*.nftc|All Files (*.*)|*.*";
             this.dlgOpen.Title = "Open Project";
+            // 
+            // dlgAddFile
+            // 
+            this.dlgAddFile.FileName = "Add Layer";
+            this.dlgAddFile.Filter = "Portable Network Graphics (*.png)|*.png|All Files (*.*)|*.*";
+            // 
+            // timerGen
+            // 
+            this.timerGen.Interval = 200;
+            this.timerGen.Tick += new System.EventHandler(this.timerGen_Tick);
             // 
             // Main
             // 
@@ -610,6 +723,8 @@ namespace NFTAG
             this.tabPage3.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.outputGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             this.toolStrip3.ResumeLayout(false);
             this.toolStrip3.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
@@ -637,7 +752,6 @@ namespace NFTAG
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel statusInfo;
         private System.Windows.Forms.ImageList imlFolders;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton btnUp;
         private System.Windows.Forms.ToolStripButton btnDown;
         private DevExpress.XtraBars.Ribbon.GalleryControl gallery1;
@@ -667,7 +781,19 @@ namespace NFTAG
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.ToolStrip toolStrip3;
         private System.Windows.Forms.ToolStripButton btnGenerate;
-        private System.Windows.Forms.TextBox output;
+        private System.Windows.Forms.ToolStripButton btnAddFile;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.OpenFileDialog dlgAddFile;
+        private System.Windows.Forms.Timer timerGen;
+        private System.Windows.Forms.ToolStripLabel lblGenProgress;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripProgressBar prg1;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel2;
+        private System.Windows.Forms.ToolStripTextBox txtSearch;
+        private DevExpress.XtraGrid.GridControl outputGrid;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn1;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn2;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn3;
     }
 }
