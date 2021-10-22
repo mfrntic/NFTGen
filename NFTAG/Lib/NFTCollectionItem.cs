@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace NFTAG.Lib
@@ -38,7 +39,7 @@ namespace NFTAG.Lib
 
         public DateTime GeneratedTimestamp { get; private set; }
 
-        public string LocalPath { get; private set; }
+        public string LocalPath { get; set; }
 
         public Dictionary<string, ProjectLayer> Traits { get; set; }
 
@@ -76,14 +77,6 @@ namespace NFTAG.Lib
                 //fill overlays for group
                 foreach (var layer in group.Overlays.Where(a => !a.IsGroup))
                 {
-                    //var temp_fls = new List<NFTCollectionItem>();
-                    //foreach (NFTCollectionItem file in files)
-                    //{
-                    //    if (!file.Traits.ContainsKey(group.ID))
-                    //    {
-                    //        temp_fls.Add(file);
-                    //    }
-                    //}
                     Random rng = new Random();
                     if (proj.Settings.ShuffleSeed > 0)
                     {
@@ -103,6 +96,7 @@ namespace NFTAG.Lib
 
             return files;
         }
+
 
         public void GenerateImage(Project proj)
         {
@@ -127,29 +121,37 @@ namespace NFTAG.Lib
 
         }
 
-        public async Task GenerateImageAsync(Project proj)
+        public async Task GenerateImageAsync(Project proj, CancellationToken cancellationToken)
         {
             await Task.Run(() =>
             {
-                ImageMagick.MagickImageCollection images = new ImageMagick.MagickImageCollection();
-                foreach (var trait in this.Traits)
+                try
                 {
-                    images.Add(trait.Value.LocalPath);
-                }
+                    ImageMagick.MagickImageCollection images = new ImageMagick.MagickImageCollection();
+                    foreach (var trait in this.Traits)
+                    {
+                        images.Add(trait.Value.LocalPath);
+                        cancellationToken.ThrowIfCancellationRequested();
+                    }
 
-                using (var res = images.Merge())
+                    using (var res = images.Merge())
+                    {
+                        res.VirtualPixelMethod = ImageMagick.VirtualPixelMethod.Transparent;
+                        res.FilterType = proj.Settings.ResizeAlgorithm;
+                        res.Resize(proj.Settings.OutputSize.Width, proj.Settings.OutputSize.Height);
+
+                        //path to generated image
+                        this.LocalPath = System.IO.Path.Combine(proj.Settings.GetOutputPath(proj), this.FileName + ".png");
+                        this.GeneratedTimestamp = DateTime.Now;
+
+                        res.Write(this.LocalPath);
+                    }
+
+                }
+                catch
                 {
-                    res.VirtualPixelMethod = ImageMagick.VirtualPixelMethod.Transparent;
-                    res.FilterType = proj.Settings.ResizeAlgorithm;
-                    res.Resize(proj.Settings.OutputSize.Width, proj.Settings.OutputSize.Height);
 
-                    //path to generated image
-                    this.LocalPath = System.IO.Path.Combine(proj.Settings.GetOutputPath(proj), this.FileName + ".png");
-                    this.GeneratedTimestamp = DateTime.Now;
-
-                    res.Write(this.LocalPath);
                 }
-
             });
         }
 
