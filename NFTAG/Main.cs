@@ -111,8 +111,10 @@ namespace NFTAG
         //remove selected item
         private void btnRemoveFolder_Click(object sender, EventArgs e)
         {
+            statusInfo.Text = "Removing item from tree...";
             treeView1.Nodes.Remove(treeView1.SelectedNode);
             btnReloadRarityTable_Click(null, null);
+            statusInfo.Text = "Ready";
         }
 
 
@@ -157,11 +159,14 @@ namespace NFTAG
                 picPrev.Image = Image.FromFile(overlay.Path);
 
             }
+            statusInfo.Text = "Ready";
+
         }
 
 
         private void btnUp_Click(object sender, EventArgs e)
         {
+            statusInfo.Text = "Moving item up the tree...";
             treeView1.BeginUpdate();
             //move item up the tree
             TreeNode sel = treeView1.SelectedNode;
@@ -172,10 +177,12 @@ namespace NFTAG
             }
             treeView1.EndUpdate();
             btnReloadRarityTable_Click(null, null);
+            statusInfo.Text = "Ready";
         }
 
         private void btnDown_Click(object sender, EventArgs e)
         {
+            statusInfo.Text = "Moving item down the tree...";
             treeView1.BeginUpdate();
             //move item down the tree
             TreeNode sel = treeView1.SelectedNode;
@@ -186,6 +193,7 @@ namespace NFTAG
             }
             treeView1.EndUpdate();
             btnReloadRarityTable_Click(null, null);
+            statusInfo.Text = "Ready";
         }
 
         #region RARITY TABLE
@@ -219,6 +227,7 @@ namespace NFTAG
 
         private void btnReloadRarityTable_Click(object sender, EventArgs e)
         {
+            statusInfo.Text = "Loading rarity table...";
             //Osvježi rarity table
             tlRT.BeginUnboundLoad();
             tlRT.Nodes.Clear();
@@ -226,6 +235,7 @@ namespace NFTAG
             //calcPerc();
 
             tlRT.EndUnboundLoad();
+            statusInfo.Text = "Ready";
         }
         #endregion
 
@@ -351,7 +361,7 @@ namespace NFTAG
 
             this.Text = $"NFTGen :: { this.CurrentProject.ProjectName}";
 
-            statusInfo.Text = "Project is saved to disk... Ready...";
+            statusInfo.Text = "Project is saved to disk";
 
         }
 
@@ -377,7 +387,7 @@ namespace NFTAG
             treeView1.Nodes.Clear();
             tlRT.Nodes.Clear();
             txtTotalItems.Text = this.CurrentProject.TotalItems.ToString();
-            statusInfo.Text = "New project created...";
+            statusInfo.Text = "New project is created";
 
         }
 
@@ -393,28 +403,7 @@ namespace NFTAG
             {
                 e.Handled = true;
             }
-
-            //// only allow one decimal point
-            //if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
-            //{
-            //    e.Handled = true;
-            //}
         }
-
-        //private void calcPerc(TreeListNode tln = null)
-        //{
-        //    var nodes = (tln != null ? tln.Nodes : tlRT.Nodes);
-        //    foreach (TreeListNode item in nodes)
-        //    {
-        //        Lib.ProjectLayer lyCurr = (item.Tag as TreeNode).Tag as Lib.ProjectLayer;
-        //        if (!lyCurr.IsGroup)
-        //        {
-        //            Lib.ProjectLayer lyParent = (item.ParentNode.Tag as TreeNode).Tag as Lib.ProjectLayer;
-        //            item.SetValue(3, Math.Round(lyCurr.Rarity * 1.0 / lyParent.Rarity * 100, 2));
-        //        }
-        //        calcPerc(item);
-        //    }
-        //}
 
         private void tlRT_CellValueChanged(object sender, DevExpress.XtraTreeList.CellValueChangedEventArgs e)
         {
@@ -426,6 +415,7 @@ namespace NFTAG
             }
             else if (e.Column.FieldName == "Rarity")
             {
+                statusInfo.Text = "Computing rarity percentage...";
                 lay.Rarity = int.Parse(e.Value.ToString());
                 if (lay.IsGroup)
                 {
@@ -445,6 +435,7 @@ namespace NFTAG
                 }
                 // calcPerc();
             }
+            statusInfo.Text = "Ready";
         }
 
         private void FillProjectStructure(TreeNode tn = null)
@@ -529,7 +520,7 @@ namespace NFTAG
             }
             else
             {
-                statusInfo.Text = "Ready...";
+                statusInfo.Text = "Ready";
             }
 
         }
@@ -538,48 +529,22 @@ namespace NFTAG
         {
             if (tabControl1.SelectedIndex == 2)
             {
+                //loading project json
+                statusInfo.Text = "Loading project JSON...";
                 FillProjectStructure();
                 var style = "<style>body{ background-color: 'black'; font-family: 'Courier New'; font-size: '11pt'; color: 'white'; } .key{ color: 'CornflowerBlue'; } .string {color: 'Lime'} .number { color: 'Yellow'; } .boolean { color: 'magenta' } .null { color: 'gray'; }</style>";
-                webBrowser1.DocumentText = style + SyntaxHighlightJson(CurrentProject.ToJSON().Replace("\n", "<br>").Replace(" ", "&nbsp;"));
+                webBrowser1.DocumentText = style + CurrentProject.ToJSON().Replace("\n", "<br>").Replace(" ", "&nbsp;").SyntaxHighlightJson();
+                statusInfo.Text = "Ready";
             }
         }
 
-        private string SyntaxHighlightJson(string original)
-        {
-            return Regex.Replace(
-              original,
-              @"(¤(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\¤])*¤(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)".Replace('¤', '"'),
-              match =>
-              {
-                  var cls = "number";
-                  if (Regex.IsMatch(match.Value, @"^¤".Replace('¤', '"')))
-                  {
-                      if (Regex.IsMatch(match.Value, ":$"))
-                      {
-                          cls = "key";
-                      }
-                      else
-                      {
-                          cls = "string";
-                      }
-                  }
-                  else if (Regex.IsMatch(match.Value, "true|false"))
-                  {
-                      cls = "boolean";
-                  }
-                  else if (Regex.IsMatch(match.Value, "null"))
-                  {
-                      cls = "null";
-                  }
-                  return "<span class=\"" + cls + "\">" + match + "</span>";
-              });
-        }
 
         private void btnAddFile_Click(object sender, EventArgs e)
         {
             //add file
             if (dlgAddFile.ShowDialog(this) == DialogResult.OK)
             {
+                statusInfo.Text = "Adding file to tree structure...";
                 TreeNode nd = treeView1.SelectedNode;
                 if (nd.ImageIndex == 2)
                 {
@@ -602,11 +567,14 @@ namespace NFTAG
                 projectLayer.Name = fileName;
                 projectLayer.ID = $"{parentLayer.ID}{nd.Nodes.Count}";
                 ndFile.Tag = projectLayer;
+                statusInfo.Text = "Ready";
+
             }
         }
 
         private async void btnGenerate_Click(object sender, EventArgs e)
         {
+            statusInfo.Text = "Prepare for generating images...";
             string outputPath = "D:\\CryptoWeb_Processed";
 
             generatedFiles = new List<System.IO.FileInfo>();
@@ -614,10 +582,12 @@ namespace NFTAG
 
             btnGenerate.Enabled = false;
             timerGen.Enabled = true;
-            
 
+
+            statusInfo.Text = "Checking output folder...";
             if (System.IO.Directory.Exists(outputPath))
             {
+                statusInfo.Text = "Deleting output folder...";
                 System.IO.Directory.Delete(outputPath, true);
             }
             System.IO.Directory.CreateDirectory(outputPath);
