@@ -91,8 +91,8 @@ namespace NFTAG
                 statusInfo.Text = "Loading trait folders...";
                 LoadFolder(folderBrowse.SelectedPath);
 
-                //set base project folder
-                CurrentProject.BaseFolder = folderBrowse.SelectedPath;
+                ////set base project folder
+                //CurrentProject.Settings.InitialFolder = folderBrowse.SelectedPath;
 
             }
             statusInfo.Text = "Ready";
@@ -145,9 +145,17 @@ namespace NFTAG
                     Lib.ProjectLayer overlay = tn.Tag as Lib.ProjectLayer;
                     if (!overlay.IsGroup)
                     {
-                        var gi = new GalleryItem(Image.FromFile(overlay.Path).GetThumbnailImage(100, 100, null, new IntPtr()), overlay.Name, "");
-                        gi.Tag = tn;
-                        group.Items.Add(gi);
+                        if (System.IO.File.Exists(overlay.Path))
+                        {
+                            var gi = new GalleryItem(Image.FromFile(overlay.Path).GetThumbnailImage(100, 100, null, new IntPtr()), overlay.Name, "");
+                            gi.Tag = tn;
+                            group.Items.Add(gi);
+                        }
+                        else
+                        {
+                            MessageBox.Show($"Odabrana datoteka [{overlay.Path}] više ne postoji na zadanoj putanji", "Datoteka ne postoji!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            break;
+                        }
                     }
                 }
             }
@@ -156,7 +164,14 @@ namespace NFTAG
                 picPrev.Visible = true;
                 gallery1.Visible = false;
                 Lib.ProjectLayer overlay = e.Node.Tag as Lib.ProjectLayer;
-                picPrev.Image = Image.FromFile(overlay.Path);
+                if (System.IO.File.Exists(overlay.Path))
+                {
+                    picPrev.Image = Image.FromFile(overlay.Path);
+                }
+                else
+                {
+                    MessageBox.Show($"Odabrana datoteka [{overlay.Path}] više ne postoji na zadanoj putanji", "Datoteka ne postoji!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
 
             }
             statusInfo.Text = "Ready";
@@ -527,7 +542,7 @@ namespace NFTAG
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (tabControl1.SelectedIndex == 2)
+            if (tabControl1.SelectedIndex == 3)
             {
                 //loading project json
                 statusInfo.Text = "Loading project JSON...";
@@ -574,42 +589,53 @@ namespace NFTAG
 
         private async void btnGenerate_Click(object sender, EventArgs e)
         {
+            string outputPath = CurrentProject.Settings.GetOutputPath(CurrentProject);
             statusInfo.Text = "Prepare for generating images...";
             string outputPath = "D:\\CryptoWeb_Processed";
 
-            generatedFiles = new List<System.IO.FileInfo>();
-            outputGrid.DataSource = generatedFiles;
 
             btnGenerate.Enabled = false;
             timerGen.Enabled = true;
+            
 
-
-            statusInfo.Text = "Checking output folder...";
-            if (System.IO.Directory.Exists(outputPath))
+            if (!System.IO.Directory.Exists(outputPath))
             {
-                statusInfo.Text = "Deleting output folder...";
-                System.IO.Directory.Delete(outputPath, true);
+                System.IO.Directory.CreateDirectory(outputPath);
             }
-            System.IO.Directory.CreateDirectory(outputPath);
+            else
+            {
+                //check if empty
+                if (System.IO.Directory.GetFileSystemEntries(outputPath).Length > 0)
+                {
+                    //nije prazno
+                    if (MessageBox.Show("Continuing to generate will delete the contents of the entire output folder.\nDo you want to continue?", "The output folder is not empty", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
+                    {
 
-            var files = Lib.NFTCollectionItem.CreateCollection(CurrentProject);
+                        return;
+                    }
+                }
+                System.IO.Directory.Delete(outputPath, true);
+                System.IO.Directory.CreateDirectory(outputPath);
+            }
+
+            generatedFiles = new List<Lib.NFTCollectionItem>();
+            outputGrid.DataSource = generatedFiles;
+            btnGenerate.Enabled = false;
+            timerGen.Enabled = true;
+            allFiles = Lib.NFTCollectionItem.CreateCollection(CurrentProject);
 
             prg1.Minimum = 0;
-            prg1.Maximum = files.Count;
+            prg1.Maximum = allFiles.Count;
             prg1.Value = 0;
             prg1.Step = 1;
             prg1.Visible = true;
-            lblGenProgress.Text = $"{0}/{files.Count} ({Math.Round(0 * 1.0 / files.Count * 100, 2)}%)";
-
-            StringBuilder sb = new StringBuilder();
-
-
+            lblGenProgress.Text = $"{0}/{allFiles.Count} ({Math.Round(0 * 1.0 / allFiles.Count * 100, 2)}%)";
 
             await Task.Run(() =>
              {
-                 Parallel.ForEach(files, async item =>
+                 Parallel.ForEach(allFiles, async item =>
                 {
-                    await item.GenerateImageAsync(outputPath);
+                    await item.GenerateImageAsync(CurrentProject);
                 });
              });
 
@@ -628,34 +654,37 @@ namespace NFTAG
             //    //}));
 
             //}
-          
+
 
 
         }
 
 
-        public List<System.IO.FileInfo> generatedFiles;
+        public List<Lib.NFTCollectionItem> allFiles;
+        public List<Lib.NFTCollectionItem> generatedFiles;
 
         private void timerGen_Tick(object sender, EventArgs e)
         {
             //generate progress for 
-            string outputPath = "D:\\CryptoWeb_Processed";
+            string outputPath = CurrentProject.Settings.GetOutputPath(CurrentProject);
             //get files
             var processed = System.IO.Directory.GetFiles(outputPath, "*.png");
             prg1.Value = processed.Length;
 
             if (prg1.Value == 0) return;
 
-           
+
             foreach (var item in processed)
             {
-                if (generatedFiles.Where(a=> a.FullName == item).Count() == 0)
+                if (generatedFiles.Where(a => a.ImagePath == item).Count() == 0)
                 {
-                    generatedFiles.Add(new System.IO.FileInfo(item));
+                    generatedFiles.Add(allFiles.Where(x => x.ImagePath == item).Single());
                 }
             }
             outputGrid.RefreshDataSource();
 
+            var view = ((DevExpress.XtraGrid.Views.Base.ColumnView)outputGrid.DefaultView);
+            view.MoveLast();
 
             lblGenProgress.Text = $"{processed.Length}/{CurrentProject.TotalItems} ({Math.Round(processed.Length * 1.0 / CurrentProject.TotalItems * 100, 2)}%)";
 
@@ -666,12 +695,22 @@ namespace NFTAG
                 btnGenerate.Enabled = true;
                 timerGen.Enabled = false;
                 lblGenProgress.Text = "";
+
+                //save final json
+                var json = Newtonsoft.Json.JsonConvert.SerializeObject(allFiles, Newtonsoft.Json.Formatting.Indented);
+                System.IO.File.WriteAllText(
+                    System.IO.Path.Combine(outputPath, $"{CurrentProject.ProjectName}_db.json"),
+                    json
+                );
+                var style = "<style>body{ background-color: 'black'; font-family: 'Courier New'; font-size: '11pt'; color: 'white'; } .key{ color: 'CornflowerBlue'; } .string {color: 'Lime'} .number { color: 'Yellow'; } .boolean { color: 'magenta' } .null { color: 'gray'; }</style>";
+                webBrowser2.DocumentText = style + SyntaxHighlightJson(json.Replace("\n", "<br>").Replace(" ", "&nbsp;"));
+
             }
         }
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            
+
             var view = ((DevExpress.XtraGrid.Views.Base.ColumnView)outputGrid.DefaultView);
             if (!string.IsNullOrEmpty(txtSearch.Text))
             {
@@ -684,6 +723,21 @@ namespace NFTAG
 
 
         }
- 
+
+        private void mnuProjectSettings_Click(object sender, EventArgs e)
+        {
+            //show setting
+            SettingsForm sett = new SettingsForm();
+            sett.Settings = (Lib.ProjectSettings)CurrentProject.Settings.Clone();
+            if (sett.ShowDialog(this) == DialogResult.OK)
+            {
+                CurrentProject.Settings.CreateProjectFolderInOutputDirectory = sett.Settings.CreateProjectFolderInOutputDirectory;
+                //CurrentProject.Settings.InitialFolder = sett.Settings.InitialFolder;
+                CurrentProject.Settings.OutputDirectory = sett.Settings.OutputDirectory;
+                CurrentProject.Settings.OutputSize = sett.Settings.OutputSize;
+                CurrentProject.Settings.ResizeAlgorithm = sett.Settings.ResizeAlgorithm;
+                CurrentProject.Settings.ShuffleSeed = sett.Settings.ShuffleSeed;
+            }
+        }
     }
 }

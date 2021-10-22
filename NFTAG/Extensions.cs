@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -103,6 +104,21 @@ namespace NFTAG
             {
                 await Task.WhenAll(enumerable.Select(item => action(item)));
             }
+        }
+
+        public static byte[] Hash(this string inputString)
+        {
+            using (HashAlgorithm algorithm = SHA256.Create())
+                return algorithm.ComputeHash(Encoding.UTF8.GetBytes(inputString));
+        }
+
+        public static string HashString(this string inputString)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (byte b in  inputString.Hash())
+                sb.Append(b.ToString("X2"));
+
+            return sb.ToString();
         }
 
         public static string SyntaxHighlightJson(this string original)

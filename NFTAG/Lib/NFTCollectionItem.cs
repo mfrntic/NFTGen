@@ -15,7 +15,6 @@ namespace NFTAG.Lib
 
         public int TokenID { get; set; }
         //public Project Project { get; set; }
-        public Dictionary<string, ProjectLayer> Traits { get; set; }
         public string FileName
         {
             get
@@ -29,6 +28,21 @@ namespace NFTAG.Lib
             }
         }
 
+        public string HashName
+        {
+            get
+            {
+                return FileName.HashString();
+            }
+        }
+
+        public DateTime GeneratedTimestamp { get; private set; }
+
+        public string ImagePath { get; private set; }
+
+        public Dictionary<string, ProjectLayer> Traits { get; set; }
+
+
         public static List<NFTCollectionItem> CreateCollection(Project proj)
         {
             List<NFTCollectionItem> files = new List<NFTCollectionItem>();
@@ -41,7 +55,7 @@ namespace NFTAG.Lib
 
             int id = 0;
 
-            //create base collection
+            //create base collection without traits
             foreach (var layer in baseLayer.Overlays)
             {
                 if (!layer.IsGroup) //ako je overlay
@@ -71,6 +85,10 @@ namespace NFTAG.Lib
                     //    }
                     //}
                     Random rng = new Random();
+                    if (proj.Settings.ShuffleSeed > 0)
+                    {
+                        rng = new Random(proj.Settings.ShuffleSeed);
+                    }
 
                     var temp_fls = files
                         .Where(x => !x.Traits.ContainsKey(group.ID))
@@ -86,7 +104,7 @@ namespace NFTAG.Lib
             return files;
         }
 
-        public void GenerateImage(string outputPath)
+        public void GenerateImage(Project proj)
         {
             ImageMagick.MagickImageCollection images = new ImageMagick.MagickImageCollection();
             foreach (var trait in this.Traits)
@@ -97,14 +115,18 @@ namespace NFTAG.Lib
             using (var res = images.Merge())
             {
                 res.VirtualPixelMethod = ImageMagick.VirtualPixelMethod.Transparent;
-                res.FilterType = ImageMagick.FilterType.Point;
-                res.Resize(500, 500);
-                res.Write(System.IO.Path.Combine(outputPath, this.FileName + ".png"));
+                res.FilterType = proj.Settings.ResizeAlgorithm;
+                res.Resize(proj.Settings.OutputSize.Width, proj.Settings.OutputSize.Height);
+
+                this.ImagePath = System.IO.Path.Combine(proj.Settings.GetOutputPath(proj), this.FileName + ".png");
+                this.GeneratedTimestamp = DateTime.Now;
+
+                res.Write(this.ImagePath);
             }
 
         }
 
-        public async Task GenerateImageAsync(string outputPath)
+        public async Task GenerateImageAsync(Project proj)
         {
             await Task.Run(() =>
             {
@@ -117,9 +139,13 @@ namespace NFTAG.Lib
                 using (var res = images.Merge())
                 {
                     res.VirtualPixelMethod = ImageMagick.VirtualPixelMethod.Transparent;
-                    res.FilterType = ImageMagick.FilterType.Point;
-                    res.Resize(500, 500);
-                    res.Write(System.IO.Path.Combine(outputPath, this.FileName + ".png"));
+                    res.FilterType = proj.Settings.ResizeAlgorithm;
+                    res.Resize(proj.Settings.OutputSize.Width, proj.Settings.OutputSize.Height);
+
+                    this.ImagePath = System.IO.Path.Combine(proj.Settings.GetOutputPath(proj), this.FileName + ".png");
+                    this.GeneratedTimestamp = DateTime.Now;
+
+                    res.Write(this.ImagePath);
                 }
 
             });
