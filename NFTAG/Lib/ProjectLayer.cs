@@ -17,7 +17,7 @@ namespace NFTAG.Lib
         public string Name { get; set; }
         public int Rarity { get; set; }
         public double RarityPerc { get; set; }
-        public string Path { get; set; }
+        public string LocalPath { get; set; }
         public bool IsGroup { get; set; }
 
         private List<ProjectLayer> overlays = null;

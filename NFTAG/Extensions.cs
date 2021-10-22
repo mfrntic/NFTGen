@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -124,7 +125,7 @@ namespace NFTAG
         public static string SyntaxHighlightJson(this string original)
         {
             return Regex.Replace(
-              original,
+              original.Replace("\n", "<br>").Replace(" ", "&nbsp;"),
               @"(¤(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\¤])*¤(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)".Replace('¤', '"'),
               match =>
               {

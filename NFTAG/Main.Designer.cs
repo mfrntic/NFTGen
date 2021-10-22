@@ -70,8 +70,6 @@ namespace NFTAG
             this.picPrev = new DevExpress.XtraEditors.PictureEdit();
             this.gallery1 = new DevExpress.XtraBars.Ribbon.GalleryControl();
             this.galleryControlClient1 = new DevExpress.XtraBars.Ribbon.GalleryControlClient();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.outputGrid = new DevExpress.XtraGrid.GridControl();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -88,6 +86,10 @@ namespace NFTAG
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.txtSearch = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.webBrowser2 = new System.Windows.Forms.WebBrowser();
             this.folderBrowse = new System.Windows.Forms.FolderBrowserDialog();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.statusInfo = new System.Windows.Forms.ToolStripStatusLabel();
@@ -96,8 +98,7 @@ namespace NFTAG
             this.dlgOpen = new System.Windows.Forms.OpenFileDialog();
             this.dlgAddFile = new System.Windows.Forms.OpenFileDialog();
             this.timerGen = new System.Windows.Forms.Timer(this.components);
-            this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.webBrowser2 = new System.Windows.Forms.WebBrowser();
+            this.btnGenerateCancel = new System.Windows.Forms.ToolStripButton();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -113,13 +114,13 @@ namespace NFTAG
             ((System.ComponentModel.ISupportInitialize)(this.picPrev.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gallery1)).BeginInit();
             this.gallery1.SuspendLayout();
-            this.tabPage3.SuspendLayout();
             this.tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.outputGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             this.toolStrip3.SuspendLayout();
-            this.statusStrip1.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.tabPage5.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // splashScreenManager1
@@ -200,7 +201,7 @@ namespace NFTAG
             // mnuSetProjectName
             // 
             this.mnuSetProjectName.Name = "mnuSetProjectName";
-            this.mnuSetProjectName.Size = new System.Drawing.Size(174, 22);
+            this.mnuSetProjectName.Size = new System.Drawing.Size(180, 22);
             this.mnuSetProjectName.Text = "Set Project &Name...";
             this.mnuSetProjectName.Click += new System.EventHandler(this.mnuSetProjectName_Click);
             // 
@@ -208,7 +209,7 @@ namespace NFTAG
             // 
             this.mnuProjectSettings.Image = global::NFTAG.Properties.Resources.settings_icon1;
             this.mnuProjectSettings.Name = "mnuProjectSettings";
-            this.mnuProjectSettings.Size = new System.Drawing.Size(174, 22);
+            this.mnuProjectSettings.Size = new System.Drawing.Size(180, 22);
             this.mnuProjectSettings.Text = "Project &Settings...";
             this.mnuProjectSettings.Click += new System.EventHandler(this.mnuProjectSettings_Click);
             // 
@@ -469,6 +470,7 @@ namespace NFTAG
             // 
             // txtTotalItems
             // 
+            this.txtTotalItems.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtTotalItems.Name = "txtTotalItems";
             this.txtTotalItems.Size = new System.Drawing.Size(100, 25);
             this.txtTotalItems.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTotalItems_KeyPress);
@@ -517,26 +519,6 @@ namespace NFTAG
             this.galleryControlClient1.GalleryControl = this.gallery1;
             this.galleryControlClient1.Location = new System.Drawing.Point(2, 2);
             this.galleryControlClient1.Size = new System.Drawing.Size(835, 651);
-            // 
-            // tabPage3
-            // 
-            this.tabPage3.Controls.Add(this.webBrowser1);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(862, 661);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Project JSON";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // webBrowser1
-            // 
-            this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webBrowser1.Location = new System.Drawing.Point(3, 3);
-            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(856, 655);
-            this.webBrowser1.TabIndex = 0;
             // 
             // tabPage4
             // 
@@ -614,7 +596,7 @@ namespace NFTAG
             // gridColumn3
             // 
             this.gridColumn3.Caption = "Path";
-            this.gridColumn3.FieldName = "ImagePath";
+            this.gridColumn3.FieldName = "LocalPath";
             this.gridColumn3.Name = "gridColumn3";
             this.gridColumn3.Summary.AddRange(new DevExpress.XtraGrid.GridSummaryItem[] {
             new DevExpress.XtraGrid.GridColumnSummaryItem(DevExpress.Data.SummaryItemType.Count, "FullName", "Ukupno datoteka: {0}")});
@@ -626,6 +608,7 @@ namespace NFTAG
             // 
             this.toolStrip3.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnGenerate,
+            this.btnGenerateCancel,
             this.toolStripSeparator1,
             this.lblGenProgress,
             this.btnProjectSettings,
@@ -682,6 +665,7 @@ namespace NFTAG
             // 
             // txtSearch
             // 
+            this.txtSearch.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(200, 25);
             this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
@@ -690,6 +674,46 @@ namespace NFTAG
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
             this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.webBrowser1);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(862, 661);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Project JSON";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // webBrowser1
+            // 
+            this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.webBrowser1.Location = new System.Drawing.Point(3, 3);
+            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowser1.Name = "webBrowser1";
+            this.webBrowser1.Size = new System.Drawing.Size(856, 655);
+            this.webBrowser1.TabIndex = 0;
+            // 
+            // tabPage5
+            // 
+            this.tabPage5.Controls.Add(this.webBrowser2);
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage5.Size = new System.Drawing.Size(862, 661);
+            this.tabPage5.TabIndex = 4;
+            this.tabPage5.Text = "Generated JSON";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // webBrowser2
+            // 
+            this.webBrowser2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.webBrowser2.Location = new System.Drawing.Point(3, 3);
+            this.webBrowser2.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowser2.Name = "webBrowser2";
+            this.webBrowser2.Size = new System.Drawing.Size(856, 655);
+            this.webBrowser2.TabIndex = 1;
             // 
             // statusStrip1
             // 
@@ -737,25 +761,15 @@ namespace NFTAG
             this.timerGen.Interval = 200;
             this.timerGen.Tick += new System.EventHandler(this.timerGen_Tick);
             // 
-            // tabPage5
+            // btnGenerateCancel
             // 
-            this.tabPage5.Controls.Add(this.webBrowser2);
-            this.tabPage5.Location = new System.Drawing.Point(4, 22);
-            this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(862, 661);
-            this.tabPage5.TabIndex = 4;
-            this.tabPage5.Text = "Generated JSON";
-            this.tabPage5.UseVisualStyleBackColor = true;
-            // 
-            // webBrowser2
-            // 
-            this.webBrowser2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webBrowser2.Location = new System.Drawing.Point(3, 3);
-            this.webBrowser2.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowser2.Name = "webBrowser2";
-            this.webBrowser2.Size = new System.Drawing.Size(856, 655);
-            this.webBrowser2.TabIndex = 1;
+            this.btnGenerateCancel.Enabled = false;
+            this.btnGenerateCancel.Image = ((System.Drawing.Image)(resources.GetObject("btnGenerateCancel.Image")));
+            this.btnGenerateCancel.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnGenerateCancel.Name = "btnGenerateCancel";
+            this.btnGenerateCancel.Size = new System.Drawing.Size(93, 22);
+            this.btnGenerateCancel.Text = "Cancel Build";
+            this.btnGenerateCancel.Click += new System.EventHandler(this.btnGenerateCancel_Click);
             // 
             // Main
             // 
@@ -791,16 +805,16 @@ namespace NFTAG
             ((System.ComponentModel.ISupportInitialize)(this.picPrev.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gallery1)).EndInit();
             this.gallery1.ResumeLayout(false);
-            this.tabPage3.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.outputGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             this.toolStrip3.ResumeLayout(false);
             this.toolStrip3.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage5.ResumeLayout(false);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
-            this.tabPage5.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -874,5 +888,6 @@ namespace NFTAG
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.WebBrowser webBrowser2;
+        private System.Windows.Forms.ToolStripButton btnGenerateCancel;
     }
 }

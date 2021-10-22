@@ -9,6 +9,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -48,7 +49,7 @@ namespace NFTAG
 
                     Lib.ProjectLayer projectGroup = new Lib.ProjectLayer();
                     projectGroup.IsGroup = true;
-                    projectGroup.Path = dir;
+                    projectGroup.LocalPath = dir;
                     projectGroup.Name = folderName;
                     projectGroup.ID = $"{(char)(65 + (numOfGroups - 1))}";
                     nd.Tag = projectGroup;
@@ -71,7 +72,7 @@ namespace NFTAG
 
                         Lib.ProjectLayer projectLayer = new Lib.ProjectLayer();
                         projectLayer.IsGroup = false;
-                        projectLayer.Path = fl;
+                        projectLayer.LocalPath = fl;
                         projectLayer.Name = fileName;
                         projectLayer.ID = $"{(char)(65 + (numOfGroups - 1))}{j}";
                         ndFile.Tag = projectLayer;
@@ -145,15 +146,15 @@ namespace NFTAG
                     Lib.ProjectLayer overlay = tn.Tag as Lib.ProjectLayer;
                     if (!overlay.IsGroup)
                     {
-                        if (System.IO.File.Exists(overlay.Path))
+                        if (System.IO.File.Exists(overlay.LocalPath))
                         {
-                            var gi = new GalleryItem(Image.FromFile(overlay.Path).GetThumbnailImage(100, 100, null, new IntPtr()), overlay.Name, "");
+                            var gi = new GalleryItem(Image.FromFile(overlay.LocalPath).GetThumbnailImage(100, 100, null, new IntPtr()), overlay.Name, "");
                             gi.Tag = tn;
                             group.Items.Add(gi);
                         }
                         else
                         {
-                            MessageBox.Show($"Odabrana datoteka [{overlay.Path}] više ne postoji na zadanoj putanji", "Datoteka ne postoji!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show($"Odabrana datoteka [{overlay.LocalPath}] više ne postoji na zadanoj putanji", "Datoteka ne postoji!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             break;
                         }
                     }
@@ -164,13 +165,13 @@ namespace NFTAG
                 picPrev.Visible = true;
                 gallery1.Visible = false;
                 Lib.ProjectLayer overlay = e.Node.Tag as Lib.ProjectLayer;
-                if (System.IO.File.Exists(overlay.Path))
+                if (System.IO.File.Exists(overlay.LocalPath))
                 {
-                    picPrev.Image = Image.FromFile(overlay.Path);
+                    picPrev.Image = Image.FromFile(overlay.LocalPath);
                 }
                 else
                 {
-                    MessageBox.Show($"Odabrana datoteka [{overlay.Path}] više ne postoji na zadanoj putanji", "Datoteka ne postoji!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Odabrana datoteka [{overlay.LocalPath}] više ne postoji na zadanoj putanji", "Datoteka ne postoji!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
 
             }
@@ -548,7 +549,7 @@ namespace NFTAG
                 statusInfo.Text = "Loading project JSON...";
                 FillProjectStructure();
                 var style = "<style>body{ background-color: 'black'; font-family: 'Courier New'; font-size: '11pt'; color: 'white'; } .key{ color: 'CornflowerBlue'; } .string {color: 'Lime'} .number { color: 'Yellow'; } .boolean { color: 'magenta' } .null { color: 'gray'; }</style>";
-                webBrowser1.DocumentText = style + CurrentProject.ToJSON().Replace("\n", "<br>").Replace(" ", "&nbsp;").SyntaxHighlightJson();
+                webBrowser1.DocumentText = style + CurrentProject.ToJSON().SyntaxHighlightJson();
                 statusInfo.Text = "Ready";
             }
         }
@@ -578,7 +579,7 @@ namespace NFTAG
 
                 Lib.ProjectLayer projectLayer = new Lib.ProjectLayer();
                 projectLayer.IsGroup = false;
-                projectLayer.Path = fl;
+                projectLayer.LocalPath = fl;
                 projectLayer.Name = fileName;
                 projectLayer.ID = $"{parentLayer.ID}{nd.Nodes.Count}";
                 ndFile.Tag = projectLayer;
@@ -590,13 +591,7 @@ namespace NFTAG
         private async void btnGenerate_Click(object sender, EventArgs e)
         {
             string outputPath = CurrentProject.Settings.GetOutputPath(CurrentProject);
-            statusInfo.Text = "Prepare for generating images...";
-            string outputPath = "D:\\CryptoWeb_Processed";
-
-
-            btnGenerate.Enabled = false;
-            timerGen.Enabled = true;
-            
+            statusInfo.Text = "Prepare for image generation...";
 
             if (!System.IO.Directory.Exists(outputPath))
             {
@@ -608,19 +603,28 @@ namespace NFTAG
                 if (System.IO.Directory.GetFileSystemEntries(outputPath).Length > 0)
                 {
                     //nije prazno
-                    if (MessageBox.Show("Continuing to generate will delete the contents of the entire output folder.\nDo you want to continue?", "The output folder is not empty", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
+                    if (MessageBox.Show("Continuation of work will delete the contents of the entire output folder.\nDo you want to continue?", "The output folder is not empty", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
                     {
-
                         return;
                     }
                 }
-                System.IO.Directory.Delete(outputPath, true);
-                System.IO.Directory.CreateDirectory(outputPath);
+                this.Cursor = Cursors.WaitCursor;
+                await Task.Run(() =>
+                 {
+                     System.IO.Directory.Delete(outputPath, true);
+                     System.IO.Directory.CreateDirectory(outputPath);
+                 });
+
+                statusInfo.Text = "Deleting existing files in the output folder...";
+                this.Cursor = Cursors.Default;
             }
+
+            statusInfo.Text = "Generating images...";
 
             generatedFiles = new List<Lib.NFTCollectionItem>();
             outputGrid.DataSource = generatedFiles;
             btnGenerate.Enabled = false;
+            btnGenerateCancel.Enabled = true;
             timerGen.Enabled = true;
             allFiles = Lib.NFTCollectionItem.CreateCollection(CurrentProject);
 
@@ -632,29 +636,23 @@ namespace NFTAG
             lblGenProgress.Text = $"{0}/{allFiles.Count} ({Math.Round(0 * 1.0 / allFiles.Count * 100, 2)}%)";
 
             await Task.Run(() =>
-             {
-                 Parallel.ForEach(allFiles, async item =>
-                {
-                    await item.GenerateImageAsync(CurrentProject);
-                });
-             });
+            {
+                cts = new CancellationTokenSource();
+                ParallelOptions po = new ParallelOptions();
+                po.CancellationToken = cts.Token;
+                po.MaxDegreeOfParallelism = System.Environment.ProcessorCount;
 
-            //foreach (var item in files)
-            //{
-            //    await item.GenerateImageAsync(outputPath);
-            //    sb.AppendLine($"> DONE!\t[{item.FileName}]");
 
-            //    //this.Invoke(new Action(() =>
-            //    //{
-            //    //    sb.AppendLine($"> DONE!\t[{item.FileName}]");
-            //    //    prg1.Increment(1);
-            //    //    output.Text = sb.ToString();
-            //    //    output.SelectionStart = sb.Length;
-            //    //    output.ScrollToCaret();
-            //    //}));
-
-            //}
-
+                Parallel.ForEach(allFiles, po,
+                    async (item, state) =>
+                    {
+                        await item.GenerateImageAsync(CurrentProject);
+                        if (po.CancellationToken.IsCancellationRequested)
+                        {
+                            state.Break();
+                        }
+                    });
+            });
 
 
         }
@@ -662,25 +660,35 @@ namespace NFTAG
 
         public List<Lib.NFTCollectionItem> allFiles;
         public List<Lib.NFTCollectionItem> generatedFiles;
+        CancellationTokenSource cts = null;
 
-        private void timerGen_Tick(object sender, EventArgs e)
+        private async void timerGen_Tick(object sender, EventArgs e)
         {
             //generate progress for 
             string outputPath = CurrentProject.Settings.GetOutputPath(CurrentProject);
             //get files
             var processed = System.IO.Directory.GetFiles(outputPath, "*.png");
-            prg1.Value = processed.Length;
+
+            if (prg1.Maximum >= processed.Length)
+            {
+                prg1.Value = processed.Length;
+            }
+            else
+            {
+                prg1.Value = prg1.Maximum;
+            }
 
             if (prg1.Value == 0) return;
 
 
             foreach (var item in processed)
             {
-                if (generatedFiles.Where(a => a.ImagePath == item).Count() == 0)
+                if (generatedFiles.Where(a => a.LocalPath == item).Count() == 0)
                 {
-                    generatedFiles.Add(allFiles.Where(x => x.ImagePath == item).Single());
+                    generatedFiles.Add(allFiles.Where(x => x.LocalPath == item).Single());
                 }
             }
+
             outputGrid.RefreshDataSource();
 
             var view = ((DevExpress.XtraGrid.Views.Base.ColumnView)outputGrid.DefaultView);
@@ -693,35 +701,40 @@ namespace NFTAG
                 //GOTOVO!
                 prg1.Visible = false;
                 btnGenerate.Enabled = true;
+                btnGenerateCancel.Enabled = false;
                 timerGen.Enabled = false;
                 lblGenProgress.Text = "";
 
-                //save final json
-                var json = Newtonsoft.Json.JsonConvert.SerializeObject(allFiles, Newtonsoft.Json.Formatting.Indented);
-                System.IO.File.WriteAllText(
-                    System.IO.Path.Combine(outputPath, $"{CurrentProject.ProjectName}_db.json"),
-                    json
-                );
-                var style = "<style>body{ background-color: 'black'; font-family: 'Courier New'; font-size: '11pt'; color: 'white'; } .key{ color: 'CornflowerBlue'; } .string {color: 'Lime'} .number { color: 'Yellow'; } .boolean { color: 'magenta' } .null { color: 'gray'; }</style>";
-                webBrowser2.DocumentText = style + SyntaxHighlightJson(json.Replace("\n", "<br>").Replace(" ", "&nbsp;"));
 
+                //save final json
+                var finalJSONFile = System.IO.Path.Combine(outputPath, $"{CurrentProject.ProjectName}_db.json");
+                statusInfo.Text = $"Saving final JSON file [{finalJSONFile}]...";
+
+                var json = Newtonsoft.Json.JsonConvert.SerializeObject(allFiles, Newtonsoft.Json.Formatting.Indented);
+
+                await Task.Run(() =>
+                {
+                    System.IO.File.WriteAllText(finalJSONFile, json);
+                });
+                var style = "<style>body{ background-color: 'black'; font-family: 'Courier New'; font-size: '11pt'; color: 'white'; } .key{ color: 'CornflowerBlue'; } .string {color: 'Lime'} .number { color: 'Yellow'; } .boolean { color: 'magenta' } .null { color: 'gray'; }</style>";
+                webBrowser2.DocumentText = style + json.SyntaxHighlightJson();
+
+                statusInfo.Text = "Ready";
             }
         }
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-
+            //search in grid
             var view = ((DevExpress.XtraGrid.Views.Base.ColumnView)outputGrid.DefaultView);
             if (!string.IsNullOrEmpty(txtSearch.Text))
             {
-                view.ActiveFilterCriteria = DevExpress.Data.Filtering.CriteriaOperator.Parse("Contains([Name], '" + txtSearch.Text + "')");
+                view.ActiveFilterCriteria = DevExpress.Data.Filtering.CriteriaOperator.Parse("Contains([FileName], '" + txtSearch.Text + "')");
             }
             else
             {
                 view.ActiveFilter.Clear();
             }
-
-
         }
 
         private void mnuProjectSettings_Click(object sender, EventArgs e)
@@ -738,6 +751,19 @@ namespace NFTAG
                 CurrentProject.Settings.ResizeAlgorithm = sett.Settings.ResizeAlgorithm;
                 CurrentProject.Settings.ShuffleSeed = sett.Settings.ShuffleSeed;
             }
+        }
+
+        private void btnGenerateCancel_Click(object sender, EventArgs e)
+        {
+            //cancel build
+            cts.Cancel();
+            //set ui
+            prg1.Visible = false;
+            btnGenerate.Enabled = true;
+            btnGenerateCancel.Enabled = false;
+            timerGen.Enabled = false;
+            lblGenProgress.Text = "";
+
         }
     }
 }

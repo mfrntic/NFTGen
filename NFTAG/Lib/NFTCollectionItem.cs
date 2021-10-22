@@ -38,7 +38,7 @@ namespace NFTAG.Lib
 
         public DateTime GeneratedTimestamp { get; private set; }
 
-        public string ImagePath { get; private set; }
+        public string LocalPath { get; private set; }
 
         public Dictionary<string, ProjectLayer> Traits { get; set; }
 
@@ -109,7 +109,7 @@ namespace NFTAG.Lib
             ImageMagick.MagickImageCollection images = new ImageMagick.MagickImageCollection();
             foreach (var trait in this.Traits)
             {
-                images.Add(trait.Value.Path);
+                images.Add(trait.Value.LocalPath);
             }
 
             using (var res = images.Merge())
@@ -118,10 +118,11 @@ namespace NFTAG.Lib
                 res.FilterType = proj.Settings.ResizeAlgorithm;
                 res.Resize(proj.Settings.OutputSize.Width, proj.Settings.OutputSize.Height);
 
-                this.ImagePath = System.IO.Path.Combine(proj.Settings.GetOutputPath(proj), this.FileName + ".png");
+                //path to generated image
+                this.LocalPath = System.IO.Path.Combine(proj.Settings.GetOutputPath(proj), this.FileName + ".png");
                 this.GeneratedTimestamp = DateTime.Now;
 
-                res.Write(this.ImagePath);
+                res.Write(this.LocalPath);
             }
 
         }
@@ -133,7 +134,7 @@ namespace NFTAG.Lib
                 ImageMagick.MagickImageCollection images = new ImageMagick.MagickImageCollection();
                 foreach (var trait in this.Traits)
                 {
-                    images.Add(trait.Value.Path);
+                    images.Add(trait.Value.LocalPath);
                 }
 
                 using (var res = images.Merge())
@@ -142,10 +143,11 @@ namespace NFTAG.Lib
                     res.FilterType = proj.Settings.ResizeAlgorithm;
                     res.Resize(proj.Settings.OutputSize.Width, proj.Settings.OutputSize.Height);
 
-                    this.ImagePath = System.IO.Path.Combine(proj.Settings.GetOutputPath(proj), this.FileName + ".png");
+                    //path to generated image
+                    this.LocalPath = System.IO.Path.Combine(proj.Settings.GetOutputPath(proj), this.FileName + ".png");
                     this.GeneratedTimestamp = DateTime.Now;
 
-                    res.Write(this.ImagePath);
+                    res.Write(this.LocalPath);
                 }
 
             });
