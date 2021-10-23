@@ -10,6 +10,7 @@ namespace NFTAG.Lib
     {
         public Project()
         {
+            ProjectName = "New Project";
             Settings = new ProjectSettings();
             overlays = new List<ProjectLayer>();
         }

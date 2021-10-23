@@ -78,7 +78,7 @@ namespace NFTAG.Lib
                 foreach (var layer in group.Overlays.Where(a => !a.IsGroup))
                 {
                     Random rng = new Random();
-                    if (proj.Settings.ShuffleSeed > 0)
+                    if (proj.Settings.PredictableShuffle)
                     {
                         rng = new Random(proj.Settings.ShuffleSeed);
                     }

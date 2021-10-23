@@ -15,18 +15,17 @@ namespace NFTAG.Lib
         {
             OutputDirectory = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "NFTGen_Processed");
             OutputSize = new Size(500, 500);
-            ShuffleSeed = 0; //if 0 then uses timer!
             ResizeAlgorithm = ResampleAlgorithmEnum.NearestNeighbor; //nearest neighbor (hard edges)
         }
 
-        [Description("Path to output directory where images will be generated"), 
-            DisplayName("Output Folder"), 
+        [Description("Path to output directory where images will be generated"),
+            DisplayName("Output Folder"),
             Category("Output")]
         [EditorAttribute(typeof(System.Windows.Forms.Design.FolderNameEditor), typeof(System.Drawing.Design.UITypeEditor))]
         public string OutputDirectory { get; set; }
 
-        [Description("Specifies whether project folder will be created in output directory"), 
-            DisplayName("Folderize Project"), 
+        [Description("Specifies whether project folder will be created in output directory"),
+            DisplayName("Folderize Project"),
             Category("Output")]
         public bool CreateProjectFolderInOutputDirectory { get; set; }
 
@@ -40,13 +39,33 @@ namespace NFTAG.Lib
             return pth;
         }
 
-        [Description("Size of output images in pixels"), 
-            DisplayName("Image Size"), 
+        [Description("Size of output images in pixels"),
+            DisplayName("Image Size"),
             Category("Output")]
         public Size OutputSize { get; set; }
 
-        [Description("Determines seed for shuffling new image collection. Can be used for predictible shuffle. If value is >0 then shuffle order will be same every time. If value is 0 (default) then timer value is used (every time order is different and unpredictable)."), 
-            DisplayName("Shuffle Seed"), 
+        private bool predicatableShuffle = false;
+        [Description("Determines that shuffle should produce same output every time. Uses ShuffleSeed number to produce this. If it is false (default) then system timer is used and every time shuffle is different."),
+         DisplayName("Shuffle Predictable"),
+         Category("Output")]
+        public bool PredictableShuffle { get
+            {
+                return predicatableShuffle;
+            }
+            set
+            {
+                predicatableShuffle = value;
+                if (predicatableShuffle && ShuffleSeed == 0)
+                {
+                    Random rnd = new Random();
+                    ShuffleSeed = rnd.Next(1, 9999);
+                }
+            }
+
+        }
+
+        [Description("Determines seed for shuffling new image collection. Used for predictible shuffle. If value is >0 then shuffle order will be same every time. If value is 0 (default) then timer value is used (every time order is different and unpredictable)."),
+            DisplayName("Shuffle Seed"),
             Category("Output")]
         public int ShuffleSeed { get; set; }
 
