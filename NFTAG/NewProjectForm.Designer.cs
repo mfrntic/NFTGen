@@ -1,7 +1,7 @@
 ﻿
 namespace NFTAG
 {
-    partial class NewProjectForm
+    partial class ProjectForm
     {
         /// <summary>
         /// Required designer variable.
@@ -49,14 +49,14 @@ namespace NFTAG
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel1.Location = new System.Drawing.Point(0, 397);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(495, 39);
+            this.panel1.Size = new System.Drawing.Size(471, 39);
             this.panel1.TabIndex = 1;
             // 
             // btnOK
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(280, 4);
+            this.btnOK.Location = new System.Drawing.Point(247, 3);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(103, 32);
             this.btnOK.TabIndex = 1;
@@ -67,7 +67,7 @@ namespace NFTAG
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(389, 4);
+            this.btnCancel.Location = new System.Drawing.Point(356, 3);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(103, 32);
             this.btnCancel.TabIndex = 0;
@@ -77,7 +77,7 @@ namespace NFTAG
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(19, 20);
+            this.label1.Location = new System.Drawing.Point(12, 20);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(74, 13);
             this.label1.TabIndex = 2;
@@ -89,15 +89,15 @@ namespace NFTAG
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtProjectName.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.txtProjectName.Location = new System.Drawing.Point(22, 36);
+            this.txtProjectName.Location = new System.Drawing.Point(15, 36);
             this.txtProjectName.Name = "txtProjectName";
-            this.txtProjectName.Size = new System.Drawing.Size(461, 21);
+            this.txtProjectName.Size = new System.Drawing.Size(444, 21);
             this.txtProjectName.TabIndex = 3;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(19, 79);
+            this.label2.Location = new System.Drawing.Point(12, 79);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(115, 13);
             this.label2.TabIndex = 4;
@@ -106,6 +106,11 @@ namespace NFTAG
             // nudTotalItems
             // 
             this.nudTotalItems.Location = new System.Drawing.Point(136, 77);
+            this.nudTotalItems.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
             this.nudTotalItems.Name = "nudTotalItems";
             this.nudTotalItems.Size = new System.Drawing.Size(79, 21);
             this.nudTotalItems.TabIndex = 5;
@@ -114,7 +119,7 @@ namespace NFTAG
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(19, 124);
+            this.label3.Location = new System.Drawing.Point(12, 124);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(50, 13);
             this.label3.TabIndex = 6;
@@ -125,17 +130,17 @@ namespace NFTAG
             this.pgSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pgSettings.Location = new System.Drawing.Point(22, 140);
+            this.pgSettings.Location = new System.Drawing.Point(15, 140);
             this.pgSettings.Name = "pgSettings";
-            this.pgSettings.Size = new System.Drawing.Size(461, 251);
+            this.pgSettings.Size = new System.Drawing.Size(444, 251);
             this.pgSettings.TabIndex = 7;
             this.pgSettings.ToolbarVisible = false;
             // 
-            // NewProjectForm
+            // ProjectForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(495, 436);
+            this.ClientSize = new System.Drawing.Size(471, 436);
             this.Controls.Add(this.pgSettings);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.nudTotalItems);
@@ -147,7 +152,7 @@ namespace NFTAG
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "NewProjectForm";
+            this.Name = "ProjectForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "New Project";
             this.panel1.ResumeLayout(false);

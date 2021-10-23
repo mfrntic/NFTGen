@@ -32,8 +32,8 @@ namespace NFTAG
             this.components = new System.ComponentModel.Container();
             DevExpress.XtraSplashScreen.SplashScreenManager splashScreenManager1 = new DevExpress.XtraSplashScreen.SplashScreenManager(this, null, true, true);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
-            DevExpress.XtraTreeList.StyleFormatConditions.TreeListFormatRule treeListFormatRule3 = new DevExpress.XtraTreeList.StyleFormatConditions.TreeListFormatRule();
-            DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar3 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
+            DevExpress.XtraTreeList.StyleFormatConditions.TreeListFormatRule treeListFormatRule1 = new DevExpress.XtraTreeList.StyleFormatConditions.TreeListFormatRule();
+            DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar1 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
             this.treeListColumn4 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -369,8 +369,8 @@ namespace NFTAG
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage5);
@@ -402,20 +402,20 @@ namespace NFTAG
             this.treeListColumn3,
             this.treeListColumn4});
             this.tlRT.Dock = System.Windows.Forms.DockStyle.Fill;
-            treeListFormatRule3.Column = this.treeListColumn4;
-            treeListFormatRule3.Name = "Format0";
-            formatConditionRuleDataBar3.AllowNegativeAxis = false;
-            formatConditionRuleDataBar3.DrawAxis = false;
-            formatConditionRuleDataBar3.Maximum = new decimal(new int[] {
+            treeListFormatRule1.Column = this.treeListColumn4;
+            treeListFormatRule1.Name = "Format0";
+            formatConditionRuleDataBar1.AllowNegativeAxis = false;
+            formatConditionRuleDataBar1.DrawAxis = false;
+            formatConditionRuleDataBar1.Maximum = new decimal(new int[] {
             100,
             0,
             0,
             0});
-            formatConditionRuleDataBar3.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
-            formatConditionRuleDataBar3.MinimumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
-            formatConditionRuleDataBar3.PredefinedName = "Mint";
-            treeListFormatRule3.Rule = formatConditionRuleDataBar3;
-            this.tlRT.FormatRules.Add(treeListFormatRule3);
+            formatConditionRuleDataBar1.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
+            formatConditionRuleDataBar1.MinimumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
+            formatConditionRuleDataBar1.PredefinedName = "Mint";
+            treeListFormatRule1.Rule = formatConditionRuleDataBar1;
+            this.tlRT.FormatRules.Add(treeListFormatRule1);
             this.tlRT.Location = new System.Drawing.Point(3, 28);
             this.tlRT.Name = "tlRT";
             this.tlRT.OptionsView.ShowRowFooterSummary = true;
@@ -905,7 +905,6 @@ namespace NFTAG
             this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "NFTGen";
-            this.Load += new System.EventHandler(this.Main_Load);
             this.Shown += new System.EventHandler(this.Main_Shown);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
