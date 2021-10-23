@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace NFTAG
 {
-    public partial class NewProjectForm : Form
+    public partial class ProjectForm : Form
     {
-        public NewProjectForm()
+        public ProjectForm()
         {
             InitializeComponent();
         }

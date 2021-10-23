@@ -179,7 +179,8 @@ namespace NFTAG
 
         private void mnuNewProject_Click(object sender, EventArgs e)
         {
-            NewProjectForm newProj = new NewProjectForm();
+            ProjectForm newProj = new ProjectForm();
+            newProj.Text = "New Project";
             newProj.Project = CurrentProject.Copy();
             statusInfo.Text = "Creating new project...";
 
@@ -295,16 +296,12 @@ namespace NFTAG
         private void mnuProjectSettings_Click(object sender, EventArgs e)
         {
             //show setting
-            SettingsForm sett = new SettingsForm();
-            sett.Settings = (Lib.ProjectSettings)CurrentProject.Settings.Clone();
+            ProjectForm sett = new ProjectForm();
+            sett.Text = "Project Settings";
+            sett.Project = CurrentProject.Copy();
             if (sett.ShowDialog(this) == DialogResult.OK)
             {
-                CurrentProject.Settings.CreateProjectFolderInOutputDirectory = sett.Settings.CreateProjectFolderInOutputDirectory;
-                //CurrentProject.Settings.InitialFolder = sett.Settings.InitialFolder;
-                CurrentProject.Settings.OutputDirectory = sett.Settings.OutputDirectory;
-                CurrentProject.Settings.OutputSize = sett.Settings.OutputSize;
-                CurrentProject.Settings.ResizeAlgorithm = sett.Settings.ResizeAlgorithm;
-                CurrentProject.Settings.ShuffleSeed = sett.Settings.ShuffleSeed;
+                CurrentProject = sett.Project;
             }
         }
         #endregion
@@ -896,6 +893,8 @@ namespace NFTAG
 
         #endregion
 
+        #region GENERATED JSON (DB)
+
         private void btnLoadDBFromJSONFile_Click(object sender, EventArgs e)
         {
             if (dlgLoadJSON.ShowDialog(this) == DialogResult.OK)
@@ -906,12 +905,11 @@ namespace NFTAG
             }
         }
 
-        private void Main_Load(object sender, EventArgs e)
-        {
-        }
+        #endregion
 
         private void Main_Shown(object sender, EventArgs e)
         {
+            //show new project dialog on first load
             mnuNewProject_Click(null, null);
 
         }
