@@ -32,8 +32,8 @@ namespace NFTAG
             this.components = new System.ComponentModel.Container();
             DevExpress.XtraSplashScreen.SplashScreenManager splashScreenManager1 = new DevExpress.XtraSplashScreen.SplashScreenManager(this, null, true, true);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
-            DevExpress.XtraTreeList.StyleFormatConditions.TreeListFormatRule treeListFormatRule1 = new DevExpress.XtraTreeList.StyleFormatConditions.TreeListFormatRule();
-            DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar1 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
+            DevExpress.XtraTreeList.StyleFormatConditions.TreeListFormatRule treeListFormatRule3 = new DevExpress.XtraTreeList.StyleFormatConditions.TreeListFormatRule();
+            DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar3 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
             this.treeListColumn4 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -99,6 +99,8 @@ namespace NFTAG
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.webBrowser2 = new System.Windows.Forms.WebBrowser();
+            this.toolStrip5 = new System.Windows.Forms.ToolStrip();
+            this.btnLoadDBFromJSONFile = new System.Windows.Forms.ToolStripButton();
             this.folderBrowse = new System.Windows.Forms.FolderBrowserDialog();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.statusInfo = new System.Windows.Forms.ToolStripStatusLabel();
@@ -107,8 +109,6 @@ namespace NFTAG
             this.dlgOpen = new System.Windows.Forms.OpenFileDialog();
             this.dlgAddFile = new System.Windows.Forms.OpenFileDialog();
             this.timerGen = new System.Windows.Forms.Timer(this.components);
-            this.toolStrip5 = new System.Windows.Forms.ToolStrip();
-            this.btnLoadDBFromJSONFile = new System.Windows.Forms.ToolStripButton();
             this.dlgLoadJSON = new System.Windows.Forms.OpenFileDialog();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -133,8 +133,8 @@ namespace NFTAG
             this.toolStrip3.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage5.SuspendLayout();
-            this.statusStrip1.SuspendLayout();
             this.toolStrip5.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // splashScreenManager1
@@ -402,20 +402,20 @@ namespace NFTAG
             this.treeListColumn3,
             this.treeListColumn4});
             this.tlRT.Dock = System.Windows.Forms.DockStyle.Fill;
-            treeListFormatRule1.Column = this.treeListColumn4;
-            treeListFormatRule1.Name = "Format0";
-            formatConditionRuleDataBar1.AllowNegativeAxis = false;
-            formatConditionRuleDataBar1.DrawAxis = false;
-            formatConditionRuleDataBar1.Maximum = new decimal(new int[] {
+            treeListFormatRule3.Column = this.treeListColumn4;
+            treeListFormatRule3.Name = "Format0";
+            formatConditionRuleDataBar3.AllowNegativeAxis = false;
+            formatConditionRuleDataBar3.DrawAxis = false;
+            formatConditionRuleDataBar3.Maximum = new decimal(new int[] {
             100,
             0,
             0,
             0});
-            formatConditionRuleDataBar1.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
-            formatConditionRuleDataBar1.MinimumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
-            formatConditionRuleDataBar1.PredefinedName = "Mint";
-            treeListFormatRule1.Rule = formatConditionRuleDataBar1;
-            this.tlRT.FormatRules.Add(treeListFormatRule1);
+            formatConditionRuleDataBar3.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
+            formatConditionRuleDataBar3.MinimumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
+            formatConditionRuleDataBar3.PredefinedName = "Mint";
+            treeListFormatRule3.Rule = formatConditionRuleDataBar3;
+            this.tlRT.FormatRules.Add(treeListFormatRule3);
             this.tlRT.Location = new System.Drawing.Point(3, 28);
             this.tlRT.Name = "tlRT";
             this.tlRT.OptionsView.ShowRowFooterSummary = true;
@@ -820,6 +820,26 @@ namespace NFTAG
             this.webBrowser2.Size = new System.Drawing.Size(856, 630);
             this.webBrowser2.TabIndex = 1;
             // 
+            // toolStrip5
+            // 
+            this.toolStrip5.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.btnLoadDBFromJSONFile});
+            this.toolStrip5.Location = new System.Drawing.Point(3, 3);
+            this.toolStrip5.Name = "toolStrip5";
+            this.toolStrip5.Size = new System.Drawing.Size(856, 25);
+            this.toolStrip5.TabIndex = 2;
+            this.toolStrip5.Text = "toolStrip5";
+            // 
+            // btnLoadDBFromJSONFile
+            // 
+            this.btnLoadDBFromJSONFile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnLoadDBFromJSONFile.Image = global::NFTAG.Properties.Resources.folder_page_icon;
+            this.btnLoadDBFromJSONFile.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnLoadDBFromJSONFile.Name = "btnLoadDBFromJSONFile";
+            this.btnLoadDBFromJSONFile.Size = new System.Drawing.Size(23, 22);
+            this.btnLoadDBFromJSONFile.Text = "Load from file";
+            this.btnLoadDBFromJSONFile.Click += new System.EventHandler(this.btnLoadDBFromJSONFile_Click);
+            // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -866,26 +886,6 @@ namespace NFTAG
             this.timerGen.Interval = 200;
             this.timerGen.Tick += new System.EventHandler(this.timerGen_Tick);
             // 
-            // toolStrip5
-            // 
-            this.toolStrip5.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.btnLoadDBFromJSONFile});
-            this.toolStrip5.Location = new System.Drawing.Point(3, 3);
-            this.toolStrip5.Name = "toolStrip5";
-            this.toolStrip5.Size = new System.Drawing.Size(856, 25);
-            this.toolStrip5.TabIndex = 2;
-            this.toolStrip5.Text = "toolStrip5";
-            // 
-            // btnLoadDBFromJSONFile
-            // 
-            this.btnLoadDBFromJSONFile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnLoadDBFromJSONFile.Image = global::NFTAG.Properties.Resources.folder_page_icon;
-            this.btnLoadDBFromJSONFile.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnLoadDBFromJSONFile.Name = "btnLoadDBFromJSONFile";
-            this.btnLoadDBFromJSONFile.Size = new System.Drawing.Size(23, 22);
-            this.btnLoadDBFromJSONFile.Text = "Load from file";
-            this.btnLoadDBFromJSONFile.Click += new System.EventHandler(this.btnLoadDBFromJSONFile_Click);
-            // 
             // dlgLoadJSON
             // 
             this.dlgLoadJSON.Filter = "JSON (*.json)|*.json|All Files (*.*)|*.*";
@@ -905,6 +905,8 @@ namespace NFTAG
             this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "NFTGen";
+            this.Load += new System.EventHandler(this.Main_Load);
+            this.Shown += new System.EventHandler(this.Main_Shown);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -938,10 +940,10 @@ namespace NFTAG
             this.tabPage3.ResumeLayout(false);
             this.tabPage5.ResumeLayout(false);
             this.tabPage5.PerformLayout();
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
             this.toolStrip5.ResumeLayout(false);
             this.toolStrip5.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

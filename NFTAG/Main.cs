@@ -179,15 +179,31 @@ namespace NFTAG
 
         private void mnuNewProject_Click(object sender, EventArgs e)
         {
+            NewProjectForm newProj = new NewProjectForm();
+            newProj.Project = CurrentProject.Copy();
             statusInfo.Text = "Creating new project...";
+
+            if (newProj.ShowDialog(this) == DialogResult.OK)
+            {
+                this.CurrentProject = newProj.Project;
+                CreateProject();
+            }
+            else
+            {
+                statusInfo.Text = "Ready";
+            }
+        }
+
+        private void CreateProject()
+        {
             //new project
-            this.CurrentProject = new Lib.Project();
-            this.Text = $"NFTGen";
+            this.Text = $"NFTGen :: { this.CurrentProject.ProjectName}";
             treeView1.Nodes.Clear();
             tlRT.Nodes.Clear();
+            gallery1.Gallery.Groups.Clear();
+            webBrowser2.DocumentText = webBrowser1.DocumentText = "";
             txtTotalItems.Text = this.CurrentProject.TotalItems.ToString();
             statusInfo.Text = "New project is created";
-
         }
 
         private void FillProjectStructure(TreeNode tn = null)
@@ -258,7 +274,7 @@ namespace NFTAG
             //open project
             if (dlgOpen.ShowDialog(this) == DialogResult.OK)
             {
-                mnuNewProject_Click(null, null);
+                CreateProject();
                 currentFileName = dlgOpen.FileName;
                 CurrentProject = Lib.Project.Load(currentFileName);
                 LoadProject();
@@ -597,7 +613,7 @@ namespace NFTAG
             //calcPerc();
 
             tlRT.EndUnboundLoad();
-            
+
             statusInfo.Text = "Ready";
         }
 
@@ -888,6 +904,16 @@ namespace NFTAG
                 var style = "<style>body{ background-color: 'black'; font-family: 'Courier New'; font-size: '11pt'; color: 'white'; } .key{ color: 'CornflowerBlue'; } .string {color: 'Lime'} .number { color: 'Yellow'; } .boolean { color: 'magenta' } .null { color: 'gray'; }</style>";
                 webBrowser2.DocumentText = style + json.SyntaxHighlightJson();
             }
+        }
+
+        private void Main_Load(object sender, EventArgs e)
+        {
+        }
+
+        private void Main_Shown(object sender, EventArgs e)
+        {
+            mnuNewProject_Click(null, null);
+
         }
     }
 }

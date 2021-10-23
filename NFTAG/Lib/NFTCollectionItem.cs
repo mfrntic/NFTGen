@@ -109,7 +109,7 @@ namespace NFTAG.Lib
             using (var res = images.Merge())
             {
                 res.VirtualPixelMethod = ImageMagick.VirtualPixelMethod.Transparent;
-                res.FilterType = proj.Settings.ResizeAlgorithm;
+                res.FilterType = proj.Settings.GetMagickResizeAlgorithm();
                 res.Resize(proj.Settings.OutputSize.Width, proj.Settings.OutputSize.Height);
 
                 //path to generated image
@@ -137,7 +137,7 @@ namespace NFTAG.Lib
                     using (var res = images.Merge())
                     {
                         res.VirtualPixelMethod = ImageMagick.VirtualPixelMethod.Transparent;
-                        res.FilterType = proj.Settings.ResizeAlgorithm;
+                        res.FilterType = proj.Settings.GetMagickResizeAlgorithm();
                         res.Resize(proj.Settings.OutputSize.Width, proj.Settings.OutputSize.Height);
 
                         //path to generated image
