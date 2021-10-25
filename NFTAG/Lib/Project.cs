@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NFTAG.Lib
+namespace NFTGen.Lib
 {
     public class Project
     {

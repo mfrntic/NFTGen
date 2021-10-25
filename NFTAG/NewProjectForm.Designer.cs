@@ -1,5 +1,5 @@
 ﻿
-namespace NFTAG
+namespace NFTGen
 {
     partial class ProjectForm
     {

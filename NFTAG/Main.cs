@@ -13,7 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace NFTAG
+namespace NFTGen
 {
     public partial class Main : Form
     {
@@ -207,7 +207,7 @@ namespace NFTAG
             treeView1.Nodes.Clear();
             tlRT.Nodes.Clear();
             gallery1.Gallery.Groups.Clear();
-            webBrowser2.DocumentText = webBrowser1.DocumentText = "";
+            webBrowser2.Tag = webBrowser2.DocumentText = webBrowser1.DocumentText = "";
             txtTotalItems.Text = this.CurrentProject.TotalItems.ToString();
             statusInfo.Text = "New project is created";
         }
@@ -861,7 +861,7 @@ namespace NFTAG
                 });
                 var style = "<style>body{ background-color: 'black'; font-family: 'Courier New'; font-size: '11pt'; color: 'white'; } .key{ color: 'CornflowerBlue'; } .string {color: 'Lime'} .number { color: 'Yellow'; } .boolean { color: 'magenta' } .null { color: 'gray'; }</style>";
                 webBrowser2.DocumentText = style + json.SyntaxHighlightJson();
-
+                webBrowser2.Tag = json;
                 statusInfo.Text = "Ready";
             }
         }
@@ -906,6 +906,7 @@ namespace NFTAG
             {
                 var json = System.IO.File.ReadAllText(dlgLoadJSON.FileName);
                 var style = "<style>body{ background-color: 'black'; font-family: 'Courier New'; font-size: '11pt'; color: 'white'; } .key{ color: 'CornflowerBlue'; } .string {color: 'Lime'} .number { color: 'Yellow'; } .boolean { color: 'magenta' } .null { color: 'gray'; }</style>";
+                webBrowser2.Tag = json;
                 webBrowser2.DocumentText = style + json.SyntaxHighlightJson();
             }
         }
@@ -917,6 +918,38 @@ namespace NFTAG
             //show new project dialog on first load
             mnuNewProject_Click(null, null);
 
+        }
+
+        private void btnCopyJSONDB_Click(object sender, EventArgs e)
+        {
+            if (webBrowser2.Tag != null)
+            {
+                //copy json db
+                string json = webBrowser2.Tag.ToString();
+                Clipboard.SetText(json, TextDataFormat.UnicodeText);
+                statusInfo.Text = "Generated JSON is copied to clipboard...";
+            }
+        }
+
+        private void btnSaveJSONDBAs_Click(object sender, EventArgs e)
+        {
+            if (webBrowser2.Tag != null)
+            {
+                dlgSaveJSON.FileName = CurrentProject.ProjectName;
+                if (dlgSaveJSON.ShowDialog(this) == DialogResult.OK)
+                {
+                    string json = webBrowser2.Tag.ToString();
+                    System.IO.File.WriteAllText(dlgSaveJSON.FileName, json);
+                    statusInfo.Text = $"File saved [{dlgSave.FileName}]";
+
+                }
+            }
+        }
+
+        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AboutForm about = new AboutForm();
+            about.ShowDialog(this);
         }
     }
 }

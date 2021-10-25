@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NFTAG.Lib
+namespace NFTGen.Lib
 {
     public enum ResampleAlgorithmEnum : byte { NearestNeighbor = 1, Bilinear = 2, BicubicSmoother = 3, BicubicSharper = 4 }
     public class ProjectSettings : ICloneable

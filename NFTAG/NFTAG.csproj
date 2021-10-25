@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{A6AC5486-51BF-4E4E-B7A8-9E3A7AD8517D}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>NFTAG</RootNamespace>
-    <AssemblyName>NFTAG</AssemblyName>
+    <RootNamespace>NFTGen</RootNamespace>
+    <AssemblyName>NFTGen</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -31,6 +31,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>nftgen.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accessibility" />
@@ -72,6 +75,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AboutForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutForm.Designer.cs">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Lib\NFTCollectionItem.cs" />
     <Compile Include="Lib\Project.cs" />
     <Compile Include="Lib\ProjectLayer.cs" />
@@ -92,6 +101,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extensions.cs" />
+    <EmbeddedResource Include="AboutForm.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
@@ -140,6 +152,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\arrow-refresh-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="nftgen.ico" />
+    <Content Include="setup.iss" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

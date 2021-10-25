@@ -1,5 +1,5 @@
 ﻿
-namespace NFTAG
+namespace NFTGen
 {
     partial class Main
     {
@@ -45,6 +45,7 @@ namespace NFTAG
             this.projectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSetProjectName = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuProjectSettings = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.imlFolders = new System.Windows.Forms.ImageList(this.components);
@@ -57,6 +58,16 @@ namespace NFTAG
             this.btnUp = new System.Windows.Forms.ToolStripButton();
             this.btnDown = new System.Windows.Forms.ToolStripButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.pnlImageHolder = new System.Windows.Forms.Panel();
+            this.picPrev = new DevExpress.XtraEditors.PictureEdit();
+            this.toolStrip4 = new System.Windows.Forms.ToolStrip();
+            this.btnZoomIn = new System.Windows.Forms.ToolStripButton();
+            this.btnZoomOut = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnPicOriginal = new System.Windows.Forms.ToolStripButton();
+            this.gallery1 = new DevExpress.XtraBars.Ribbon.GalleryControl();
+            this.galleryControlClient1 = new DevExpress.XtraBars.Ribbon.GalleryControlClient();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tlRT = new DevExpress.XtraTreeList.TreeList();
             this.treeListColumn1 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
@@ -68,16 +79,6 @@ namespace NFTAG
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.txtTotalItems = new System.Windows.Forms.ToolStripTextBox();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.pnlImageHolder = new System.Windows.Forms.Panel();
-            this.picPrev = new DevExpress.XtraEditors.PictureEdit();
-            this.toolStrip4 = new System.Windows.Forms.ToolStrip();
-            this.btnZoomIn = new System.Windows.Forms.ToolStripButton();
-            this.btnZoomOut = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
-            this.btnPicOriginal = new System.Windows.Forms.ToolStripButton();
-            this.gallery1 = new DevExpress.XtraBars.Ribbon.GalleryControl();
-            this.galleryControlClient1 = new DevExpress.XtraBars.Ribbon.GalleryControlClient();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.outputGrid = new DevExpress.XtraGrid.GridControl();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -101,6 +102,9 @@ namespace NFTAG
             this.webBrowser2 = new System.Windows.Forms.WebBrowser();
             this.toolStrip5 = new System.Windows.Forms.ToolStrip();
             this.btnLoadDBFromJSONFile = new System.Windows.Forms.ToolStripButton();
+            this.btnSaveJSONDBAs = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnCopyJSONDB = new System.Windows.Forms.ToolStripButton();
             this.folderBrowse = new System.Windows.Forms.FolderBrowserDialog();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.statusInfo = new System.Windows.Forms.ToolStripStatusLabel();
@@ -110,6 +114,7 @@ namespace NFTAG
             this.dlgAddFile = new System.Windows.Forms.OpenFileDialog();
             this.timerGen = new System.Windows.Forms.Timer(this.components);
             this.dlgLoadJSON = new System.Windows.Forms.OpenFileDialog();
+            this.dlgSaveJSON = new System.Windows.Forms.SaveFileDialog();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -117,16 +122,16 @@ namespace NFTAG
             this.splitContainer1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tlRT)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit1)).BeginInit();
-            this.toolStrip2.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.pnlImageHolder.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picPrev.Properties)).BeginInit();
             this.toolStrip4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gallery1)).BeginInit();
             this.gallery1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tlRT)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit1)).BeginInit();
+            this.toolStrip2.SuspendLayout();
             this.tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.outputGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
@@ -157,7 +162,8 @@ namespace NFTAG
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.projectToolStripMenuItem});
+            this.projectToolStripMenuItem,
+            this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1157, 24);
@@ -178,7 +184,7 @@ namespace NFTAG
             // 
             // mnuNewProject
             // 
-            this.mnuNewProject.Image = global::NFTAG.Properties.Resources.script_code_red_icon;
+            this.mnuNewProject.Image = global::NFTGen.Properties.Resources.script_code_red_icon;
             this.mnuNewProject.Name = "mnuNewProject";
             this.mnuNewProject.Size = new System.Drawing.Size(195, 22);
             this.mnuNewProject.Text = "&New Project...";
@@ -186,7 +192,7 @@ namespace NFTAG
             // 
             // mnuSaveProject
             // 
-            this.mnuSaveProject.Image = global::NFTAG.Properties.Resources.disk_icon;
+            this.mnuSaveProject.Image = global::NFTGen.Properties.Resources.disk_icon;
             this.mnuSaveProject.Name = "mnuSaveProject";
             this.mnuSaveProject.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
             this.mnuSaveProject.Size = new System.Drawing.Size(195, 22);
@@ -195,7 +201,7 @@ namespace NFTAG
             // 
             // mnuOpenProject
             // 
-            this.mnuOpenProject.Image = global::NFTAG.Properties.Resources.folder_page_icon;
+            this.mnuOpenProject.Image = global::NFTGen.Properties.Resources.folder_page_icon;
             this.mnuOpenProject.Name = "mnuOpenProject";
             this.mnuOpenProject.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             this.mnuOpenProject.Size = new System.Drawing.Size(195, 22);
@@ -233,11 +239,18 @@ namespace NFTAG
             // 
             // mnuProjectSettings
             // 
-            this.mnuProjectSettings.Image = global::NFTAG.Properties.Resources.settings_icon1;
+            this.mnuProjectSettings.Image = global::NFTGen.Properties.Resources.settings_icon1;
             this.mnuProjectSettings.Name = "mnuProjectSettings";
             this.mnuProjectSettings.Size = new System.Drawing.Size(174, 22);
             this.mnuProjectSettings.Text = "Project &Settings...";
             this.mnuProjectSettings.Click += new System.EventHandler(this.mnuProjectSettings_Click);
+            // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
+            this.helpToolStripMenuItem.Text = "&About";
+            this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
             // 
             // splitContainer1
             // 
@@ -382,6 +395,112 @@ namespace NFTAG
             this.tabControl1.TabIndex = 0;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.pnlImageHolder);
+            this.tabPage1.Controls.Add(this.gallery1);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(862, 661);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Preview";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // pnlImageHolder
+            // 
+            this.pnlImageHolder.Controls.Add(this.picPrev);
+            this.pnlImageHolder.Controls.Add(this.toolStrip4);
+            this.pnlImageHolder.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlImageHolder.Location = new System.Drawing.Point(3, 3);
+            this.pnlImageHolder.Name = "pnlImageHolder";
+            this.pnlImageHolder.Size = new System.Drawing.Size(856, 655);
+            this.pnlImageHolder.TabIndex = 2;
+            this.pnlImageHolder.Visible = false;
+            // 
+            // picPrev
+            // 
+            this.picPrev.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.picPrev.Location = new System.Drawing.Point(0, 25);
+            this.picPrev.Name = "picPrev";
+            this.picPrev.Properties.ReadOnly = true;
+            this.picPrev.Properties.ShowEditMenuItem = DevExpress.Utils.DefaultBoolean.False;
+            this.picPrev.Properties.ShowMenu = false;
+            this.picPrev.Properties.ShowZoomSubMenu = DevExpress.Utils.DefaultBoolean.True;
+            this.picPrev.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Squeeze;
+            this.picPrev.Size = new System.Drawing.Size(856, 630);
+            this.picPrev.TabIndex = 3;
+            // 
+            // toolStrip4
+            // 
+            this.toolStrip4.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.btnZoomIn,
+            this.btnZoomOut,
+            this.toolStripSeparator6,
+            this.btnPicOriginal});
+            this.toolStrip4.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip4.Name = "toolStrip4";
+            this.toolStrip4.Size = new System.Drawing.Size(856, 25);
+            this.toolStrip4.TabIndex = 2;
+            this.toolStrip4.Text = "toolStrip4";
+            // 
+            // btnZoomIn
+            // 
+            this.btnZoomIn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnZoomIn.Image = ((System.Drawing.Image)(resources.GetObject("btnZoomIn.Image")));
+            this.btnZoomIn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnZoomIn.Name = "btnZoomIn";
+            this.btnZoomIn.Size = new System.Drawing.Size(23, 22);
+            this.btnZoomIn.Text = "Zoom In";
+            this.btnZoomIn.Click += new System.EventHandler(this.btnZoomIn_Click);
+            // 
+            // btnZoomOut
+            // 
+            this.btnZoomOut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnZoomOut.Image = ((System.Drawing.Image)(resources.GetObject("btnZoomOut.Image")));
+            this.btnZoomOut.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnZoomOut.Name = "btnZoomOut";
+            this.btnZoomOut.Size = new System.Drawing.Size(23, 22);
+            this.btnZoomOut.Text = "Zoom Out";
+            this.btnZoomOut.Click += new System.EventHandler(this.btnZoomOut_Click);
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 25);
+            // 
+            // btnPicOriginal
+            // 
+            this.btnPicOriginal.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnPicOriginal.Image = ((System.Drawing.Image)(resources.GetObject("btnPicOriginal.Image")));
+            this.btnPicOriginal.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnPicOriginal.Name = "btnPicOriginal";
+            this.btnPicOriginal.Size = new System.Drawing.Size(23, 22);
+            this.btnPicOriginal.Text = "Original size / Fit if bigger";
+            this.btnPicOriginal.Click += new System.EventHandler(this.btnPicOriginal_Click);
+            // 
+            // gallery1
+            // 
+            this.gallery1.Controls.Add(this.galleryControlClient1);
+            this.gallery1.Dock = System.Windows.Forms.DockStyle.Fill;
+            // 
+            // 
+            // 
+            this.gallery1.Gallery.ImageSize = new System.Drawing.Size(100, 100);
+            this.gallery1.Gallery.ItemImageLayout = DevExpress.Utils.Drawing.ImageLayoutMode.ZoomInside;
+            this.gallery1.Gallery.ItemClick += new DevExpress.XtraBars.Ribbon.GalleryItemClickEventHandler(this.gallery1_Gallery_ItemClick);
+            this.gallery1.Location = new System.Drawing.Point(3, 3);
+            this.gallery1.Name = "gallery1";
+            this.gallery1.Size = new System.Drawing.Size(856, 655);
+            this.gallery1.TabIndex = 0;
+            this.gallery1.Text = "galleryControl1";
+            // 
+            // galleryControlClient1
+            // 
+            this.galleryControlClient1.GalleryControl = this.gallery1;
+            this.galleryControlClient1.Location = new System.Drawing.Point(2, 2);
+            this.galleryControlClient1.Size = new System.Drawing.Size(835, 651);
+            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.tlRT);
@@ -479,7 +598,7 @@ namespace NFTAG
             // btnReloadRarityTable
             // 
             this.btnReloadRarityTable.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnReloadRarityTable.Image = global::NFTAG.Properties.Resources.arrow_refresh_icon;
+            this.btnReloadRarityTable.Image = global::NFTGen.Properties.Resources.arrow_refresh_icon;
             this.btnReloadRarityTable.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnReloadRarityTable.Name = "btnReloadRarityTable";
             this.btnReloadRarityTable.Size = new System.Drawing.Size(23, 22);
@@ -504,111 +623,6 @@ namespace NFTAG
             this.txtTotalItems.Size = new System.Drawing.Size(100, 25);
             this.txtTotalItems.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTotalItems_KeyPress);
             this.txtTotalItems.TextChanged += new System.EventHandler(this.txtTotalItems_TextChanged);
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.pnlImageHolder);
-            this.tabPage1.Controls.Add(this.gallery1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(862, 661);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Preview";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // pnlImageHolder
-            // 
-            this.pnlImageHolder.Controls.Add(this.picPrev);
-            this.pnlImageHolder.Controls.Add(this.toolStrip4);
-            this.pnlImageHolder.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlImageHolder.Location = new System.Drawing.Point(3, 3);
-            this.pnlImageHolder.Name = "pnlImageHolder";
-            this.pnlImageHolder.Size = new System.Drawing.Size(856, 655);
-            this.pnlImageHolder.TabIndex = 2;
-            this.pnlImageHolder.Visible = false;
-            // 
-            // picPrev
-            // 
-            this.picPrev.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picPrev.Location = new System.Drawing.Point(0, 25);
-            this.picPrev.Name = "picPrev";
-            this.picPrev.Properties.ReadOnly = true;
-            this.picPrev.Properties.ShowEditMenuItem = DevExpress.Utils.DefaultBoolean.False;
-            this.picPrev.Properties.ShowMenu = false;
-            this.picPrev.Properties.ShowZoomSubMenu = DevExpress.Utils.DefaultBoolean.True;
-            this.picPrev.Size = new System.Drawing.Size(856, 630);
-            this.picPrev.TabIndex = 3;
-            // 
-            // toolStrip4
-            // 
-            this.toolStrip4.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.btnZoomIn,
-            this.btnZoomOut,
-            this.toolStripSeparator6,
-            this.btnPicOriginal});
-            this.toolStrip4.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip4.Name = "toolStrip4";
-            this.toolStrip4.Size = new System.Drawing.Size(856, 25);
-            this.toolStrip4.TabIndex = 2;
-            this.toolStrip4.Text = "toolStrip4";
-            // 
-            // btnZoomIn
-            // 
-            this.btnZoomIn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnZoomIn.Image = ((System.Drawing.Image)(resources.GetObject("btnZoomIn.Image")));
-            this.btnZoomIn.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnZoomIn.Name = "btnZoomIn";
-            this.btnZoomIn.Size = new System.Drawing.Size(23, 22);
-            this.btnZoomIn.Text = "Zoom In";
-            this.btnZoomIn.Click += new System.EventHandler(this.btnZoomIn_Click);
-            // 
-            // btnZoomOut
-            // 
-            this.btnZoomOut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnZoomOut.Image = ((System.Drawing.Image)(resources.GetObject("btnZoomOut.Image")));
-            this.btnZoomOut.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnZoomOut.Name = "btnZoomOut";
-            this.btnZoomOut.Size = new System.Drawing.Size(23, 22);
-            this.btnZoomOut.Text = "Zoom Out";
-            this.btnZoomOut.Click += new System.EventHandler(this.btnZoomOut_Click);
-            // 
-            // toolStripSeparator6
-            // 
-            this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 25);
-            // 
-            // btnPicOriginal
-            // 
-            this.btnPicOriginal.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnPicOriginal.Image = ((System.Drawing.Image)(resources.GetObject("btnPicOriginal.Image")));
-            this.btnPicOriginal.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnPicOriginal.Name = "btnPicOriginal";
-            this.btnPicOriginal.Size = new System.Drawing.Size(23, 22);
-            this.btnPicOriginal.Text = "Original size / Fit if bigger";
-            this.btnPicOriginal.Click += new System.EventHandler(this.btnPicOriginal_Click);
-            // 
-            // gallery1
-            // 
-            this.gallery1.Controls.Add(this.galleryControlClient1);
-            this.gallery1.Dock = System.Windows.Forms.DockStyle.Fill;
-            // 
-            // 
-            // 
-            this.gallery1.Gallery.ImageSize = new System.Drawing.Size(100, 100);
-            this.gallery1.Gallery.ItemImageLayout = DevExpress.Utils.Drawing.ImageLayoutMode.ZoomInside;
-            this.gallery1.Gallery.ItemClick += new DevExpress.XtraBars.Ribbon.GalleryItemClickEventHandler(this.gallery1_Gallery_ItemClick);
-            this.gallery1.Location = new System.Drawing.Point(3, 3);
-            this.gallery1.Name = "gallery1";
-            this.gallery1.Size = new System.Drawing.Size(856, 655);
-            this.gallery1.TabIndex = 0;
-            this.gallery1.Text = "galleryControl1";
-            // 
-            // galleryControlClient1
-            // 
-            this.galleryControlClient1.GalleryControl = this.gallery1;
-            this.galleryControlClient1.Location = new System.Drawing.Point(2, 2);
-            this.galleryControlClient1.Size = new System.Drawing.Size(835, 651);
             // 
             // tabPage4
             // 
@@ -749,7 +763,7 @@ namespace NFTAG
             // btnProjectSettings
             // 
             this.btnProjectSettings.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnProjectSettings.Image = global::NFTAG.Properties.Resources.settings_icon1;
+            this.btnProjectSettings.Image = global::NFTGen.Properties.Resources.settings_icon1;
             this.btnProjectSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnProjectSettings.Name = "btnProjectSettings";
             this.btnProjectSettings.Size = new System.Drawing.Size(23, 22);
@@ -823,7 +837,10 @@ namespace NFTAG
             // toolStrip5
             // 
             this.toolStrip5.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.btnLoadDBFromJSONFile});
+            this.btnLoadDBFromJSONFile,
+            this.btnSaveJSONDBAs,
+            this.toolStripSeparator7,
+            this.btnCopyJSONDB});
             this.toolStrip5.Location = new System.Drawing.Point(3, 3);
             this.toolStrip5.Name = "toolStrip5";
             this.toolStrip5.Size = new System.Drawing.Size(856, 25);
@@ -833,12 +850,37 @@ namespace NFTAG
             // btnLoadDBFromJSONFile
             // 
             this.btnLoadDBFromJSONFile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnLoadDBFromJSONFile.Image = global::NFTAG.Properties.Resources.folder_page_icon;
+            this.btnLoadDBFromJSONFile.Image = global::NFTGen.Properties.Resources.folder_page_icon;
             this.btnLoadDBFromJSONFile.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnLoadDBFromJSONFile.Name = "btnLoadDBFromJSONFile";
             this.btnLoadDBFromJSONFile.Size = new System.Drawing.Size(23, 22);
             this.btnLoadDBFromJSONFile.Text = "Load from file";
             this.btnLoadDBFromJSONFile.Click += new System.EventHandler(this.btnLoadDBFromJSONFile_Click);
+            // 
+            // btnSaveJSONDBAs
+            // 
+            this.btnSaveJSONDBAs.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnSaveJSONDBAs.Image = ((System.Drawing.Image)(resources.GetObject("btnSaveJSONDBAs.Image")));
+            this.btnSaveJSONDBAs.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnSaveJSONDBAs.Name = "btnSaveJSONDBAs";
+            this.btnSaveJSONDBAs.Size = new System.Drawing.Size(23, 22);
+            this.btnSaveJSONDBAs.Text = "Save As..";
+            this.btnSaveJSONDBAs.Click += new System.EventHandler(this.btnSaveJSONDBAs_Click);
+            // 
+            // toolStripSeparator7
+            // 
+            this.toolStripSeparator7.Name = "toolStripSeparator7";
+            this.toolStripSeparator7.Size = new System.Drawing.Size(6, 25);
+            // 
+            // btnCopyJSONDB
+            // 
+            this.btnCopyJSONDB.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnCopyJSONDB.Image = ((System.Drawing.Image)(resources.GetObject("btnCopyJSONDB.Image")));
+            this.btnCopyJSONDB.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnCopyJSONDB.Name = "btnCopyJSONDB";
+            this.btnCopyJSONDB.Size = new System.Drawing.Size(23, 22);
+            this.btnCopyJSONDB.Text = "Copy to Clipboard";
+            this.btnCopyJSONDB.Click += new System.EventHandler(this.btnCopyJSONDB_Click);
             // 
             // statusStrip1
             // 
@@ -891,6 +933,11 @@ namespace NFTAG
             this.dlgLoadJSON.Filter = "JSON (*.json)|*.json|All Files (*.*)|*.*";
             this.dlgLoadJSON.Title = "Load JSON";
             // 
+            // dlgSaveJSON
+            // 
+            this.dlgSaveJSON.Filter = "JSON (*.json)|*.json|All Files (*.*)|*.*";
+            this.dlgSaveJSON.Title = "Save JSON";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -916,12 +963,6 @@ namespace NFTAG
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tlRT)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit1)).EndInit();
-            this.toolStrip2.ResumeLayout(false);
-            this.toolStrip2.PerformLayout();
             this.tabPage1.ResumeLayout(false);
             this.pnlImageHolder.ResumeLayout(false);
             this.pnlImageHolder.PerformLayout();
@@ -930,6 +971,12 @@ namespace NFTAG
             this.toolStrip4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gallery1)).EndInit();
             this.gallery1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tlRT)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit1)).EndInit();
+            this.toolStrip2.ResumeLayout(false);
+            this.toolStrip2.PerformLayout();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.outputGrid)).EndInit();
@@ -1026,5 +1073,10 @@ namespace NFTAG
         private System.Windows.Forms.ToolStrip toolStrip5;
         private System.Windows.Forms.ToolStripButton btnLoadDBFromJSONFile;
         private System.Windows.Forms.OpenFileDialog dlgLoadJSON;
+        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripButton btnSaveJSONDBAs;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
+        private System.Windows.Forms.ToolStripButton btnCopyJSONDB;
+        private System.Windows.Forms.SaveFileDialog dlgSaveJSON;
     }
 }
