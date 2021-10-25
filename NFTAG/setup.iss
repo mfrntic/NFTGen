@@ -17,7 +17,7 @@ AppVersion={#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 DefaultDirName={pf}\NFTGen
 DisableProgramGroupPage=yes
-OutputBaseFilename=setup
+OutputBaseFilename=setup-{#MyAppVersion}
 Compression=lzma
 SolidCompression=yes
 
