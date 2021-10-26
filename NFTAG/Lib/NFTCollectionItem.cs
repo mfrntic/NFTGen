@@ -37,7 +37,7 @@ namespace NFTGen.Lib
             }
         }
 
-        public DateTime GeneratedTimestamp { get; private set; }
+        public DateTime GeneratedTimestamp { get; set; }
 
         public string LocalPath { get; set; }
 

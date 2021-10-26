@@ -96,6 +96,7 @@ namespace NFTGen
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.txtSearch = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnUploadIPFS = new System.Windows.Forms.ToolStripButton();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.tabPage5 = new System.Windows.Forms.TabPage();
@@ -723,7 +724,8 @@ namespace NFTGen
             this.toolStripSeparator4,
             this.toolStripLabel2,
             this.txtSearch,
-            this.toolStripSeparator5});
+            this.toolStripSeparator5,
+            this.btnUploadIPFS});
             this.toolStrip3.Location = new System.Drawing.Point(3, 3);
             this.toolStrip3.Name = "toolStrip3";
             this.toolStrip3.Size = new System.Drawing.Size(856, 25);
@@ -792,6 +794,15 @@ namespace NFTGen
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
             this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
+            // 
+            // btnUploadIPFS
+            // 
+            this.btnUploadIPFS.Image = ((System.Drawing.Image)(resources.GetObject("btnUploadIPFS.Image")));
+            this.btnUploadIPFS.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnUploadIPFS.Name = "btnUploadIPFS";
+            this.btnUploadIPFS.Size = new System.Drawing.Size(93, 22);
+            this.btnUploadIPFS.Text = "IPFS (Pinata)";
+            this.btnUploadIPFS.Click += new System.EventHandler(this.btnUploadIPFS_Click);
             // 
             // tabPage3
             // 
@@ -1078,5 +1089,6 @@ namespace NFTGen
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
         private System.Windows.Forms.ToolStripButton btnCopyJSONDB;
         private System.Windows.Forms.SaveFileDialog dlgSaveJSON;
+        private System.Windows.Forms.ToolStripButton btnUploadIPFS;
     }
 }

@@ -38,6 +38,13 @@ namespace NFTGen
                 webBrowser1.DocumentText = style + CurrentProject.ToJSON().SyntaxHighlightJson();
                 statusInfo.Text = "Ready";
             }
+            else if (tabControl1.SelectedIndex == 4)
+            {
+                var json = webBrowser2.Tag.ToString();
+                var style = "<style>body{ background-color: 'black'; font-family: 'Courier New'; font-size: '11pt'; color: 'white'; } .key{ color: 'CornflowerBlue'; } .string {color: 'Lime'} .number { color: 'Yellow'; } .boolean { color: 'magenta' } .null { color: 'gray'; }</style>";
+                webBrowser2.DocumentText = style + json.SyntaxHighlightJson();
+                statusInfo.Text = "Ready";
+            }
         }
 
 
@@ -270,33 +277,58 @@ namespace NFTGen
                     LoadProject(item, tn);
                 }
             }
+
+
         }
 
         string currentFileName = "";
         private void mnuOpenProject_Click(object sender, EventArgs e)
         {
-            statusInfo.Text = "Loading project from disk...";
-
-            //open project
-            if (dlgOpen.ShowDialog(this) == DialogResult.OK)
+            try
             {
-                CreateProject();
-                currentFileName = dlgOpen.FileName;
-                CurrentProject = Lib.Project.Load(currentFileName);
-                LoadProject();
-                btnReloadRarityTable_Click(null, null);
-                //calcPerc();
+                statusInfo.Text = "Loading project from disk...";
+                this.Cursor = Cursors.WaitCursor;
+                //open project
+                if (dlgOpen.ShowDialog(this) == DialogResult.OK)
+                {
+                    CreateProject();
+                    currentFileName = dlgOpen.FileName;
+                    CurrentProject = Lib.Project.Load(currentFileName);
+                    LoadProject();
+                    btnReloadRarityTable_Click(null, null);
+                    //calcPerc();
+                    LoadGenerated(CurrentProject.LastGeneratedJSON);
 
-                txtTotalItems.Text = this.CurrentProject.TotalItems.ToString();
-                this.Text = $"NFTGen :: { this.CurrentProject.ProjectName}";
+                    txtTotalItems.Text = this.CurrentProject.TotalItems.ToString();
+                    this.Text = $"NFTGen :: { this.CurrentProject.ProjectName}";
 
-                statusInfo.Text = "Project loaded...";
+                    if (treeView1.Nodes.Count > 0)
+                    {
+                        treeView1.SelectedNode = treeView1.Nodes[0];
+                        treeView1.SelectedNode.Expand();
+                        treeView1_AfterSelect(treeView1, new TreeViewEventArgs(treeView1.SelectedNode));
+                    }
+
+                    statusInfo.Text = "Project loaded...";
+                }
+                else
+                {
+                    statusInfo.Text = "Ready";
+                }
+
             }
-            else
+            catch (Exception ex)
             {
-                statusInfo.Text = "Ready";
+                MessageBox.Show("File Corrupted", "File load error. Check if it is compatible with NFTGen!\n" + ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                this.Cursor = Cursors.Default;
             }
         }
+
+
+
 
         private void mnuProjectSettings_Click(object sender, EventArgs e)
         {
@@ -853,7 +885,9 @@ namespace NFTGen
                 var finalJSONFile = System.IO.Path.Combine(outputPath, $"{CurrentProject.ProjectName}_db.json");
                 statusInfo.Text = $"Saving final JSON file [{finalJSONFile}]...";
 
-                var json = Newtonsoft.Json.JsonConvert.SerializeObject(allFiles, Newtonsoft.Json.Formatting.Indented);
+                var json = Newtonsoft.Json.JsonConvert.SerializeObject(generatedFiles, Newtonsoft.Json.Formatting.Indented);
+
+                CurrentProject.LastGeneratedJSON = finalJSONFile;
 
                 await Task.Run(() =>
                 {
@@ -904,21 +938,37 @@ namespace NFTGen
         {
             if (dlgLoadJSON.ShowDialog(this) == DialogResult.OK)
             {
-                var json = System.IO.File.ReadAllText(dlgLoadJSON.FileName);
-                var style = "<style>body{ background-color: 'black'; font-family: 'Courier New'; font-size: '11pt'; color: 'white'; } .key{ color: 'CornflowerBlue'; } .string {color: 'Lime'} .number { color: 'Yellow'; } .boolean { color: 'magenta' } .null { color: 'gray'; }</style>";
-                webBrowser2.Tag = json;
-                webBrowser2.DocumentText = style + json.SyntaxHighlightJson();
+                this.Cursor = Cursors.WaitCursor;
+                try
+                {
+                    LoadGenerated(dlgLoadJSON.FileName);
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("File Corrupted", "File load error. Check if it is compatible with NFTGen!\n" + ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    this.Cursor = Cursors.Default;
+                }
             }
         }
 
-        #endregion
-
-        private void Main_Shown(object sender, EventArgs e)
+        private void LoadGenerated(string path)
         {
-            //show new project dialog on first load
-            mnuNewProject_Click(null, null);
+            if (!string.IsNullOrEmpty(path))
+            {
+                var json = System.IO.File.ReadAllText(path);
+                webBrowser2.Tag = json;
+                tabControl1_SelectedIndexChanged(null, null);
+                //load
+                generatedFiles = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Lib.NFTCollectionItem>>(json);
+                outputGrid.DataSource = generatedFiles;
 
+            }
         }
+
 
         private void btnCopyJSONDB_Click(object sender, EventArgs e)
         {
@@ -946,10 +996,30 @@ namespace NFTGen
             }
         }
 
+        #endregion
+
+        private void Main_Shown(object sender, EventArgs e)
+        {
+            //show new project dialog on first load
+            mnuNewProject_Click(null, null);
+
+        }
         private void helpToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AboutForm about = new AboutForm();
             about.ShowDialog(this);
         }
+
+        private void btnUploadIPFS_Click(object sender, EventArgs e)
+        {
+            if (generatedFiles.Count > 0)
+            {
+                statusInfo.Text = "Starting upload to IPFS and pining with Pinata... ";
+              
+
+            }
+        }
+
+
     }
 }
