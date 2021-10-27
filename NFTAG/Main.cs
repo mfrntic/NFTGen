@@ -995,11 +995,9 @@ namespace NFTGen
                 dlgSaveJSON.FileName = CurrentProject.ProjectName;
                 if (dlgSaveJSON.ShowDialog(this) == DialogResult.OK)
                 {
-
                     string json = webBrowser2.Tag.ToString();
                     System.IO.File.WriteAllText(dlgSaveJSON.FileName, json);
                     statusInfo.Text = $"File saved [{dlgSaveJSON.FileName}]";
-
                 }
             }
         }

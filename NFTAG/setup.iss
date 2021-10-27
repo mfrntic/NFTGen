@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "NFT Image Generator / Blender"
-#define MyAppVersion "0.7"
+#define MyAppVersion "0.8"
 #define MyAppPublisher "Monachus"
 #define MyAppExeName "NFTGen.exe"
 
@@ -16,9 +16,9 @@ AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 DefaultDirName={pf}\NFTGen
-DisableProgramGroupPage=yes
+DisableProgramGroupPage=true
 OutputBaseFilename=setup-{#MyAppVersion}
-Compression=lzma
+Compression=lzma2
 SolidCompression=yes
 
 [Languages]
@@ -28,25 +28,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "H:\DEVGIT\mfrntic\NFTAG\NFTAG\bin\Debug\NFTGen.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "H:\DEVGIT\mfrntic\NFTAG\NFTAG\bin\Debug\DevExpress.Data.v19.2.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "H:\DEVGIT\mfrntic\NFTAG\NFTAG\bin\Debug\DevExpress.Images.v19.2.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "H:\DEVGIT\mfrntic\NFTAG\NFTAG\bin\Debug\DevExpress.Office.v19.2.Core.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "H:\DEVGIT\mfrntic\NFTAG\NFTAG\bin\Debug\DevExpress.Pdf.v19.2.Core.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "H:\DEVGIT\mfrntic\NFTAG\NFTAG\bin\Debug\DevExpress.Printing.v19.2.Core.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "H:\DEVGIT\mfrntic\NFTAG\NFTAG\bin\Debug\DevExpress.RichEdit.v19.2.Core.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "H:\DEVGIT\mfrntic\NFTAG\NFTAG\bin\Debug\DevExpress.Sparkline.v19.2.Core.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "H:\DEVGIT\mfrntic\NFTAG\NFTAG\bin\Debug\DevExpress.Utils.v19.2.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "H:\DEVGIT\mfrntic\NFTAG\NFTAG\bin\Debug\DevExpress.XtraBars.v19.2.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "H:\DEVGIT\mfrntic\NFTAG\NFTAG\bin\Debug\DevExpress.XtraEditors.v19.2.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "H:\DEVGIT\mfrntic\NFTAG\NFTAG\bin\Debug\DevExpress.XtraGrid.v19.2.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "H:\DEVGIT\mfrntic\NFTAG\NFTAG\bin\Debug\DevExpress.XtraLayout.v19.2.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "H:\DEVGIT\mfrntic\NFTAG\NFTAG\bin\Debug\DevExpress.XtraPrinting.v19.2.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "H:\DEVGIT\mfrntic\NFTAG\NFTAG\bin\Debug\DevExpress.XtraTreeList.v19.2.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "H:\DEVGIT\mfrntic\NFTAG\NFTAG\bin\Debug\Magick.NET.Core.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "H:\DEVGIT\mfrntic\NFTAG\NFTAG\bin\Debug\Magick.NET-Q16-AnyCPU.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "H:\DEVGIT\mfrntic\NFTAG\NFTAG\bin\Debug\Newtonsoft.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "H:\DEVGIT\mfrntic\NFTAG\NFTAG\bin\Debug\NFTGen.exe.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: "H:\DEVGIT\mfrntic\NFTAG\NFTAG\bin\Debug\*"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
