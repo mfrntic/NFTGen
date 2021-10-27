@@ -1,6 +1,7 @@
 ﻿using DevExpress.XtraBars.Ribbon;
 using DevExpress.XtraEditors;
 using DevExpress.XtraTreeList.Nodes;
+using Pinata.Client;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -1010,13 +1011,87 @@ namespace NFTGen
             about.ShowDialog(this);
         }
 
-        private void btnUploadIPFS_Click(object sender, EventArgs e)
+        private async void btnUploadIPFS_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrEmpty(CurrentProject.Settings.APIKey) || string.IsNullOrEmpty(CurrentProject.Settings.APISecret))
+            {
+                MessageBox.Show("Pinata API Credentials missing!", "You are misssing Pinata API Credentials (see pinata.cloud). Please enter it in the project settings.", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            
             if (generatedFiles.Count > 0)
             {
-                statusInfo.Text = "Starting upload to IPFS and pining with Pinata... ";
-              
+                statusInfo.Text = "Uploading files to IPFS and pining with Pinata... ";
+                this.Cursor = Cursors.WaitCursor;
+                try
+                {
 
+                    var config = new Config
+                    {
+                        ApiKey = CurrentProject.Settings.APIKey,
+                        ApiSecret = CurrentProject.Settings.APISecret
+                    };
+
+                    var metadata = new PinataMetadata();
+                    metadata.Name = CurrentProject.ProjectName.ToLower();
+
+
+                    var client = new PinataClient(config);
+
+                    var response = await client.Pinning.PinFileToIpfsAsync(content =>
+                    {
+                        foreach (var item in generatedFiles)
+                        {
+                            var fl = new System.Net.Http.ByteArrayContent(System.IO.File.ReadAllBytes(item.LocalPath));
+                            fl.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("image/png");
+                            var fldata = new
+                            {
+                                filepath = $"{metadata.Name}/{item.TokenID}"
+                            };
+                            content.AddPinataFile(fl, fldata.filepath);
+                            //i++;
+                            //if (i >= 10)
+                            //{
+                            //    break;
+                            //}
+                        }
+
+                    }, metadata);
+
+                    if (response.IsSuccess)
+                    {
+                        //File uploaded to Pinata Cloud and can be accessed on IPFS!
+                        var hash = response.IpfsHash; // QmR9HwzakHVr67HFzzgJHoRjwzTTt4wtD6KU4NFe2ArYuj
+                        foreach (var item in generatedFiles)
+                        {
+                            item.IsIPFSWrappedFolder = true;
+                            item.IPFSHash = hash;
+                        }
+                        statusInfo.Text = $"Ipfs Hash: {hash}";
+                        System.Diagnostics.Debug.WriteLine($"Ipfs Hash: {hash}");
+
+                        var json = Newtonsoft.Json.JsonConvert.SerializeObject(generatedFiles, Newtonsoft.Json.Formatting.Indented);
+                        System.IO.File.WriteAllText(CurrentProject.LastGeneratedJSON, json);
+                        var style = "<style>body{ background-color: 'black'; font-family: 'Courier New'; font-size: '11pt'; color: 'white'; } .key{ color: 'CornflowerBlue'; } .string {color: 'Lime'} .number { color: 'Yellow'; } .boolean { color: 'magenta' } .null { color: 'gray'; }</style>";
+                        webBrowser2.DocumentText = style + json.SyntaxHighlightJson();
+                        webBrowser2.Tag = json;
+                        statusInfo.Text = "Ready";
+
+
+                    }
+                    else
+                    {
+                        statusInfo.Text = $"Error: {response.Error}";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error!", ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    this.Cursor = Cursors.Default;
+                }
             }
         }
 

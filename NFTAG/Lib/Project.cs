@@ -22,7 +22,6 @@ namespace NFTGen.Lib
         /// Total expected number of items in the collection
         /// </summary>
         public int TotalItems { get; set; }
-
         public string LastGeneratedJSON {get;set;}
         public ProjectSettings Settings
         {

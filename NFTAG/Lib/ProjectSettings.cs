@@ -91,6 +91,16 @@ namespace NFTGen.Lib
             return ImageMagick.FilterType.SincFast;
         }
 
+        [Description("Pinata (pinata.cloud) API Key"),
+            DisplayName("API Key"),
+            Category("Pinata")]
+        public string APIKey { get; set; }
+
+        [Description("Pinata (pinata.cloud) API Secret"),
+          DisplayName("API Secret"),
+          Category("Pinata")]
+        public string APISecret { get; set; }
+
         public object Clone()
         {
             return this.MemberwiseClone();

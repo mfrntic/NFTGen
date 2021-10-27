@@ -12,9 +12,29 @@ namespace NFTGen.Lib
         public NFTCollectionItem()
         {
             Traits = new Dictionary<string, ProjectLayer>();
+            IsIPFSWrappedFolder = true;
         }
 
         public int TokenID { get; set; }
+        public string IPFSHash { get; set; }
+        public bool IsIPFSWrappedFolder { get; set; }
+
+        public string GetIPFSHttpURL()
+        {
+            if (!string.IsNullOrEmpty(IPFSHash))
+            {
+                if (IsIPFSWrappedFolder)
+                {
+                    return $"{IPFSHash}/{TokenID}";
+                }
+                else
+                {
+                    return IPFSHash;
+                }
+            }
+            return "";
+        }
+
         //public Project Project { get; set; }
         public string FileName
         {
