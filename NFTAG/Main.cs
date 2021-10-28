@@ -1026,7 +1026,6 @@ namespace NFTGen
 
             if (generatedFiles.Count > 0)
             {
-                statusInfo.Text = "Uploading files to IPFS and pining with Pinata... ";
                 this.Cursor = Cursors.WaitCursor;
                 try
                 {
@@ -1044,6 +1043,15 @@ namespace NFTGen
 
                     var response = await client.Pinning.PinFileToIpfsAsync(content =>
                     {
+                        this.Invoke(new Action(() =>
+                        {
+                            prg1.Value = 0;
+                            prg1.Maximum = generatedFiles.Count;
+                            prg1.Minimum = 0;
+                            prg1.Visible = true;
+                            statusInfo.Text = "Adding files to upload queue... ";
+                        }));
+ 
                         foreach (var item in generatedFiles)
                         {
                             var fl = new System.Net.Http.ByteArrayContent(System.IO.File.ReadAllBytes(item.LocalPath));
@@ -1058,9 +1066,16 @@ namespace NFTGen
                             //{
                             //    break;
                             //}
+                            this.Invoke(new Action(() =>
+                            {
+                                prg1.Value += 1;
+                            }));
                         }
 
                     }, metadata);
+
+
+                    statusInfo.Text = "Uploading files to IPFS and pining with Pinata... ";
 
                     if (response.IsSuccess)
                     {
@@ -1086,6 +1101,7 @@ namespace NFTGen
                     {
                         statusInfo.Text = $"Error: {response.Error}";
                     }
+                    prg1.Visible = false;
                 }
                 catch (Exception ex)
                 {
