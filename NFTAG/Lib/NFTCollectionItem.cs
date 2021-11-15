@@ -153,12 +153,17 @@ namespace NFTGen.Lib
                         images.Add(trait.Value.LocalPath);
                         cancellationToken.ThrowIfCancellationRequested();
                     }
+                    //apply resize to each layer
+                    foreach (var item in images)
+                    {
+                        item.Resize(proj.Settings.OutputSize.Width, proj.Settings.OutputSize.Height);
+                    }
 
                     using (var res = images.Merge())
                     {
                         res.VirtualPixelMethod = ImageMagick.VirtualPixelMethod.Transparent;
                         res.FilterType = proj.Settings.GetMagickResizeAlgorithm();
-                        res.Resize(proj.Settings.OutputSize.Width, proj.Settings.OutputSize.Height);
+                       // res.Resize(proj.Settings.OutputSize.Width, proj.Settings.OutputSize.Height);
 
                         //path to generated image
                         this.LocalPath = System.IO.Path.Combine(proj.Settings.GetOutputPath(proj), this.FileName + ".png");
