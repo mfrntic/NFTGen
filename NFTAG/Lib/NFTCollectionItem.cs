@@ -41,6 +41,7 @@ namespace NFTGen.Lib
             get
             {
                 string fn = $"{TokenID.ToString("0000")}_";
+                //string fn = "";
                 foreach (KeyValuePair<string, ProjectLayer> item in Traits)
                 {
                     fn += $"{item.Value.ID}_";
@@ -63,6 +64,17 @@ namespace NFTGen.Lib
 
         public Dictionary<string, ProjectLayer> Traits { get; set; }
 
+        public string GetLayersString(string id)
+        {
+
+            var fn = System.IO.Path.GetFileNameWithoutExtension(this.FileName);
+            var index = fn.IndexOf("_");
+            if (index > -1) {
+                return $"{fn.Substring(index, fn.Length - index)}_{id}";
+            }
+            return $"{fn}_{id}".TrimEnd('_');
+
+        }
 
         public static List<NFTCollectionItem> CreateCollection(Project proj)
         {
@@ -90,6 +102,13 @@ namespace NFTGen.Lib
                 }
             }
 
+            //random
+            Random rng = new Random();
+            if (proj.Settings.PredictableShuffle)
+            {
+                rng = new Random(proj.Settings.ShuffleSeed);
+            }
+ 
             //traverse all trait groups
             foreach (var group in proj.Overlays.Where(a => a.IsGroup))
             {
@@ -97,25 +116,24 @@ namespace NFTGen.Lib
                 //fill overlays for group
                 foreach (var layer in group.Overlays.Where(a => !a.IsGroup))
                 {
-                    Random rng = new Random();
-                    if (proj.Settings.PredictableShuffle)
-                    {
-                        rng = new Random(proj.Settings.ShuffleSeed);
-                    }
 
                     var temp_fls = files
-                        .Where(x => !x.Traits.ContainsKey(group.ID))
-                        .OrderBy(a => rng.Next()).ToList(); //shuffle
+                       .Where(x => !x.Traits.ContainsKey(group.ID))
+                       .OrderBy(a => rng.Next()).ToList(); //shuffle
 
                     for (int j = 0; j < layer.Rarity; j++)
                     {
-                        temp_fls[j].Traits.Add(group.ID, layer);
+                        if (temp_fls.Count > j) //&& !files.Exists(y => y.FileName.Contains(temp_fls[j].GetLayersString(layer.ID)))
+                        {
+                            temp_fls[j].Traits.Add(group.ID, layer);
+                        }
                     }
                 }
             }
 
             return files;
         }
+
 
 
         public void GenerateImage(Project proj)
@@ -163,7 +181,7 @@ namespace NFTGen.Lib
                     {
                         res.VirtualPixelMethod = ImageMagick.VirtualPixelMethod.Transparent;
                         res.FilterType = proj.Settings.GetMagickResizeAlgorithm();
-                       // res.Resize(proj.Settings.OutputSize.Width, proj.Settings.OutputSize.Height);
+                        // res.Resize(proj.Settings.OutputSize.Width, proj.Settings.OutputSize.Height);
 
                         //path to generated image
                         this.LocalPath = System.IO.Path.Combine(proj.Settings.GetOutputPath(proj), this.FileName + ".png");
