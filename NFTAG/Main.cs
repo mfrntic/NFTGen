@@ -890,7 +890,10 @@ namespace NFTGen
                 var finalJSONFile = System.IO.Path.Combine(outputPath, $"{CurrentProject.ProjectName}_db.json");
                 statusInfo.Text = $"Saving final JSON file [{finalJSONFile}]...";
 
-                var json = Newtonsoft.Json.JsonConvert.SerializeObject(generatedFiles, Newtonsoft.Json.Formatting.Indented);
+                Lib.NFTCollectionProject nftProject = new Lib.NFTCollectionProject(CurrentProject.ProjectName);
+                nftProject.Tokens = generatedFiles;
+
+                var json = nftProject.ToJSON();
 
                 CurrentProject.LastGeneratedJSON = finalJSONFile;
 
@@ -898,6 +901,7 @@ namespace NFTGen
                 {
                     System.IO.File.WriteAllText(finalJSONFile, json);
                 });
+
                 var style = "<style>body{ background-color: 'black'; font-family: 'Courier New'; font-size: '11pt'; color: 'white'; } .key{ color: 'CornflowerBlue'; } .string {color: 'Lime'} .number { color: 'Yellow'; } .boolean { color: 'magenta' } .null { color: 'gray'; }</style>";
                 webBrowser2.DocumentText = style + json.SyntaxHighlightJson();
                 webBrowser2.Tag = json;
@@ -970,7 +974,9 @@ namespace NFTGen
 
                 tabControl1_SelectedIndexChanged(null, null);
                 //load
-                generatedFiles = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Lib.NFTCollectionItem>>(json);
+                var proj = Lib.NFTCollectionProject.FromJSON(json);
+
+                generatedFiles = proj.Tokens;
                 outputGrid.DataSource = generatedFiles;
 
             }
@@ -1089,7 +1095,10 @@ namespace NFTGen
                         statusInfo.Text = $"Ipfs Hash: {hash}";
                         System.Diagnostics.Debug.WriteLine($"Ipfs Hash: {hash}");
 
-                        var json = Newtonsoft.Json.JsonConvert.SerializeObject(generatedFiles, Newtonsoft.Json.Formatting.Indented);
+                        Lib.NFTCollectionProject nftProject = new Lib.NFTCollectionProject(CurrentProject.ProjectName);
+                        nftProject.Tokens = generatedFiles;
+
+                        var json = nftProject.ToJSON();
                         System.IO.File.WriteAllText(CurrentProject.LastGeneratedJSON, json);
                         var style = "<style>body{ background-color: 'black'; font-family: 'Courier New'; font-size: '11pt'; color: 'white'; } .key{ color: 'CornflowerBlue'; } .string {color: 'Lime'} .number { color: 'Yellow'; } .boolean { color: 'magenta' } .null { color: 'gray'; }</style>";
                         webBrowser2.DocumentText = style + json.SyntaxHighlightJson();

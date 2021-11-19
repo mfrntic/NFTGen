@@ -19,6 +19,8 @@ namespace NFTGen.Lib
         public string IPFSHash { get; set; }
         public bool IsIPFSWrappedFolder { get; set; }
 
+        public string Hash { get; set; }
+
         public string GetIPFSHttpURL()
         {
             if (!string.IsNullOrEmpty(IPFSHash))
@@ -139,6 +141,15 @@ namespace NFTGen.Lib
                 res.Write(this.LocalPath);
             }
 
+            //compute hash
+            using (System.IO.FileStream stream = System.IO.File.OpenRead(this.LocalPath))
+            {
+                var sha = new System.Security.Cryptography.SHA256Managed();
+                byte[] checksum = sha.ComputeHash(stream);
+                Hash = BitConverter.ToString(checksum).Replace("-", String.Empty);
+            }
+            
+
         }
 
         public async Task GenerateImageAsync(Project proj, CancellationToken cancellationToken)
@@ -172,6 +183,13 @@ namespace NFTGen.Lib
                         res.Write(this.LocalPath);
                     }
 
+                    //compute hash
+                    using (System.IO.FileStream stream = System.IO.File.OpenRead(this.LocalPath))
+                    {
+                        var sha = new System.Security.Cryptography.SHA256Managed();
+                        byte[] checksum = sha.ComputeHash(stream);
+                        Hash = BitConverter.ToString(checksum).Replace("-", String.Empty);
+                    }
                 }
                 catch
                 {
