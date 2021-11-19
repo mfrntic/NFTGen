@@ -324,7 +324,7 @@ namespace NFTGen
             }
             catch (Exception ex)
             {
-                MessageBox.Show("File Corrupted", "File load error. Check if it is compatible with NFTGen!\n" + ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("File load error. Check if it is compatible with NFTGen!\n" + ex.Message,"File Corrupted",  MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
