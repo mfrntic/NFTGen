@@ -560,6 +560,7 @@ namespace NFTGen
             this.treeListColumn2.MaxWidth = 100;
             this.treeListColumn2.Name = "treeListColumn2";
             this.treeListColumn2.OptionsColumn.AllowEdit = false;
+            this.treeListColumn2.RowFooterSummary = DevExpress.XtraTreeList.SummaryItemType.Count;
             this.treeListColumn2.Visible = true;
             this.treeListColumn2.VisibleIndex = 1;
             // 
