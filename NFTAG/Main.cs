@@ -1,15 +1,12 @@
 ﻿using DevExpress.XtraBars.Ribbon;
 using DevExpress.XtraEditors;
 using DevExpress.XtraTreeList.Nodes;
-using Pinata.Client;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -26,32 +23,6 @@ namespace NFTGen
             CurrentProject = new Lib.Project();
             txtTotalItems.Text = this.CurrentProject.TotalItems.ToString();
         }
-
-
-        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (tabControl1.SelectedIndex == 3)
-            {
-                //loading project json
-                statusInfo.Text = "Loading project JSON...";
-                FillProjectStructure();
-                var style = "<style>body{ background-color: 'black'; font-family: 'Courier New'; font-size: '11pt'; color: 'white'; } .key{ color: 'CornflowerBlue'; } .string {color: 'Lime'} .number { color: 'Yellow'; } .boolean { color: 'magenta' } .null { color: 'gray'; }</style>";
-                webBrowser1.DocumentText = style + CurrentProject.ToJSON().SyntaxHighlightJson();
-                statusInfo.Text = "Ready";
-            }
-            else if (tabControl1.SelectedIndex == 4)
-            {
-                if (tabControl1.TabPages[4].Tag == null)
-                {
-                    var json = webBrowser2.Tag.ToString();
-                    var style = "<style>body{ background-color: 'black'; font-family: 'Courier New'; font-size: '11pt'; color: 'white'; } .key{ color: 'CornflowerBlue'; } .string {color: 'Lime'} .number { color: 'Yellow'; } .boolean { color: 'magenta' } .null { color: 'gray'; }</style>";
-                    tabControl1.TabPages[4].Tag = style + json.SyntaxHighlightJson();
-                    webBrowser2.DocumentText = tabControl1.TabPages[4].Tag.ToString();
-                }
-                statusInfo.Text = "Ready";
-            }
-        }
-
 
         #region ADD FOLDER TO TREEVIEW (recursion)
 
@@ -170,12 +141,12 @@ namespace NFTGen
             FillProjectStructure();
             if (string.IsNullOrEmpty(this.CurrentProject.ProjectName))
             {
-                this.CurrentProject.ProjectName = System.IO.Path.GetFileName(fileName);
+                this.CurrentProject.ProjectName = Path.GetFileName(fileName);
             }
 
-            System.IO.File.WriteAllText(fileName, CurrentProject.ToJSON());
+            File.WriteAllText(fileName, CurrentProject.ToJSON());
 
-            this.Text = $"NFTGen :: { this.CurrentProject.ProjectName}";
+            this.Text = $"{ this.CurrentProject.ProjectName}";
 
             statusInfo.Text = "Project is saved to disk";
 
@@ -185,7 +156,7 @@ namespace NFTGen
         {
             //set project name
             this.CurrentProject.ProjectName = XtraInputBox.Show("Set project name", "Project Name", "");
-            this.Text = $"NFTGen :: { this.CurrentProject.ProjectName}";
+            this.Text = $"{ this.CurrentProject.ProjectName}";
         }
 
         private void mnuExit_Click(object sender, EventArgs e)
@@ -214,12 +185,10 @@ namespace NFTGen
 
         private void CreateProject()
         {
-            //new project
-            this.Text = $"NFTGen :: { this.CurrentProject.ProjectName}";
+            this.Text = $"{ this.CurrentProject.ProjectName}";
             treeView1.Nodes.Clear();
             tlRT.Nodes.Clear();
             gallery1.Gallery.Groups.Clear();
-            webBrowser2.Tag = webBrowser2.DocumentText = webBrowser1.DocumentText = "";
             txtTotalItems.Text = this.CurrentProject.TotalItems.ToString();
             statusInfo.Text = "New project is created";
         }
@@ -305,7 +274,7 @@ namespace NFTGen
                     LoadGenerated(CurrentProject.LastGeneratedJSON);
 
                     txtTotalItems.Text = this.CurrentProject.TotalItems.ToString();
-                    this.Text = $"NFTGen :: { this.CurrentProject.ProjectName}";
+                    this.Text = $"{ this.CurrentProject.ProjectName}";
 
                     if (treeView1.Nodes.Count > 0)
                     {
@@ -331,9 +300,6 @@ namespace NFTGen
                 this.Cursor = Cursors.Default;
             }
         }
-
-
-
 
         private void mnuProjectSettings_Click(object sender, EventArgs e)
         {
@@ -361,21 +327,17 @@ namespace NFTGen
         //action after treeview select
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            //Odabir foldera u treeview kontroli
-            //omogući/onemogući gumbe
             btnAddFile.Enabled = btnUp.Enabled = btnDown.Enabled = btnRemoveFolder.Enabled = e.Node != null;
-            //očisti galeriju
             gallery1.Gallery.Groups.Clear();
 
             Lib.ProjectLayer lay = e.Node.Tag as Lib.ProjectLayer;
 
             pgProjLay.SelectedObject = lay;
 
-            if (lay.IsGroup) //ako je folder prikaži galeriju
+            if (lay.IsGroup)
             {
                 pnlImageHolder.Visible = false;
                 gallery1.Visible = true;
-                //load images
                 GalleryItemGroup group = new GalleryItemGroup();
                 group.Caption = lay.Name;
 
@@ -400,12 +362,12 @@ namespace NFTGen
                     }
                 }
             }
-            else //ako je file prikaži sliku
+            else
             {
                 pnlImageHolder.Visible = true;
                 gallery1.Visible = false;
                 Lib.ProjectLayer overlay = e.Node.Tag as Lib.ProjectLayer;
-                if (System.IO.File.Exists(overlay.LocalPath))
+                if (File.Exists(overlay.LocalPath))
                 {
                     picPrev.Image = Image.FromFile(overlay.LocalPath);
                 }
@@ -738,7 +700,7 @@ namespace NFTGen
                 {
                     statusInfo.Text = "Deleting existing files in the output folder...";
 
-                    var delFiles = System.IO.Directory.GetFileSystemEntries(outputPath);
+                    var delFiles = Directory.GetFileSystemEntries(outputPath);
 
                     //delete from output folder
                     this.Invoke(new Action(() =>
@@ -750,18 +712,18 @@ namespace NFTGen
                     }));
                     foreach (var delfl in delFiles)
                     {
-                        var attr = System.IO.File.GetAttributes(delfl);
-                        if ((attr & System.IO.FileAttributes.Directory) == System.IO.FileAttributes.Directory)
+                        var attr = File.GetAttributes(delfl);
+                        if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
                         {
                             //dir
-                            System.IO.Directory.Delete(delfl, true);
+                            Directory.Delete(delfl, true);
                         }
                         else
                         {
                             try
                             {
                                 //file
-                                System.IO.File.Delete(delfl);
+                                File.Delete(delfl);
 
                             }
                             catch (Exception ex)
@@ -775,7 +737,7 @@ namespace NFTGen
                             prg1.Increment(1);
                         }));
                     }
-                    delFiles = System.IO.Directory.GetFileSystemEntries(outputPath);
+                    delFiles = Directory.GetFileSystemEntries(outputPath);
                 });
                 //this.Cursor = Cursors.Default;
             }
@@ -787,6 +749,33 @@ namespace NFTGen
             btnGenerateCancel.Enabled = true;
             //create collection with empty nft items (not blended yet!)
             allFiles = Lib.NFTCollectionItem.CreateCollection(CurrentProject);
+
+            metaList = new List<Lib.NFTMetaCollectionItem>();
+            await Task.Run(() =>
+            {
+                foreach (Lib.NFTCollectionItem item in allFiles)
+                {
+                    Lib.NFTMetaCollectionItem t = new Lib.NFTMetaCollectionItem
+                    {
+                        tokenId = item.TokenID,
+                        name = item.TokenID.ToString(),
+                        description = "description todo",
+                        image = "ipfs://base/" + item.TokenID.ToString() + ".png",
+                        attributes = new List<Lib.Trait>()
+                    };
+
+                    foreach (var trait in item.Traits)
+                    {
+                        t.attributes.Add(new Lib.Trait
+                        {
+                            trait_type = trait.Key,
+                            value = trait.Value.Name
+                        });
+                    }
+
+                    metaList.Add(t);
+                }
+            });
 
             prg1.Minimum = 0;
             prg1.Maximum = allFiles.Count;
@@ -838,6 +827,7 @@ namespace NFTGen
 
         public List<Lib.NFTCollectionItem> allFiles;
         public List<Lib.NFTCollectionItem> generatedFiles;
+        public List<Lib.NFTMetaCollectionItem> metaList;
         CancellationTokenSource cts = null;
 
         private async void timerGen_Tick(object sender, EventArgs e)
@@ -879,7 +869,6 @@ namespace NFTGen
 
             if (processed.Length == CurrentProject.TotalItems)
             {
-                //GOTOVO!
                 prg1.Visible = false;
                 btnGenerate.Enabled = true;
                 btnGenerateCancel.Enabled = false;
@@ -887,7 +876,7 @@ namespace NFTGen
                 lblGenProgress.Text = "";
 
                 //save final json
-                var finalJSONFile = System.IO.Path.Combine(outputPath, $"{CurrentProject.ProjectName}_db.json");
+                var finalJSONFile = Path.Combine(outputPath, $"{CurrentProject.ProjectName}_db.json");
                 statusInfo.Text = $"Saving final JSON file [{finalJSONFile}]...";
 
                 Lib.NFTCollectionProject nftProject = new Lib.NFTCollectionProject(CurrentProject.ProjectName);
@@ -899,12 +888,14 @@ namespace NFTGen
 
                 await Task.Run(() =>
                 {
-                    System.IO.File.WriteAllText(finalJSONFile, json);
+                    File.WriteAllText(finalJSONFile, json);
+                    foreach (var tokenMeta in metaList)
+                    {
+                        var tokenMetaJsonString = Newtonsoft.Json.JsonConvert.SerializeObject(tokenMeta, Newtonsoft.Json.Formatting.Indented);
+                        File.WriteAllText(Path.Combine(outputPath, $"/meta/{tokenMeta.tokenId}.json"), tokenMetaJsonString);
+                    }
                 });
 
-                var style = "<style>body{ background-color: 'black'; font-family: 'Courier New'; font-size: '11pt'; color: 'white'; } .key{ color: 'CornflowerBlue'; } .string {color: 'Lime'} .number { color: 'Yellow'; } .boolean { color: 'magenta' } .null { color: 'gray'; }</style>";
-                webBrowser2.DocumentText = style + json.SyntaxHighlightJson();
-                webBrowser2.Tag = json;
                 statusInfo.Text = "Ready";
             }
         }
@@ -969,42 +960,11 @@ namespace NFTGen
             if (!string.IsNullOrEmpty(path))
             {
                 var json = System.IO.File.ReadAllText(path);
-                webBrowser2.Tag = json;
-                tabControl1.TabPages[4].Tag = null;
-
-                tabControl1_SelectedIndexChanged(null, null);
-                //load
                 var proj = Lib.NFTCollectionProject.FromJSON(json);
 
                 generatedFiles = proj.Tokens;
                 outputGrid.DataSource = generatedFiles;
 
-            }
-        }
-
-
-        private void btnCopyJSONDB_Click(object sender, EventArgs e)
-        {
-            if (webBrowser2.Tag != null)
-            {
-                //copy json db
-                string json = webBrowser2.Tag.ToString();
-                Clipboard.SetText(json, TextDataFormat.UnicodeText);
-                statusInfo.Text = "Generated JSON is copied to clipboard...";
-            }
-        }
-
-        private void btnSaveJSONDBAs_Click(object sender, EventArgs e)
-        {
-            if (webBrowser2.Tag != null)
-            {
-                dlgSaveJSON.FileName = CurrentProject.ProjectName;
-                if (dlgSaveJSON.ShowDialog(this) == DialogResult.OK)
-                {
-                    string json = webBrowser2.Tag.ToString();
-                    System.IO.File.WriteAllText(dlgSaveJSON.FileName, json);
-                    statusInfo.Text = $"File saved [{dlgSaveJSON.FileName}]";
-                }
             }
         }
 
@@ -1014,115 +974,6 @@ namespace NFTGen
         {
             //show new project dialog on first load
             mnuNewProject_Click(null, null);
-
         }
-        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            AboutForm about = new AboutForm();
-            about.ShowDialog(this);
-        }
-
-        private async void btnUploadIPFS_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(CurrentProject.Settings.APIKey) || string.IsNullOrEmpty(CurrentProject.Settings.APISecret))
-            {
-                MessageBox.Show("Pinata API Credentials missing!", "You are misssing Pinata API Credentials (see pinata.cloud). Please enter it in the project settings.", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            if (generatedFiles.Count > 0)
-            {
-                this.Cursor = Cursors.WaitCursor;
-                try
-                {
-
-                    var config = new Config
-                    {
-                        ApiKey = CurrentProject.Settings.APIKey,
-                        ApiSecret = CurrentProject.Settings.APISecret
-                    };
-
-                    var metadata = new PinataMetadata();
-                    metadata.Name = CurrentProject.ProjectName.ToLower();
-
-                    var client = new PinataClient(config);
-
-                    var response = await client.Pinning.PinFileToIpfsAsync(content =>
-                    {
-                        this.Invoke(new Action(() =>
-                        {
-                            prg1.Value = 0;
-                            prg1.Maximum = generatedFiles.Count;
-                            prg1.Minimum = 0;
-                            prg1.Visible = true;
-                            statusInfo.Text = "Adding files to upload queue... ";
-                        }));
- 
-                        foreach (var item in generatedFiles)
-                        {
-                            var fl = new System.Net.Http.ByteArrayContent(System.IO.File.ReadAllBytes(item.LocalPath));
-                            fl.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("image/png");
-                            var fldata = new
-                            {
-                                filepath = $"{metadata.Name}/{item.TokenID}"
-                            };
-                            content.AddPinataFile(fl, fldata.filepath);
-                            //i++;
-                            //if (i >= 10)
-                            //{
-                            //    break;
-                            //}
-                            this.Invoke(new Action(() =>
-                            {
-                                prg1.Value += 1;
-                            }));
-                        }
-
-                    }, metadata);
-
-
-                    statusInfo.Text = "Uploading files to IPFS and pining with Pinata... ";
-
-                    if (response.IsSuccess)
-                    {
-                        //File uploaded to Pinata Cloud and can be accessed on IPFS!
-                        var hash = response.IpfsHash; // QmR9HwzakHVr67HFzzgJHoRjwzTTt4wtD6KU4NFe2ArYuj
-                        foreach (var item in generatedFiles)
-                        {
-                            item.IsIPFSWrappedFolder = true;
-                            item.IPFSHash = hash;
-                        }
-                        statusInfo.Text = $"Ipfs Hash: {hash}";
-                        System.Diagnostics.Debug.WriteLine($"Ipfs Hash: {hash}");
-
-                        Lib.NFTCollectionProject nftProject = new Lib.NFTCollectionProject(CurrentProject.ProjectName);
-                        nftProject.Tokens = generatedFiles;
-
-                        var json = nftProject.ToJSON();
-                        System.IO.File.WriteAllText(CurrentProject.LastGeneratedJSON, json);
-                        var style = "<style>body{ background-color: 'black'; font-family: 'Courier New'; font-size: '11pt'; color: 'white'; } .key{ color: 'CornflowerBlue'; } .string {color: 'Lime'} .number { color: 'Yellow'; } .boolean { color: 'magenta' } .null { color: 'gray'; }</style>";
-                        webBrowser2.DocumentText = style + json.SyntaxHighlightJson();
-                        webBrowser2.Tag = json;
-                        tabControl1.TabPages[4].Tag = null;
-                        statusInfo.Text = "Ready";
-                    }
-                    else
-                    {
-                        statusInfo.Text = $"Error: {response.Error}";
-                    }
-                    prg1.Visible = false;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error!", ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                finally
-                {
-                    this.Cursor = Cursors.Default;
-                }
-            }
-        }
-
-
     }
 }

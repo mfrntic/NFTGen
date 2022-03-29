@@ -45,7 +45,6 @@ namespace NFTGen
             this.projectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSetProjectName = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuProjectSettings = new System.Windows.Forms.ToolStripMenuItem();
-            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.imlFolders = new System.Windows.Forms.ImageList(this.components);
@@ -97,15 +96,6 @@ namespace NFTGen
             this.txtSearch = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.btnUploadIPFS = new System.Windows.Forms.ToolStripButton();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
-            this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.webBrowser2 = new System.Windows.Forms.WebBrowser();
-            this.toolStrip5 = new System.Windows.Forms.ToolStrip();
-            this.btnLoadDBFromJSONFile = new System.Windows.Forms.ToolStripButton();
-            this.btnSaveJSONDBAs = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
-            this.btnCopyJSONDB = new System.Windows.Forms.ToolStripButton();
             this.folderBrowse = new System.Windows.Forms.FolderBrowserDialog();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.statusInfo = new System.Windows.Forms.ToolStripStatusLabel();
@@ -116,6 +106,7 @@ namespace NFTGen
             this.timerGen = new System.Windows.Forms.Timer(this.components);
             this.dlgLoadJSON = new System.Windows.Forms.OpenFileDialog();
             this.dlgSaveJSON = new System.Windows.Forms.SaveFileDialog();
+            this.miniToolStrip = new System.Windows.Forms.ToolStrip();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -137,9 +128,6 @@ namespace NFTGen
             ((System.ComponentModel.ISupportInitialize)(this.outputGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             this.toolStrip3.SuspendLayout();
-            this.tabPage3.SuspendLayout();
-            this.tabPage5.SuspendLayout();
-            this.toolStrip5.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -157,14 +145,13 @@ namespace NFTGen
             this.treeListColumn4.RowFooterSummary = DevExpress.XtraTreeList.SummaryItemType.Sum;
             this.treeListColumn4.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Decimal;
             this.treeListColumn4.Visible = true;
-            this.treeListColumn4.VisibleIndex = 3;
+            this.treeListColumn4.VisibleIndex = 1;
             // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.projectToolStripMenuItem,
-            this.helpToolStripMenuItem});
+            this.projectToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1157, 24);
@@ -245,13 +232,6 @@ namespace NFTGen
             this.mnuProjectSettings.Size = new System.Drawing.Size(174, 22);
             this.mnuProjectSettings.Text = "Project &Settings...";
             this.mnuProjectSettings.Click += new System.EventHandler(this.mnuProjectSettings_Click);
-            // 
-            // helpToolStripMenuItem
-            // 
-            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
-            this.helpToolStripMenuItem.Text = "&About";
-            this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
             // 
             // splitContainer1
             // 
@@ -386,15 +366,12 @@ namespace NFTGen
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage4);
-            this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(870, 687);
             this.tabControl1.TabIndex = 0;
-            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // tabPage1
             // 
@@ -562,7 +539,7 @@ namespace NFTGen
             this.treeListColumn2.OptionsColumn.AllowEdit = false;
             this.treeListColumn2.RowFooterSummary = DevExpress.XtraTreeList.SummaryItemType.Count;
             this.treeListColumn2.Visible = true;
-            this.treeListColumn2.VisibleIndex = 1;
+            this.treeListColumn2.VisibleIndex = 2;
             // 
             // treeListColumn3
             // 
@@ -573,7 +550,7 @@ namespace NFTGen
             this.treeListColumn3.Name = "treeListColumn3";
             this.treeListColumn3.RowFooterSummary = DevExpress.XtraTreeList.SummaryItemType.Sum;
             this.treeListColumn3.Visible = true;
-            this.treeListColumn3.VisibleIndex = 2;
+            this.treeListColumn3.VisibleIndex = 3;
             // 
             // repositoryItemSpinEdit1
             // 
@@ -582,6 +559,7 @@ namespace NFTGen
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.repositoryItemSpinEdit1.IsFloatValue = false;
             this.repositoryItemSpinEdit1.Mask.EditMask = "N00";
+            this.repositoryItemSpinEdit1.MaskSettings.Set("mask", "N00");
             this.repositoryItemSpinEdit1.Name = "repositoryItemSpinEdit1";
             // 
             // toolStrip2
@@ -657,6 +635,7 @@ namespace NFTGen
             this.gridColumn1,
             this.gridColumn2,
             this.gridColumn3});
+            this.gridView1.CustomizationFormBounds = new System.Drawing.Rectangle(944, 574, 264, 272);
             this.gridView1.GridControl = this.outputGrid;
             this.gridView1.Name = "gridView1";
             this.gridView1.OptionsBehavior.AlignGroupSummaryInGroupRow = DevExpress.Utils.DefaultBoolean.False;
@@ -678,6 +657,7 @@ namespace NFTGen
             this.gridColumn5.OptionsColumn.AllowEdit = false;
             this.gridColumn5.Visible = true;
             this.gridColumn5.VisibleIndex = 0;
+            this.gridColumn5.Width = 82;
             // 
             // gridColumn1
             // 
@@ -694,13 +674,7 @@ namespace NFTGen
             // 
             // gridColumn2
             // 
-            this.gridColumn2.Caption = "FileName";
-            this.gridColumn2.FieldName = "FileName";
             this.gridColumn2.Name = "gridColumn2";
-            this.gridColumn2.OptionsColumn.AllowEdit = false;
-            this.gridColumn2.Visible = true;
-            this.gridColumn2.VisibleIndex = 2;
-            this.gridColumn2.Width = 221;
             // 
             // gridColumn3
             // 
@@ -709,10 +683,10 @@ namespace NFTGen
             this.gridColumn3.Name = "gridColumn3";
             this.gridColumn3.OptionsColumn.AllowEdit = false;
             this.gridColumn3.Summary.AddRange(new DevExpress.XtraGrid.GridSummaryItem[] {
-            new DevExpress.XtraGrid.GridColumnSummaryItem(DevExpress.Data.SummaryItemType.Count, "FullName", "Ukupno datoteka: {0}")});
+            new DevExpress.XtraGrid.GridColumnSummaryItem(DevExpress.Data.SummaryItemType.Count, "FullName", "Number of images: {0}")});
             this.gridColumn3.Visible = true;
-            this.gridColumn3.VisibleIndex = 3;
-            this.gridColumn3.Width = 298;
+            this.gridColumn3.VisibleIndex = 2;
+            this.gridColumn3.Width = 373;
             // 
             // toolStrip3
             // 
@@ -798,101 +772,8 @@ namespace NFTGen
             // 
             // btnUploadIPFS
             // 
-            this.btnUploadIPFS.Image = ((System.Drawing.Image)(resources.GetObject("btnUploadIPFS.Image")));
-            this.btnUploadIPFS.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnUploadIPFS.Name = "btnUploadIPFS";
-            this.btnUploadIPFS.Size = new System.Drawing.Size(93, 22);
-            this.btnUploadIPFS.Text = "IPFS (Pinata)";
-            this.btnUploadIPFS.Click += new System.EventHandler(this.btnUploadIPFS_Click);
-            // 
-            // tabPage3
-            // 
-            this.tabPage3.Controls.Add(this.webBrowser1);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(862, 661);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Project JSON";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // webBrowser1
-            // 
-            this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webBrowser1.Location = new System.Drawing.Point(3, 3);
-            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(856, 655);
-            this.webBrowser1.TabIndex = 0;
-            // 
-            // tabPage5
-            // 
-            this.tabPage5.Controls.Add(this.webBrowser2);
-            this.tabPage5.Controls.Add(this.toolStrip5);
-            this.tabPage5.Location = new System.Drawing.Point(4, 22);
-            this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(862, 661);
-            this.tabPage5.TabIndex = 4;
-            this.tabPage5.Text = "Generated JSON";
-            this.tabPage5.UseVisualStyleBackColor = true;
-            // 
-            // webBrowser2
-            // 
-            this.webBrowser2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webBrowser2.Location = new System.Drawing.Point(3, 28);
-            this.webBrowser2.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowser2.Name = "webBrowser2";
-            this.webBrowser2.Size = new System.Drawing.Size(856, 630);
-            this.webBrowser2.TabIndex = 1;
-            // 
-            // toolStrip5
-            // 
-            this.toolStrip5.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.btnLoadDBFromJSONFile,
-            this.btnSaveJSONDBAs,
-            this.toolStripSeparator7,
-            this.btnCopyJSONDB});
-            this.toolStrip5.Location = new System.Drawing.Point(3, 3);
-            this.toolStrip5.Name = "toolStrip5";
-            this.toolStrip5.Size = new System.Drawing.Size(856, 25);
-            this.toolStrip5.TabIndex = 2;
-            this.toolStrip5.Text = "toolStrip5";
-            // 
-            // btnLoadDBFromJSONFile
-            // 
-            this.btnLoadDBFromJSONFile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnLoadDBFromJSONFile.Image = global::NFTGen.Properties.Resources.folder_page_icon;
-            this.btnLoadDBFromJSONFile.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnLoadDBFromJSONFile.Name = "btnLoadDBFromJSONFile";
-            this.btnLoadDBFromJSONFile.Size = new System.Drawing.Size(23, 22);
-            this.btnLoadDBFromJSONFile.Text = "Load from file";
-            this.btnLoadDBFromJSONFile.Click += new System.EventHandler(this.btnLoadDBFromJSONFile_Click);
-            // 
-            // btnSaveJSONDBAs
-            // 
-            this.btnSaveJSONDBAs.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnSaveJSONDBAs.Image = ((System.Drawing.Image)(resources.GetObject("btnSaveJSONDBAs.Image")));
-            this.btnSaveJSONDBAs.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnSaveJSONDBAs.Name = "btnSaveJSONDBAs";
-            this.btnSaveJSONDBAs.Size = new System.Drawing.Size(23, 22);
-            this.btnSaveJSONDBAs.Text = "Save As..";
-            this.btnSaveJSONDBAs.Click += new System.EventHandler(this.btnSaveJSONDBAs_Click);
-            // 
-            // toolStripSeparator7
-            // 
-            this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(6, 25);
-            // 
-            // btnCopyJSONDB
-            // 
-            this.btnCopyJSONDB.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnCopyJSONDB.Image = ((System.Drawing.Image)(resources.GetObject("btnCopyJSONDB.Image")));
-            this.btnCopyJSONDB.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnCopyJSONDB.Name = "btnCopyJSONDB";
-            this.btnCopyJSONDB.Size = new System.Drawing.Size(23, 22);
-            this.btnCopyJSONDB.Text = "Copy to Clipboard";
-            this.btnCopyJSONDB.Click += new System.EventHandler(this.btnCopyJSONDB_Click);
+            this.btnUploadIPFS.Size = new System.Drawing.Size(23, 22);
             // 
             // statusStrip1
             // 
@@ -950,6 +831,19 @@ namespace NFTGen
             this.dlgSaveJSON.Filter = "JSON (*.json)|*.json|All Files (*.*)|*.*";
             this.dlgSaveJSON.Title = "Save JSON";
             // 
+            // miniToolStrip
+            // 
+            this.miniToolStrip.AccessibleName = "New item selection";
+            this.miniToolStrip.AccessibleRole = System.Windows.Forms.AccessibleRole.ButtonDropDown;
+            this.miniToolStrip.AutoSize = false;
+            this.miniToolStrip.CanOverflow = false;
+            this.miniToolStrip.Dock = System.Windows.Forms.DockStyle.None;
+            this.miniToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.miniToolStrip.Location = new System.Drawing.Point(84, 3);
+            this.miniToolStrip.Name = "miniToolStrip";
+            this.miniToolStrip.Size = new System.Drawing.Size(856, 25);
+            this.miniToolStrip.TabIndex = 2;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -959,7 +853,6 @@ namespace NFTGen
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -995,11 +888,6 @@ namespace NFTGen
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             this.toolStrip3.ResumeLayout(false);
             this.toolStrip3.PerformLayout();
-            this.tabPage3.ResumeLayout(false);
-            this.tabPage5.ResumeLayout(false);
-            this.tabPage5.PerformLayout();
-            this.toolStrip5.ResumeLayout(false);
-            this.toolStrip5.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -1017,25 +905,16 @@ namespace NFTGen
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton btnAddFolder;
         private System.Windows.Forms.ToolStripButton btnRemoveFolder;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.FolderBrowserDialog folderBrowse;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel statusInfo;
         private System.Windows.Forms.ImageList imlFolders;
         private System.Windows.Forms.ToolStripButton btnUp;
         private System.Windows.Forms.ToolStripButton btnDown;
-        private DevExpress.XtraBars.Ribbon.GalleryControl gallery1;
-        private DevExpress.XtraBars.Ribbon.GalleryControlClient galleryControlClient1;
-        private DevExpress.XtraTreeList.TreeList tlRT;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn1;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn2;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn3;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn4;
-        private System.Windows.Forms.ToolStrip toolStrip2;
-        private System.Windows.Forms.ToolStripButton btnReloadRarityTable;
         private System.Windows.Forms.ToolStripMenuItem mnuNewProject;
         private System.Windows.Forms.ToolStripMenuItem mnuSaveProject;
         private System.Windows.Forms.ToolStripMenuItem mnuOpenProject;
@@ -1043,38 +922,18 @@ namespace NFTGen
         private System.Windows.Forms.SaveFileDialog dlgSave;
         private System.Windows.Forms.ToolStripMenuItem projectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem mnuSetProjectName;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
-        private System.Windows.Forms.ToolStripTextBox txtTotalItems;
         private System.Windows.Forms.PropertyGrid pgProjLay;
-        private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit repositoryItemSpinEdit1;
         private System.Windows.Forms.OpenFileDialog dlgOpen;
-        private System.Windows.Forms.WebBrowser webBrowser1;
-        private System.Windows.Forms.TabPage tabPage4;
-        private System.Windows.Forms.ToolStrip toolStrip3;
-        private System.Windows.Forms.ToolStripButton btnGenerate;
         private System.Windows.Forms.ToolStripButton btnAddFile;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.OpenFileDialog dlgAddFile;
         private System.Windows.Forms.Timer timerGen;
-        private System.Windows.Forms.ToolStripLabel lblGenProgress;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripProgressBar prg1;
-        private System.Windows.Forms.ToolStripLabel toolStripLabel2;
-        private System.Windows.Forms.ToolStripTextBox txtSearch;
-        private DevExpress.XtraGrid.GridControl outputGrid;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumn1;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumn2;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumn3;
         private System.Windows.Forms.ToolStripMenuItem mnuProjectSettings;
-        private System.Windows.Forms.ToolStripButton btnProjectSettings;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumn5;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
-        private System.Windows.Forms.TabPage tabPage5;
-        private System.Windows.Forms.WebBrowser webBrowser2;
-        private System.Windows.Forms.ToolStripButton btnGenerateCancel;
+        private System.Windows.Forms.OpenFileDialog dlgLoadJSON;
+        private System.Windows.Forms.SaveFileDialog dlgSaveJSON;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.Panel pnlImageHolder;
         private DevExpress.XtraEditors.PictureEdit picPrev;
         private System.Windows.Forms.ToolStrip toolStrip4;
@@ -1082,14 +941,34 @@ namespace NFTGen
         private System.Windows.Forms.ToolStripButton btnZoomOut;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripButton btnPicOriginal;
-        private System.Windows.Forms.ToolStrip toolStrip5;
-        private System.Windows.Forms.ToolStripButton btnLoadDBFromJSONFile;
-        private System.Windows.Forms.OpenFileDialog dlgLoadJSON;
-        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
-        private System.Windows.Forms.ToolStripButton btnSaveJSONDBAs;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
-        private System.Windows.Forms.ToolStripButton btnCopyJSONDB;
-        private System.Windows.Forms.SaveFileDialog dlgSaveJSON;
+        private DevExpress.XtraBars.Ribbon.GalleryControl gallery1;
+        private DevExpress.XtraBars.Ribbon.GalleryControlClient galleryControlClient1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private DevExpress.XtraTreeList.TreeList tlRT;
+        private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit repositoryItemSpinEdit1;
+        private System.Windows.Forms.ToolStrip toolStrip2;
+        private System.Windows.Forms.ToolStripButton btnReloadRarityTable;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
+        private System.Windows.Forms.ToolStripTextBox txtTotalItems;
+        private System.Windows.Forms.TabPage tabPage4;
+        private DevExpress.XtraGrid.GridControl outputGrid;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn5;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn1;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn2;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn3;
+        private System.Windows.Forms.ToolStrip toolStrip3;
+        private System.Windows.Forms.ToolStripButton btnGenerate;
+        private System.Windows.Forms.ToolStripButton btnGenerateCancel;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripLabel lblGenProgress;
+        private System.Windows.Forms.ToolStripButton btnProjectSettings;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel2;
+        private System.Windows.Forms.ToolStripTextBox txtSearch;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripButton btnUploadIPFS;
+        private System.Windows.Forms.ToolStrip miniToolStrip;
     }
 }
