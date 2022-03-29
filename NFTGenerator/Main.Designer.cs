@@ -59,12 +59,7 @@ namespace NFTGenerator
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.pnlImageHolder = new System.Windows.Forms.Panel();
-            this.picPrev = new DevExpress.XtraEditors.PictureEdit();
-            this.toolStrip4 = new System.Windows.Forms.ToolStrip();
-            this.btnZoomIn = new System.Windows.Forms.ToolStripButton();
-            this.btnZoomOut = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
-            this.btnPicOriginal = new System.Windows.Forms.ToolStripButton();
+            this.pictureBox = new System.Windows.Forms.PictureBox();
             this.gallery1 = new DevExpress.XtraBars.Ribbon.GalleryControl();
             this.galleryControlClient1 = new DevExpress.XtraBars.Ribbon.GalleryControlClient();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -96,6 +91,11 @@ namespace NFTGenerator
             this.txtSearch = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.btnUploadIPFS = new System.Windows.Forms.ToolStripButton();
+            this.toolStrip4 = new System.Windows.Forms.ToolStrip();
+            this.btnZoomIn = new System.Windows.Forms.ToolStripButton();
+            this.btnZoomOut = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnPicOriginal = new System.Windows.Forms.ToolStripButton();
             this.folderBrowse = new System.Windows.Forms.FolderBrowserDialog();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.statusInfo = new System.Windows.Forms.ToolStripStatusLabel();
@@ -116,8 +116,7 @@ namespace NFTGenerator
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.pnlImageHolder.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picPrev.Properties)).BeginInit();
-            this.toolStrip4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gallery1)).BeginInit();
             this.gallery1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -221,15 +220,13 @@ namespace NFTGenerator
             // mnuSetProjectName
             // 
             this.mnuSetProjectName.Name = "mnuSetProjectName";
-            this.mnuSetProjectName.Size = new System.Drawing.Size(174, 22);
-            this.mnuSetProjectName.Text = "Set Project &Name...";
-            this.mnuSetProjectName.Click += new System.EventHandler(this.mnuSetProjectName_Click);
+            this.mnuSetProjectName.Size = new System.Drawing.Size(165, 22);
             // 
             // mnuProjectSettings
             // 
             this.mnuProjectSettings.Image = global::NFTGenerator.Properties.Resources.settings_icon1;
             this.mnuProjectSettings.Name = "mnuProjectSettings";
-            this.mnuProjectSettings.Size = new System.Drawing.Size(174, 22);
+            this.mnuProjectSettings.Size = new System.Drawing.Size(165, 22);
             this.mnuProjectSettings.Text = "Project &Settings...";
             this.mnuProjectSettings.Click += new System.EventHandler(this.mnuProjectSettings_Click);
             // 
@@ -387,8 +384,7 @@ namespace NFTGenerator
             // 
             // pnlImageHolder
             // 
-            this.pnlImageHolder.Controls.Add(this.picPrev);
-            this.pnlImageHolder.Controls.Add(this.toolStrip4);
+            this.pnlImageHolder.Controls.Add(this.pictureBox);
             this.pnlImageHolder.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlImageHolder.Location = new System.Drawing.Point(3, 3);
             this.pnlImageHolder.Name = "pnlImageHolder";
@@ -396,66 +392,16 @@ namespace NFTGenerator
             this.pnlImageHolder.TabIndex = 2;
             this.pnlImageHolder.Visible = false;
             // 
-            // picPrev
+            // pictureBox
             // 
-            this.picPrev.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picPrev.Location = new System.Drawing.Point(0, 25);
-            this.picPrev.Name = "picPrev";
-            this.picPrev.Properties.ReadOnly = true;
-            this.picPrev.Properties.ShowEditMenuItem = DevExpress.Utils.DefaultBoolean.False;
-            this.picPrev.Properties.ShowMenu = false;
-            this.picPrev.Properties.ShowZoomSubMenu = DevExpress.Utils.DefaultBoolean.True;
-            this.picPrev.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Squeeze;
-            this.picPrev.Size = new System.Drawing.Size(856, 630);
-            this.picPrev.TabIndex = 3;
-            // 
-            // toolStrip4
-            // 
-            this.toolStrip4.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.btnZoomIn,
-            this.btnZoomOut,
-            this.toolStripSeparator6,
-            this.btnPicOriginal});
-            this.toolStrip4.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip4.Name = "toolStrip4";
-            this.toolStrip4.Size = new System.Drawing.Size(856, 25);
-            this.toolStrip4.TabIndex = 2;
-            this.toolStrip4.Text = "toolStrip4";
-            // 
-            // btnZoomIn
-            // 
-            this.btnZoomIn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnZoomIn.Image = ((System.Drawing.Image)(resources.GetObject("btnZoomIn.Image")));
-            this.btnZoomIn.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnZoomIn.Name = "btnZoomIn";
-            this.btnZoomIn.Size = new System.Drawing.Size(23, 22);
-            this.btnZoomIn.Text = "Zoom In";
-            this.btnZoomIn.Click += new System.EventHandler(this.btnZoomIn_Click);
-            // 
-            // btnZoomOut
-            // 
-            this.btnZoomOut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnZoomOut.Image = ((System.Drawing.Image)(resources.GetObject("btnZoomOut.Image")));
-            this.btnZoomOut.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnZoomOut.Name = "btnZoomOut";
-            this.btnZoomOut.Size = new System.Drawing.Size(23, 22);
-            this.btnZoomOut.Text = "Zoom Out";
-            this.btnZoomOut.Click += new System.EventHandler(this.btnZoomOut_Click);
-            // 
-            // toolStripSeparator6
-            // 
-            this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 25);
-            // 
-            // btnPicOriginal
-            // 
-            this.btnPicOriginal.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnPicOriginal.Image = ((System.Drawing.Image)(resources.GetObject("btnPicOriginal.Image")));
-            this.btnPicOriginal.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnPicOriginal.Name = "btnPicOriginal";
-            this.btnPicOriginal.Size = new System.Drawing.Size(23, 22);
-            this.btnPicOriginal.Text = "Original size / Fit if bigger";
-            this.btnPicOriginal.Click += new System.EventHandler(this.btnPicOriginal_Click);
+            this.pictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox.Enabled = false;
+            this.pictureBox.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox.Name = "pictureBox";
+            this.pictureBox.Size = new System.Drawing.Size(856, 655);
+            this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox.TabIndex = 3;
+            this.pictureBox.TabStop = false;
             // 
             // gallery1
             // 
@@ -558,7 +504,6 @@ namespace NFTGenerator
             this.repositoryItemSpinEdit1.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.repositoryItemSpinEdit1.IsFloatValue = false;
-            this.repositoryItemSpinEdit1.Mask.EditMask = "N00";
             this.repositoryItemSpinEdit1.MaskSettings.Set("mask", "N00");
             this.repositoryItemSpinEdit1.Name = "repositoryItemSpinEdit1";
             // 
@@ -775,6 +720,33 @@ namespace NFTGenerator
             this.btnUploadIPFS.Name = "btnUploadIPFS";
             this.btnUploadIPFS.Size = new System.Drawing.Size(23, 22);
             // 
+            // toolStrip4
+            // 
+            this.toolStrip4.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip4.Name = "toolStrip4";
+            this.toolStrip4.Size = new System.Drawing.Size(100, 25);
+            this.toolStrip4.TabIndex = 0;
+            // 
+            // btnZoomIn
+            // 
+            this.btnZoomIn.Name = "btnZoomIn";
+            this.btnZoomIn.Size = new System.Drawing.Size(23, 23);
+            // 
+            // btnZoomOut
+            // 
+            this.btnZoomOut.Name = "btnZoomOut";
+            this.btnZoomOut.Size = new System.Drawing.Size(23, 23);
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 6);
+            // 
+            // btnPicOriginal
+            // 
+            this.btnPicOriginal.Name = "btnPicOriginal";
+            this.btnPicOriginal.Size = new System.Drawing.Size(23, 23);
+            // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -871,9 +843,7 @@ namespace NFTGenerator
             this.tabPage1.ResumeLayout(false);
             this.pnlImageHolder.ResumeLayout(false);
             this.pnlImageHolder.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picPrev.Properties)).EndInit();
-            this.toolStrip4.ResumeLayout(false);
-            this.toolStrip4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gallery1)).EndInit();
             this.gallery1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
@@ -935,7 +905,6 @@ namespace NFTGenerator
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.Panel pnlImageHolder;
-        private DevExpress.XtraEditors.PictureEdit picPrev;
         private System.Windows.Forms.ToolStrip toolStrip4;
         private System.Windows.Forms.ToolStripButton btnZoomIn;
         private System.Windows.Forms.ToolStripButton btnZoomOut;
@@ -970,5 +939,6 @@ namespace NFTGenerator
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripButton btnUploadIPFS;
         private System.Windows.Forms.ToolStrip miniToolStrip;
+        private System.Windows.Forms.PictureBox pictureBox;
     }
 }

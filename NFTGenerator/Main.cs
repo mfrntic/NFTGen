@@ -28,14 +28,14 @@ namespace NFTGenerator
 
         private void addNode(string fld, ref int numOfGroups, TreeNode parentNode = null)
         {
-            string[] dirs = System.IO.Directory.GetDirectories(fld);
+            string[] dirs = Directory.GetDirectories(fld);
             if (dirs.Length > 0)
             {
                 foreach (var dir in dirs)
                 {
                     TreeNode nd;
                     numOfGroups++;
-                    string folderName = System.IO.Path.GetFileName(dir);
+                    string folderName = Path.GetFileName(dir);
                     if (parentNode == null)
                     {
                         nd = treeView1.Nodes.Add(folderName);
@@ -58,7 +58,7 @@ namespace NFTGenerator
                     addNode(dir, ref numOfGroups, nd);
 
                     //add files
-                    string[] fls = System.IO.Directory.GetFiles(dir, "*.png");
+                    string[] fls = Directory.GetFiles(dir, "*.png");
                     int j = 0;
                     foreach (var fl in fls)
                     {
@@ -90,9 +90,6 @@ namespace NFTGenerator
                 statusInfo.Text = "Loading trait folders...";
                 LoadFolder(folderBrowse.SelectedPath);
 
-                ////set base project folder
-                //CurrentProject.Settings.InitialFolder = folderBrowse.SelectedPath;
-
                 if (treeView1.Nodes.Count > 0)
                 {
                     treeView1.SelectedNode = treeView1.Nodes[0];
@@ -118,13 +115,10 @@ namespace NFTGenerator
         {
             statusInfo.Text = "Saving project data...";
             dlgSave.FileName = this.CurrentProject.ProjectName;
-
-            //spremi
             if (string.IsNullOrEmpty(currentFileName) || !System.IO.File.Exists(currentFileName))
             {
                 if (dlgSave.ShowDialog(this) == DialogResult.OK)
                 {
-                    //spremi projekt
                     currentFileName = dlgSave.FileName;
                 }
             }
@@ -150,13 +144,6 @@ namespace NFTGenerator
 
             statusInfo.Text = "Project is saved to disk";
 
-        }
-
-        private void mnuSetProjectName_Click(object sender, EventArgs e)
-        {
-            //set project name
-            this.CurrentProject.ProjectName = XtraInputBox.Show("Set project name", "Project Name", "");
-            this.Text = $"{ this.CurrentProject.ProjectName}";
         }
 
         private void mnuExit_Click(object sender, EventArgs e)
@@ -348,7 +335,7 @@ namespace NFTGenerator
                     Lib.ProjectLayer overlay = tn.Tag as Lib.ProjectLayer;
                     if (!overlay.IsGroup)
                     {
-                        if (System.IO.File.Exists(overlay.LocalPath))
+                        if (File.Exists(overlay.LocalPath))
                         {
                             var gi = new GalleryItem(Image.FromFile(overlay.LocalPath).GetThumbnailImage(100, 100, null, new IntPtr()), overlay.Name, "");
                             gi.Tag = tn;
@@ -356,7 +343,7 @@ namespace NFTGenerator
                         }
                         else
                         {
-                            MessageBox.Show($"Odabrana datoteka [{overlay.LocalPath}] više ne postoji na zadanoj putanji", "Datoteka ne postoji!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show($"Selected [{overlay.LocalPath}] image does not anymore exist.", "Image does not exist", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             break;
                         }
                     }
@@ -369,11 +356,11 @@ namespace NFTGenerator
                 Lib.ProjectLayer overlay = e.Node.Tag as Lib.ProjectLayer;
                 if (File.Exists(overlay.LocalPath))
                 {
-                    picPrev.Image = Image.FromFile(overlay.LocalPath);
+                    pictureBox.Image = Image.FromFile(overlay.LocalPath);
                 }
                 else
                 {
-                    MessageBox.Show($"Odabrana datoteka [{overlay.LocalPath}] više ne postoji na zadanoj putanji", "Datoteka ne postoji!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Selected [{overlay.LocalPath}] image does not anymore exist.", "Image does not exist", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
 
             }
@@ -427,7 +414,7 @@ namespace NFTGenerator
                 }
 
                 string fl = dlgAddFile.FileName;
-                string fileName = System.IO.Path.GetFileNameWithoutExtension(fl);
+                string fileName = Path.GetFileNameWithoutExtension(fl);
 
 
                 TreeNode ndFile = nd.Nodes.Add(fileName);
@@ -561,24 +548,6 @@ namespace NFTGenerator
 
         }
 
-        private void btnZoomIn_Click(object sender, EventArgs e)
-        {
-            picPrev.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Clip;
-            picPrev.Properties.ZoomPercent += 10;
-        }
-
-        private void btnZoomOut_Click(object sender, EventArgs e)
-        {
-            picPrev.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Clip;
-            picPrev.Properties.ZoomPercent -= 10;
-        }
-
-        private void btnPicOriginal_Click(object sender, EventArgs e)
-        {
-            picPrev.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Squeeze;
-            picPrev.Properties.ZoomPercent = 100;
-        }
-
         #endregion
 
         #region RARITY TABLE
@@ -607,11 +576,9 @@ namespace NFTGenerator
         private void btnReloadRarityTable_Click(object sender, EventArgs e)
         {
             statusInfo.Text = "Loading rarity table...";
-            //Osvježi rarity table
             tlRT.BeginUnboundLoad();
             tlRT.Nodes.Clear();
             CreateRarityTableFromFolders();
-            //calcPerc();
 
             tlRT.EndUnboundLoad();
 
@@ -959,7 +926,7 @@ namespace NFTGenerator
         {
             if (!string.IsNullOrEmpty(path))
             {
-                var json = System.IO.File.ReadAllText(path);
+                var json = File.ReadAllText(path);
                 var proj = Lib.NFTCollectionProject.FromJSON(json);
 
                 generatedFiles = proj.Tokens;
