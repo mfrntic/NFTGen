@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NFTGenerator.Lib;
 using System.Windows.Forms;
 
-namespace NFTGen
+namespace NFTGenerator
 {
     public partial class ProjectForm : Form
     {
@@ -26,7 +19,7 @@ namespace NFTGen
                 {
                     project.ProjectName = txtProjectName.Text;
                     project.TotalItems = (int)nudTotalItems.Value;
-                    project.Settings = (Lib.ProjectSettings)pgSettings.SelectedObject;
+                    project.Settings = (ProjectSettings)pgSettings.SelectedObject;
                 }
                 return project;
             }
@@ -43,7 +36,7 @@ namespace NFTGen
                 {
                     txtProjectName.Text = "";
                     nudTotalItems.Value = 0;
-                    pgSettings.SelectedObject = new Lib.ProjectSettings();
+                    pgSettings.SelectedObject = new ProjectSettings();
                 }
             }
         }

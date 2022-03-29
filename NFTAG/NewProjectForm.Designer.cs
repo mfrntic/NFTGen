@@ -1,5 +1,5 @@
 ﻿
-namespace NFTGen
+namespace NFTGenerator
 {
     partial class ProjectForm
     {
@@ -49,14 +49,14 @@ namespace NFTGen
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel1.Location = new System.Drawing.Point(0, 397);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(471, 39);
+            this.panel1.Size = new System.Drawing.Size(672, 39);
             this.panel1.TabIndex = 1;
             // 
             // btnOK
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(247, 3);
+            this.btnOK.Location = new System.Drawing.Point(448, 3);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(103, 32);
             this.btnOK.TabIndex = 1;
@@ -67,7 +67,7 @@ namespace NFTGen
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(356, 3);
+            this.btnCancel.Location = new System.Drawing.Point(557, 3);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(103, 32);
             this.btnCancel.TabIndex = 0;
@@ -91,7 +91,7 @@ namespace NFTGen
             this.txtProjectName.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.txtProjectName.Location = new System.Drawing.Point(15, 36);
             this.txtProjectName.Name = "txtProjectName";
-            this.txtProjectName.Size = new System.Drawing.Size(444, 21);
+            this.txtProjectName.Size = new System.Drawing.Size(645, 21);
             this.txtProjectName.TabIndex = 3;
             // 
             // label2
@@ -132,7 +132,7 @@ namespace NFTGen
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pgSettings.Location = new System.Drawing.Point(15, 140);
             this.pgSettings.Name = "pgSettings";
-            this.pgSettings.Size = new System.Drawing.Size(444, 251);
+            this.pgSettings.Size = new System.Drawing.Size(645, 251);
             this.pgSettings.TabIndex = 7;
             this.pgSettings.ToolbarVisible = false;
             // 
@@ -140,7 +140,7 @@ namespace NFTGen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(471, 436);
+            this.ClientSize = new System.Drawing.Size(672, 436);
             this.Controls.Add(this.pgSettings);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.nudTotalItems);

@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace NFTGen.Lib
+namespace NFTGenerator.Lib
 {
     public enum ResampleAlgorithmEnum : byte { NearestNeighbor = 1, Bilinear = 2, BicubicSmoother = 3, BicubicSharper = 4 }
     public class ProjectSettings : ICloneable
@@ -74,7 +70,6 @@ namespace NFTGen.Lib
             Category("Output")]
         public ResampleAlgorithmEnum ResizeAlgorithm { get; set; }
 
-        //public string InitialFolder { get; set; }
         public ImageMagick.FilterType GetMagickResizeAlgorithm()
         {
             switch (ResizeAlgorithm)
@@ -90,16 +85,6 @@ namespace NFTGen.Lib
             }
             return ImageMagick.FilterType.SincFast;
         }
-
-        [Description("Pinata (pinata.cloud) API Key"),
-            DisplayName("API Key"),
-            Category("Pinata")]
-        public string APIKey { get; set; }
-
-        [Description("Pinata (pinata.cloud) API Secret"),
-          DisplayName("API Secret"),
-          Category("Pinata")]
-        public string APISecret { get; set; }
 
         public object Clone()
         {

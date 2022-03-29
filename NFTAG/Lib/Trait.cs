@@ -1,4 +1,4 @@
-﻿namespace NFTGen.Lib
+﻿namespace NFTGenerator.Lib
 {
     public class Trait
     {

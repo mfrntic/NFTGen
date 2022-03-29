@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace NFTGen
+namespace NFTGenerator
 {
     public static class  Extensions
     {

@@ -1,5 +1,5 @@
 ﻿
-namespace NFTGen
+namespace NFTGenerator
 {
     partial class Main
     {
@@ -172,7 +172,7 @@ namespace NFTGen
             // 
             // mnuNewProject
             // 
-            this.mnuNewProject.Image = global::NFTGen.Properties.Resources.script_code_red_icon;
+            this.mnuNewProject.Image = global::NFTGenerator.Properties.Resources.script_code_red_icon;
             this.mnuNewProject.Name = "mnuNewProject";
             this.mnuNewProject.Size = new System.Drawing.Size(195, 22);
             this.mnuNewProject.Text = "&New Project...";
@@ -180,7 +180,7 @@ namespace NFTGen
             // 
             // mnuSaveProject
             // 
-            this.mnuSaveProject.Image = global::NFTGen.Properties.Resources.disk_icon;
+            this.mnuSaveProject.Image = global::NFTGenerator.Properties.Resources.disk_icon;
             this.mnuSaveProject.Name = "mnuSaveProject";
             this.mnuSaveProject.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
             this.mnuSaveProject.Size = new System.Drawing.Size(195, 22);
@@ -189,7 +189,7 @@ namespace NFTGen
             // 
             // mnuOpenProject
             // 
-            this.mnuOpenProject.Image = global::NFTGen.Properties.Resources.folder_page_icon;
+            this.mnuOpenProject.Image = global::NFTGenerator.Properties.Resources.folder_page_icon;
             this.mnuOpenProject.Name = "mnuOpenProject";
             this.mnuOpenProject.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             this.mnuOpenProject.Size = new System.Drawing.Size(195, 22);
@@ -227,7 +227,7 @@ namespace NFTGen
             // 
             // mnuProjectSettings
             // 
-            this.mnuProjectSettings.Image = global::NFTGen.Properties.Resources.settings_icon1;
+            this.mnuProjectSettings.Image = global::NFTGenerator.Properties.Resources.settings_icon1;
             this.mnuProjectSettings.Name = "mnuProjectSettings";
             this.mnuProjectSettings.Size = new System.Drawing.Size(174, 22);
             this.mnuProjectSettings.Text = "Project &Settings...";
@@ -578,7 +578,7 @@ namespace NFTGen
             // btnReloadRarityTable
             // 
             this.btnReloadRarityTable.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnReloadRarityTable.Image = global::NFTGen.Properties.Resources.arrow_refresh_icon;
+            this.btnReloadRarityTable.Image = global::NFTGenerator.Properties.Resources.arrow_refresh_icon;
             this.btnReloadRarityTable.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnReloadRarityTable.Name = "btnReloadRarityTable";
             this.btnReloadRarityTable.Size = new System.Drawing.Size(23, 22);
@@ -740,7 +740,7 @@ namespace NFTGen
             // btnProjectSettings
             // 
             this.btnProjectSettings.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnProjectSettings.Image = global::NFTGen.Properties.Resources.settings_icon1;
+            this.btnProjectSettings.Image = global::NFTGenerator.Properties.Resources.settings_icon1;
             this.btnProjectSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnProjectSettings.Name = "btnProjectSettings";
             this.btnProjectSettings.Size = new System.Drawing.Size(23, 22);
@@ -856,7 +856,7 @@ namespace NFTGen
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "NFTGen";
+            this.Text = "NFT Image Generator";
             this.Shown += new System.EventHandler(this.Main_Shown);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NFTGen.Lib
+namespace NFTGenerator.Lib
 {
     public class ProjectLayer
     {

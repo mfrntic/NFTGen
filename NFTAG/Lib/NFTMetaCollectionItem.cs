@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace NFTGen.Lib
+namespace NFTGenerator.Lib
 {
     public class NFTMetaCollectionItem
     {

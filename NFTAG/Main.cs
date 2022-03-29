@@ -11,7 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace NFTGen
+namespace NFTGenerator
 {
     public partial class Main : Form
     {
