@@ -10,8 +10,8 @@ namespace NFTGenerator
             InitializeComponent();
         }
 
-        private Lib.Project project;
-        public Lib.Project Project
+        private Project project;
+        public Project Project
         {
             get
             {
