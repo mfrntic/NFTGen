@@ -60,8 +60,6 @@ namespace NFTGenerator
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.pnlImageHolder = new System.Windows.Forms.Panel();
             this.pictureBox = new System.Windows.Forms.PictureBox();
-            this.gallery1 = new DevExpress.XtraBars.Ribbon.GalleryControl();
-            this.galleryControlClient1 = new DevExpress.XtraBars.Ribbon.GalleryControlClient();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tlRT = new DevExpress.XtraTreeList.TreeList();
             this.treeListColumn1 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
@@ -91,6 +89,7 @@ namespace NFTGenerator
             this.txtSearch = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.btnUploadIPFS = new System.Windows.Forms.ToolStripButton();
+            this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.toolStrip4 = new System.Windows.Forms.ToolStrip();
             this.btnZoomIn = new System.Windows.Forms.ToolStripButton();
             this.btnZoomOut = new System.Windows.Forms.ToolStripButton();
@@ -117,8 +116,6 @@ namespace NFTGenerator
             this.tabPage1.SuspendLayout();
             this.pnlImageHolder.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gallery1)).BeginInit();
-            this.gallery1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tlRT)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit1)).BeginInit();
@@ -373,7 +370,6 @@ namespace NFTGenerator
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.pnlImageHolder);
-            this.tabPage1.Controls.Add(this.gallery1);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -402,28 +398,6 @@ namespace NFTGenerator
             this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox.TabIndex = 3;
             this.pictureBox.TabStop = false;
-            // 
-            // gallery1
-            // 
-            this.gallery1.Controls.Add(this.galleryControlClient1);
-            this.gallery1.Dock = System.Windows.Forms.DockStyle.Fill;
-            // 
-            // 
-            // 
-            this.gallery1.Gallery.ImageSize = new System.Drawing.Size(100, 100);
-            this.gallery1.Gallery.ItemImageLayout = DevExpress.Utils.Drawing.ImageLayoutMode.ZoomInside;
-            this.gallery1.Gallery.ItemClick += new DevExpress.XtraBars.Ribbon.GalleryItemClickEventHandler(this.gallery1_Gallery_ItemClick);
-            this.gallery1.Location = new System.Drawing.Point(3, 3);
-            this.gallery1.Name = "gallery1";
-            this.gallery1.Size = new System.Drawing.Size(856, 655);
-            this.gallery1.TabIndex = 0;
-            this.gallery1.Text = "galleryControl1";
-            // 
-            // galleryControlClient1
-            // 
-            this.galleryControlClient1.GalleryControl = this.gallery1;
-            this.galleryControlClient1.Location = new System.Drawing.Point(2, 2);
-            this.galleryControlClient1.Size = new System.Drawing.Size(835, 651);
             // 
             // tabPage2
             // 
@@ -720,6 +694,12 @@ namespace NFTGenerator
             this.btnUploadIPFS.Name = "btnUploadIPFS";
             this.btnUploadIPFS.Size = new System.Drawing.Size(23, 22);
             // 
+            // imageList
+            // 
+            this.imageList.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.imageList.ImageSize = new System.Drawing.Size(16, 16);
+            this.imageList.TransparentColor = System.Drawing.Color.Transparent;
+            // 
             // toolStrip4
             // 
             this.toolStrip4.Location = new System.Drawing.Point(0, 0);
@@ -844,8 +824,6 @@ namespace NFTGenerator
             this.pnlImageHolder.ResumeLayout(false);
             this.pnlImageHolder.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gallery1)).EndInit();
-            this.gallery1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tlRT)).EndInit();
@@ -910,8 +888,6 @@ namespace NFTGenerator
         private System.Windows.Forms.ToolStripButton btnZoomOut;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripButton btnPicOriginal;
-        private DevExpress.XtraBars.Ribbon.GalleryControl gallery1;
-        private DevExpress.XtraBars.Ribbon.GalleryControlClient galleryControlClient1;
         private System.Windows.Forms.TabPage tabPage2;
         private DevExpress.XtraTreeList.TreeList tlRT;
         private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit repositoryItemSpinEdit1;
@@ -940,5 +916,6 @@ namespace NFTGenerator
         private System.Windows.Forms.ToolStripButton btnUploadIPFS;
         private System.Windows.Forms.ToolStrip miniToolStrip;
         private System.Windows.Forms.PictureBox pictureBox;
+        private System.Windows.Forms.ImageList imageList;
     }
 }

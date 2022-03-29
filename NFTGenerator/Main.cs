@@ -175,7 +175,6 @@ namespace NFTGenerator
             this.Text = $"{ this.CurrentProject.ProjectName}";
             treeView1.Nodes.Clear();
             tlRT.Nodes.Clear();
-            gallery1.Gallery.Groups.Clear();
             txtTotalItems.Text = this.CurrentProject.TotalItems.ToString();
             statusInfo.Text = "New project is created";
         }
@@ -315,8 +314,6 @@ namespace NFTGenerator
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
             btnAddFile.Enabled = btnUp.Enabled = btnDown.Enabled = btnRemoveFolder.Enabled = e.Node != null;
-            gallery1.Gallery.Groups.Clear();
-
             Lib.ProjectLayer lay = e.Node.Tag as Lib.ProjectLayer;
 
             pgProjLay.SelectedObject = lay;
@@ -324,11 +321,8 @@ namespace NFTGenerator
             if (lay.IsGroup)
             {
                 pnlImageHolder.Visible = false;
-                gallery1.Visible = true;
                 GalleryItemGroup group = new GalleryItemGroup();
                 group.Caption = lay.Name;
-
-                gallery1.Gallery.Groups.Add(group);
 
                 foreach (TreeNode tn in e.Node.Nodes)
                 {
@@ -352,7 +346,6 @@ namespace NFTGenerator
             else
             {
                 pnlImageHolder.Visible = true;
-                gallery1.Visible = false;
                 Lib.ProjectLayer overlay = e.Node.Tag as Lib.ProjectLayer;
                 if (File.Exists(overlay.LocalPath))
                 {
@@ -799,10 +792,8 @@ namespace NFTGenerator
 
         private async void timerGen_Tick(object sender, EventArgs e)
         {
-            //generate progress for 
             string outputPath = CurrentProject.Settings.GetOutputPath(CurrentProject);
-            //get files
-            var processed = System.IO.Directory.GetFiles(outputPath, "*.png");
+            var processed = Directory.GetFiles(outputPath, "*.png");
 
             if (prg1.Maximum >= processed.Length)
             {
@@ -887,25 +878,20 @@ namespace NFTGenerator
         {
             //cancel build
             cts.Cancel();
-            //set ui
             prg1.Visible = false;
             btnGenerate.Enabled = true;
             btnGenerateCancel.Enabled = false;
             timerGen.Enabled = false;
             lblGenProgress.Text = "";
-
-
         }
 
         #endregion
-
-        #region GENERATED JSON (DB)
 
         private void btnLoadDBFromJSONFile_Click(object sender, EventArgs e)
         {
             if (dlgLoadJSON.ShowDialog(this) == DialogResult.OK)
             {
-                this.Cursor = Cursors.WaitCursor;
+                Cursor = Cursors.WaitCursor;
                 try
                 {
                     LoadGenerated(dlgLoadJSON.FileName);
@@ -934,8 +920,6 @@ namespace NFTGenerator
 
             }
         }
-
-        #endregion
 
         private void Main_Shown(object sender, EventArgs e)
         {
