@@ -1,5 +1,4 @@
 ﻿using DevExpress.XtraBars.Ribbon;
-using DevExpress.XtraEditors;
 using DevExpress.XtraTreeList.Nodes;
 using System;
 using System.Collections.Generic;
@@ -644,10 +643,8 @@ namespace NFTGenerator
             }
             else
             {
-                //check if empty
                 if (System.IO.Directory.GetFileSystemEntries(outputPath).Length > 0)
                 {
-                    //nije prazno
                     if (MessageBox.Show("Continuation of work will delete the contents of the entire output folder.\nDo you want to continue?", "The output folder is not empty", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
                     {
                         btnGenerate.Enabled = true;
@@ -688,8 +685,7 @@ namespace NFTGenerator
                             }
                             catch (Exception ex)
                             {
-
-                                //throw;
+                                Console.WriteLine(ex.InnerException);
                             }
                         }
                         this.Invoke(new Action(() =>
@@ -699,7 +695,6 @@ namespace NFTGenerator
                     }
                     delFiles = Directory.GetFileSystemEntries(outputPath);
                 });
-                //this.Cursor = Cursors.Default;
             }
 
             statusInfo.Text = "Generating images...";
@@ -707,6 +702,7 @@ namespace NFTGenerator
             generatedFiles = new List<Lib.NFTCollectionItem>();
             outputGrid.DataSource = generatedFiles;
             btnGenerateCancel.Enabled = true;
+
             //create collection with empty nft items (not blended yet!)
             allFiles = Lib.NFTCollectionItem.CreateCollection(CurrentProject);
 
