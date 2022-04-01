@@ -9,7 +9,7 @@ namespace NFTGenerator.Lib
     {
         public ProjectSettings()
         {
-            OutputDirectory = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "NFTGen_Processed");
+            OutputDirectory = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "NFTGenerator");
             OutputSize = new Size(500, 500);
             ResizeAlgorithm = ResampleAlgorithmEnum.NearestNeighbor; //nearest neighbor (hard edges)
         }

@@ -38,12 +38,11 @@ namespace NFTGenerator
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuNewProject = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuSaveProject = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuOpenProject = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuSaveProject = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuExit = new System.Windows.Forms.ToolStripMenuItem();
             this.projectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuSetProjectName = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuProjectSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView1 = new System.Windows.Forms.TreeView();
@@ -57,9 +56,6 @@ namespace NFTGenerator
             this.btnUp = new System.Windows.Forms.ToolStripButton();
             this.btnDown = new System.Windows.Forms.ToolStripButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.pnlImageHolder = new System.Windows.Forms.Panel();
-            this.pictureBox = new System.Windows.Forms.PictureBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tlRT = new DevExpress.XtraTreeList.TreeList();
             this.treeListColumn1 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
@@ -71,6 +67,9 @@ namespace NFTGenerator
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.txtTotalItems = new System.Windows.Forms.ToolStripTextBox();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.pnlImageHolder = new System.Windows.Forms.Panel();
+            this.pictureBox = new System.Windows.Forms.PictureBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.outputGrid = new DevExpress.XtraGrid.GridControl();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -113,13 +112,13 @@ namespace NFTGenerator
             this.splitContainer1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.pnlImageHolder.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tlRT)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit1)).BeginInit();
             this.toolStrip2.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.pnlImageHolder.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.outputGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
@@ -158,8 +157,8 @@ namespace NFTGenerator
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuNewProject,
-            this.mnuSaveProject,
             this.mnuOpenProject,
+            this.mnuSaveProject,
             this.toolStripMenuItem1,
             this.mnuExit});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
@@ -174,15 +173,6 @@ namespace NFTGenerator
             this.mnuNewProject.Text = "&New Project...";
             this.mnuNewProject.Click += new System.EventHandler(this.mnuNewProject_Click);
             // 
-            // mnuSaveProject
-            // 
-            this.mnuSaveProject.Image = global::NFTGenerator.Properties.Resources.disk_icon;
-            this.mnuSaveProject.Name = "mnuSaveProject";
-            this.mnuSaveProject.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.mnuSaveProject.Size = new System.Drawing.Size(195, 22);
-            this.mnuSaveProject.Text = "&Save Project...";
-            this.mnuSaveProject.Click += new System.EventHandler(this.mnuSaveProject_Click);
-            // 
             // mnuOpenProject
             // 
             this.mnuOpenProject.Image = global::NFTGenerator.Properties.Resources.folder_page_icon;
@@ -191,6 +181,15 @@ namespace NFTGenerator
             this.mnuOpenProject.Size = new System.Drawing.Size(195, 22);
             this.mnuOpenProject.Text = "&Open Project...";
             this.mnuOpenProject.Click += new System.EventHandler(this.mnuOpenProject_Click);
+            // 
+            // mnuSaveProject
+            // 
+            this.mnuSaveProject.Image = global::NFTGenerator.Properties.Resources.disk_icon;
+            this.mnuSaveProject.Name = "mnuSaveProject";
+            this.mnuSaveProject.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.mnuSaveProject.Size = new System.Drawing.Size(195, 22);
+            this.mnuSaveProject.Text = "&Save Project...";
+            this.mnuSaveProject.Click += new System.EventHandler(this.mnuSaveProject_Click);
             // 
             // toolStripMenuItem1
             // 
@@ -208,16 +207,10 @@ namespace NFTGenerator
             // projectToolStripMenuItem
             // 
             this.projectToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuSetProjectName,
             this.mnuProjectSettings});
             this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
             this.projectToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
             this.projectToolStripMenuItem.Text = "&Project";
-            // 
-            // mnuSetProjectName
-            // 
-            this.mnuSetProjectName.Name = "mnuSetProjectName";
-            this.mnuSetProjectName.Size = new System.Drawing.Size(165, 22);
             // 
             // mnuProjectSettings
             // 
@@ -357,8 +350,8 @@ namespace NFTGenerator
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
@@ -366,38 +359,6 @@ namespace NFTGenerator
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(870, 687);
             this.tabControl1.TabIndex = 0;
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.pnlImageHolder);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(862, 661);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Preview";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // pnlImageHolder
-            // 
-            this.pnlImageHolder.Controls.Add(this.pictureBox);
-            this.pnlImageHolder.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlImageHolder.Location = new System.Drawing.Point(3, 3);
-            this.pnlImageHolder.Name = "pnlImageHolder";
-            this.pnlImageHolder.Size = new System.Drawing.Size(856, 655);
-            this.pnlImageHolder.TabIndex = 2;
-            this.pnlImageHolder.Visible = false;
-            // 
-            // pictureBox
-            // 
-            this.pictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox.Enabled = false;
-            this.pictureBox.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox.Name = "pictureBox";
-            this.pictureBox.Size = new System.Drawing.Size(856, 655);
-            this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox.TabIndex = 3;
-            this.pictureBox.TabStop = false;
             // 
             // tabPage2
             // 
@@ -521,6 +482,38 @@ namespace NFTGenerator
             this.txtTotalItems.Size = new System.Drawing.Size(100, 25);
             this.txtTotalItems.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTotalItems_KeyPress);
             this.txtTotalItems.TextChanged += new System.EventHandler(this.txtTotalItems_TextChanged);
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.pnlImageHolder);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(862, 661);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Preview";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // pnlImageHolder
+            // 
+            this.pnlImageHolder.Controls.Add(this.pictureBox);
+            this.pnlImageHolder.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlImageHolder.Location = new System.Drawing.Point(3, 3);
+            this.pnlImageHolder.Name = "pnlImageHolder";
+            this.pnlImageHolder.Size = new System.Drawing.Size(856, 655);
+            this.pnlImageHolder.TabIndex = 2;
+            this.pnlImageHolder.Visible = false;
+            // 
+            // pictureBox
+            // 
+            this.pictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox.Enabled = false;
+            this.pictureBox.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox.Name = "pictureBox";
+            this.pictureBox.Size = new System.Drawing.Size(856, 655);
+            this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox.TabIndex = 3;
+            this.pictureBox.TabStop = false;
             // 
             // tabPage4
             // 
@@ -818,16 +811,16 @@ namespace NFTGenerator
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.pnlImageHolder.ResumeLayout(false);
-            this.pnlImageHolder.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tlRT)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit1)).EndInit();
             this.toolStrip2.ResumeLayout(false);
             this.toolStrip2.PerformLayout();
+            this.tabPage1.ResumeLayout(false);
+            this.pnlImageHolder.ResumeLayout(false);
+            this.pnlImageHolder.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.outputGrid)).EndInit();
@@ -867,7 +860,6 @@ namespace NFTGenerator
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.SaveFileDialog dlgSave;
         private System.Windows.Forms.ToolStripMenuItem projectToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem mnuSetProjectName;
         private System.Windows.Forms.PropertyGrid pgProjLay;
         private System.Windows.Forms.OpenFileDialog dlgOpen;
         private System.Windows.Forms.ToolStripButton btnAddFile;

@@ -579,8 +579,7 @@ namespace NFTGenerator
 
         //calculate percentage
         private void tlRT_CellValueChanged(object sender, DevExpress.XtraTreeList.CellValueChangedEventArgs e)
-        {
-            //promjena vrijednosti u rarity table
+        {            
             Lib.ProjectLayer lay = ((TreeNode)e.Node.Tag).Tag as Lib.ProjectLayer;
             if (e.Column.FieldName == "Name")
             {
@@ -592,7 +591,7 @@ namespace NFTGenerator
                 lay.Rarity = int.Parse(e.Value.ToString());
                 if (lay.IsGroup)
                 {
-                    //update svih childova
+                    //update all children
                     foreach (TreeListNode item in e.Node.Nodes)
                     {
                         Lib.ProjectLayer l = ((TreeNode)item.Tag).Tag as Lib.ProjectLayer;
@@ -882,27 +881,6 @@ namespace NFTGenerator
         }
 
         #endregion
-
-        private void btnLoadDBFromJSONFile_Click(object sender, EventArgs e)
-        {
-            if (dlgLoadJSON.ShowDialog(this) == DialogResult.OK)
-            {
-                Cursor = Cursors.WaitCursor;
-                try
-                {
-                    LoadGenerated(dlgLoadJSON.FileName);
-
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("File Corrupted", "File load error. Check if it is compatible with NFTGen!\n" + ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                finally
-                {
-                    this.Cursor = Cursors.Default;
-                }
-            }
-        }
 
         private void LoadGenerated(string path)
         {
