@@ -632,8 +632,6 @@ namespace NFTGenerator
         private async void btnGenerate_Click(object sender, EventArgs e)
         {
             btnGenerate.Enabled = false;
-
-            gridView1.ShowLoadingPanel();
             string outputPath = CurrentProject.Settings.GetOutputPath(CurrentProject);
             statusInfo.Text = "Prepare for image generation...";
             if (!System.IO.Directory.Exists(outputPath))
@@ -647,7 +645,6 @@ namespace NFTGenerator
                     if (MessageBox.Show("Continuation of work will delete the contents of the entire output folder.\nDo you want to continue?", "The output folder is not empty", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
                     {
                         btnGenerate.Enabled = true;
-                        gridView1.HideLoadingPanel();
                         return;
                     }
                 }
@@ -699,7 +696,7 @@ namespace NFTGenerator
             statusInfo.Text = "Generating images...";
 
             generatedFiles = new List<Lib.NFTCollectionItem>();
-            outputGrid.DataSource = generatedFiles;
+            outputDatalistView.DataSource = generatedFiles;
             btnGenerateCancel.Enabled = true;
 
             //create collection with empty nft items (not blended yet!)
@@ -737,7 +734,6 @@ namespace NFTGenerator
             prg1.Value = 0;
             timerGen.Enabled = true;
             prg1.Visible = true;
-            gridView1.HideLoadingPanel();
             lblGenProgress.Text = $"{0}/{allFiles.Count} ({Math.Round(0 * 1.0 / allFiles.Count * 100, 2)}%)";
 
 
@@ -813,10 +809,7 @@ namespace NFTGenerator
                 }
             }
 
-            outputGrid.RefreshDataSource();
-
-            var view = ((DevExpress.XtraGrid.Views.Base.ColumnView)outputGrid.DefaultView);
-            view.MoveLast();
+            outputDatalistView.Refresh();
 
             lblGenProgress.Text = $"{processed.Length}/{CurrentProject.TotalItems} ({Math.Round(processed.Length * 1.0 / CurrentProject.TotalItems * 100, 2)}%)";
 
@@ -845,7 +838,7 @@ namespace NFTGenerator
                     foreach (var tokenMeta in metaList)
                     {
                         var tokenMetaJsonString = Newtonsoft.Json.JsonConvert.SerializeObject(tokenMeta, Newtonsoft.Json.Formatting.Indented);
-                        File.WriteAllText(Path.Combine(outputPath, $"/meta/{tokenMeta.tokenId}.json"), tokenMetaJsonString);
+                        File.WriteAllText(Path.Combine(outputPath, $"{tokenMeta.tokenId}.json"), tokenMetaJsonString);
                     }
                 });
 
@@ -856,15 +849,15 @@ namespace NFTGenerator
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
             //search in grid
-            var view = ((DevExpress.XtraGrid.Views.Base.ColumnView)outputGrid.DefaultView);
-            if (!string.IsNullOrEmpty(txtSearch.Text))
-            {
-                view.ActiveFilterCriteria = DevExpress.Data.Filtering.CriteriaOperator.Parse("Contains([FileName], '" + txtSearch.Text + "')");
-            }
-            else
-            {
-                view.ActiveFilter.Clear();
-            }
+            //var view = ((DevExpress.XtraGrid.Views.Base.ColumnView)outputGrid.DefaultView);
+            //if (!string.IsNullOrEmpty(txtSearch.Text))
+            //{
+            //    view.ActiveFilterCriteria = DevExpress.Data.Filtering.CriteriaOperator.Parse("Contains([FileName], '" + txtSearch.Text + "')");
+            //}
+            //else
+            //{
+            //    view.ActiveFilter.Clear();
+            //}
         }
 
 
@@ -890,7 +883,7 @@ namespace NFTGenerator
                 var proj = Lib.NFTCollectionProject.FromJSON(json);
 
                 generatedFiles = proj.Tokens;
-                outputGrid.DataSource = generatedFiles;
+                outputDatalistView.DataSource = generatedFiles;
 
             }
         }

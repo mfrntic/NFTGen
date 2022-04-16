@@ -32,8 +32,8 @@ namespace NFTGenerator
             this.components = new System.ComponentModel.Container();
             DevExpress.XtraSplashScreen.SplashScreenManager splashScreenManager1 = new DevExpress.XtraSplashScreen.SplashScreenManager(this, null, true, true);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
-            DevExpress.XtraTreeList.StyleFormatConditions.TreeListFormatRule treeListFormatRule1 = new DevExpress.XtraTreeList.StyleFormatConditions.TreeListFormatRule();
-            DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar1 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
+            DevExpress.XtraTreeList.StyleFormatConditions.TreeListFormatRule treeListFormatRule2 = new DevExpress.XtraTreeList.StyleFormatConditions.TreeListFormatRule();
+            DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar2 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
             this.treeListColumn4 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,7 +56,7 @@ namespace NFTGenerator
             this.btnUp = new System.Windows.Forms.ToolStripButton();
             this.btnDown = new System.Windows.Forms.ToolStripButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.RarityTable = new System.Windows.Forms.TabPage();
             this.tlRT = new DevExpress.XtraTreeList.TreeList();
             this.treeListColumn1 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListColumn2 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
@@ -67,16 +67,10 @@ namespace NFTGenerator
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.txtTotalItems = new System.Windows.Forms.ToolStripTextBox();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.Preview = new System.Windows.Forms.TabPage();
             this.pnlImageHolder = new System.Windows.Forms.Panel();
             this.pictureBox = new System.Windows.Forms.PictureBox();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.outputGrid = new DevExpress.XtraGrid.GridControl();
-            this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Generate = new System.Windows.Forms.TabPage();
             this.toolStrip3 = new System.Windows.Forms.ToolStrip();
             this.btnGenerate = new System.Windows.Forms.ToolStripButton();
             this.btnGenerateCancel = new System.Windows.Forms.ToolStripButton();
@@ -105,6 +99,7 @@ namespace NFTGenerator
             this.dlgLoadJSON = new System.Windows.Forms.OpenFileDialog();
             this.dlgSaveJSON = new System.Windows.Forms.SaveFileDialog();
             this.miniToolStrip = new System.Windows.Forms.ToolStrip();
+            this.outputDatalistView = new BrightIdeasSoftware.DataListView();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -112,18 +107,17 @@ namespace NFTGenerator
             this.splitContainer1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
+            this.RarityTable.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tlRT)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit1)).BeginInit();
             this.toolStrip2.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.Preview.SuspendLayout();
             this.pnlImageHolder.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
-            this.tabPage4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.outputGrid)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
+            this.Generate.SuspendLayout();
             this.toolStrip3.SuspendLayout();
             this.statusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.outputDatalistView)).BeginInit();
             this.SuspendLayout();
             // 
             // splashScreenManager1
@@ -350,9 +344,9 @@ namespace NFTGenerator
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage4);
+            this.tabControl1.Controls.Add(this.RarityTable);
+            this.tabControl1.Controls.Add(this.Preview);
+            this.tabControl1.Controls.Add(this.Generate);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -360,17 +354,17 @@ namespace NFTGenerator
             this.tabControl1.Size = new System.Drawing.Size(870, 687);
             this.tabControl1.TabIndex = 0;
             // 
-            // tabPage2
+            // RarityTable
             // 
-            this.tabPage2.Controls.Add(this.tlRT);
-            this.tabPage2.Controls.Add(this.toolStrip2);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(862, 661);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Rarity Table";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.RarityTable.Controls.Add(this.tlRT);
+            this.RarityTable.Controls.Add(this.toolStrip2);
+            this.RarityTable.Location = new System.Drawing.Point(4, 22);
+            this.RarityTable.Name = "RarityTable";
+            this.RarityTable.Padding = new System.Windows.Forms.Padding(3);
+            this.RarityTable.Size = new System.Drawing.Size(862, 661);
+            this.RarityTable.TabIndex = 1;
+            this.RarityTable.Text = "Rarity Table";
+            this.RarityTable.UseVisualStyleBackColor = true;
             // 
             // tlRT
             // 
@@ -380,20 +374,20 @@ namespace NFTGenerator
             this.treeListColumn3,
             this.treeListColumn4});
             this.tlRT.Dock = System.Windows.Forms.DockStyle.Fill;
-            treeListFormatRule1.Column = this.treeListColumn4;
-            treeListFormatRule1.Name = "Format0";
-            formatConditionRuleDataBar1.AllowNegativeAxis = false;
-            formatConditionRuleDataBar1.DrawAxis = false;
-            formatConditionRuleDataBar1.Maximum = new decimal(new int[] {
+            treeListFormatRule2.Column = this.treeListColumn4;
+            treeListFormatRule2.Name = "Format0";
+            formatConditionRuleDataBar2.AllowNegativeAxis = false;
+            formatConditionRuleDataBar2.DrawAxis = false;
+            formatConditionRuleDataBar2.Maximum = new decimal(new int[] {
             100,
             0,
             0,
             0});
-            formatConditionRuleDataBar1.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
-            formatConditionRuleDataBar1.MinimumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
-            formatConditionRuleDataBar1.PredefinedName = "Mint";
-            treeListFormatRule1.Rule = formatConditionRuleDataBar1;
-            this.tlRT.FormatRules.Add(treeListFormatRule1);
+            formatConditionRuleDataBar2.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
+            formatConditionRuleDataBar2.MinimumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
+            formatConditionRuleDataBar2.PredefinedName = "Mint";
+            treeListFormatRule2.Rule = formatConditionRuleDataBar2;
+            this.tlRT.FormatRules.Add(treeListFormatRule2);
             this.tlRT.Location = new System.Drawing.Point(3, 28);
             this.tlRT.Name = "tlRT";
             this.tlRT.OptionsView.ShowRowFooterSummary = true;
@@ -483,16 +477,16 @@ namespace NFTGenerator
             this.txtTotalItems.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTotalItems_KeyPress);
             this.txtTotalItems.TextChanged += new System.EventHandler(this.txtTotalItems_TextChanged);
             // 
-            // tabPage1
+            // Preview
             // 
-            this.tabPage1.Controls.Add(this.pnlImageHolder);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(862, 661);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Preview";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.Preview.Controls.Add(this.pnlImageHolder);
+            this.Preview.Location = new System.Drawing.Point(4, 22);
+            this.Preview.Name = "Preview";
+            this.Preview.Padding = new System.Windows.Forms.Padding(3);
+            this.Preview.Size = new System.Drawing.Size(862, 661);
+            this.Preview.TabIndex = 0;
+            this.Preview.Text = "Preview";
+            this.Preview.UseVisualStyleBackColor = true;
             // 
             // pnlImageHolder
             // 
@@ -515,89 +509,17 @@ namespace NFTGenerator
             this.pictureBox.TabIndex = 3;
             this.pictureBox.TabStop = false;
             // 
-            // tabPage4
+            // Generate
             // 
-            this.tabPage4.Controls.Add(this.outputGrid);
-            this.tabPage4.Controls.Add(this.toolStrip3);
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(862, 661);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Generate";
-            this.tabPage4.UseVisualStyleBackColor = true;
-            // 
-            // outputGrid
-            // 
-            this.outputGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.outputGrid.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.outputGrid.Location = new System.Drawing.Point(3, 28);
-            this.outputGrid.MainView = this.gridView1;
-            this.outputGrid.Name = "outputGrid";
-            this.outputGrid.Size = new System.Drawing.Size(856, 630);
-            this.outputGrid.TabIndex = 3;
-            this.outputGrid.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            this.gridView1});
-            // 
-            // gridView1
-            // 
-            this.gridView1.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
-            this.gridColumn5,
-            this.gridColumn1,
-            this.gridColumn2,
-            this.gridColumn3});
-            this.gridView1.CustomizationFormBounds = new System.Drawing.Rectangle(944, 574, 264, 272);
-            this.gridView1.GridControl = this.outputGrid;
-            this.gridView1.Name = "gridView1";
-            this.gridView1.OptionsBehavior.AlignGroupSummaryInGroupRow = DevExpress.Utils.DefaultBoolean.False;
-            this.gridView1.OptionsBehavior.AllowAddRows = DevExpress.Utils.DefaultBoolean.False;
-            this.gridView1.OptionsBehavior.AllowDeleteRows = DevExpress.Utils.DefaultBoolean.False;
-            this.gridView1.OptionsBehavior.AllowFixedGroups = DevExpress.Utils.DefaultBoolean.True;
-            this.gridView1.OptionsBehavior.AllowGroupExpandAnimation = DevExpress.Utils.DefaultBoolean.False;
-            this.gridView1.OptionsBehavior.AllowIncrementalSearch = true;
-            this.gridView1.OptionsBehavior.AllowPartialGroups = DevExpress.Utils.DefaultBoolean.False;
-            this.gridView1.OptionsBehavior.Editable = false;
-            this.gridView1.OptionsView.ShowFooter = true;
-            this.gridView1.OptionsView.ShowGroupPanel = false;
-            // 
-            // gridColumn5
-            // 
-            this.gridColumn5.Caption = "TokenID";
-            this.gridColumn5.FieldName = "TokenID";
-            this.gridColumn5.Name = "gridColumn5";
-            this.gridColumn5.OptionsColumn.AllowEdit = false;
-            this.gridColumn5.Visible = true;
-            this.gridColumn5.VisibleIndex = 0;
-            this.gridColumn5.Width = 82;
-            // 
-            // gridColumn1
-            // 
-            this.gridColumn1.Caption = "Timestamp";
-            this.gridColumn1.DisplayFormat.FormatString = "yyyy-MM-dd HH\\:mm\\:ss.fffffff";
-            this.gridColumn1.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-            this.gridColumn1.FieldName = "GeneratedTimestamp";
-            this.gridColumn1.Name = "gridColumn1";
-            this.gridColumn1.OptionsColumn.AllowEdit = false;
-            this.gridColumn1.OptionsColumn.FixedWidth = true;
-            this.gridColumn1.Visible = true;
-            this.gridColumn1.VisibleIndex = 1;
-            this.gridColumn1.Width = 179;
-            // 
-            // gridColumn2
-            // 
-            this.gridColumn2.Name = "gridColumn2";
-            // 
-            // gridColumn3
-            // 
-            this.gridColumn3.Caption = "Path";
-            this.gridColumn3.FieldName = "LocalPath";
-            this.gridColumn3.Name = "gridColumn3";
-            this.gridColumn3.OptionsColumn.AllowEdit = false;
-            this.gridColumn3.Summary.AddRange(new DevExpress.XtraGrid.GridSummaryItem[] {
-            new DevExpress.XtraGrid.GridColumnSummaryItem(DevExpress.Data.SummaryItemType.Count, "FullName", "Number of images: {0}")});
-            this.gridColumn3.Visible = true;
-            this.gridColumn3.VisibleIndex = 2;
-            this.gridColumn3.Width = 373;
+            this.Generate.Controls.Add(this.outputDatalistView);
+            this.Generate.Controls.Add(this.toolStrip3);
+            this.Generate.Location = new System.Drawing.Point(4, 22);
+            this.Generate.Name = "Generate";
+            this.Generate.Padding = new System.Windows.Forms.Padding(3);
+            this.Generate.Size = new System.Drawing.Size(862, 661);
+            this.Generate.TabIndex = 3;
+            this.Generate.Text = "Generate";
+            this.Generate.UseVisualStyleBackColor = true;
             // 
             // toolStrip3
             // 
@@ -787,6 +709,20 @@ namespace NFTGenerator
             this.miniToolStrip.Size = new System.Drawing.Size(856, 25);
             this.miniToolStrip.TabIndex = 2;
             // 
+            // outputDatalistView
+            // 
+            this.outputDatalistView.CellEditUseWholeCell = false;
+            this.outputDatalistView.Cursor = System.Windows.Forms.Cursors.Default;
+            this.outputDatalistView.DataSource = null;
+            this.outputDatalistView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.outputDatalistView.HideSelection = false;
+            this.outputDatalistView.Location = new System.Drawing.Point(3, 28);
+            this.outputDatalistView.Name = "outputDatalistView";
+            this.outputDatalistView.Size = new System.Drawing.Size(856, 630);
+            this.outputDatalistView.TabIndex = 3;
+            this.outputDatalistView.UseCompatibleStateImageBehavior = false;
+            this.outputDatalistView.View = System.Windows.Forms.View.Details;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -811,24 +747,23 @@ namespace NFTGenerator
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
+            this.RarityTable.ResumeLayout(false);
+            this.RarityTable.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tlRT)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit1)).EndInit();
             this.toolStrip2.ResumeLayout(false);
             this.toolStrip2.PerformLayout();
-            this.tabPage1.ResumeLayout(false);
+            this.Preview.ResumeLayout(false);
             this.pnlImageHolder.ResumeLayout(false);
             this.pnlImageHolder.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
-            this.tabPage4.ResumeLayout(false);
-            this.tabPage4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.outputGrid)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
+            this.Generate.ResumeLayout(false);
+            this.Generate.PerformLayout();
             this.toolStrip3.ResumeLayout(false);
             this.toolStrip3.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.outputDatalistView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -871,14 +806,14 @@ namespace NFTGenerator
         private System.Windows.Forms.OpenFileDialog dlgLoadJSON;
         private System.Windows.Forms.SaveFileDialog dlgSaveJSON;
         private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage Preview;
         private System.Windows.Forms.Panel pnlImageHolder;
         private System.Windows.Forms.ToolStrip toolStrip4;
         private System.Windows.Forms.ToolStripButton btnZoomIn;
         private System.Windows.Forms.ToolStripButton btnZoomOut;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripButton btnPicOriginal;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage RarityTable;
         private DevExpress.XtraTreeList.TreeList tlRT;
         private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit repositoryItemSpinEdit1;
         private System.Windows.Forms.ToolStrip toolStrip2;
@@ -886,13 +821,7 @@ namespace NFTGenerator
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
         private System.Windows.Forms.ToolStripTextBox txtTotalItems;
-        private System.Windows.Forms.TabPage tabPage4;
-        private DevExpress.XtraGrid.GridControl outputGrid;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumn5;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumn1;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumn2;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumn3;
+        private System.Windows.Forms.TabPage Generate;
         private System.Windows.Forms.ToolStrip toolStrip3;
         private System.Windows.Forms.ToolStripButton btnGenerate;
         private System.Windows.Forms.ToolStripButton btnGenerateCancel;
@@ -907,5 +836,6 @@ namespace NFTGenerator
         private System.Windows.Forms.ToolStrip miniToolStrip;
         private System.Windows.Forms.PictureBox pictureBox;
         private System.Windows.Forms.ImageList imageList;
+        private BrightIdeasSoftware.DataListView outputDatalistView;
     }
 }
