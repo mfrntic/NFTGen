@@ -112,7 +112,9 @@
     <Compile Include="Lib\Project.cs" />
     <Compile Include="Lib\ProjectLayer.cs" />
     <Compile Include="Lib\ProjectSettings.cs" />
+    <Compile Include="Lib\TraitRarityItem.cs" />
     <Compile Include="Lib\Trait.cs" />
+    <Compile Include="Lib\TraitRarityGroupItem.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>

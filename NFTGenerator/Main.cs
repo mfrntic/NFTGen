@@ -16,11 +16,25 @@ namespace NFTGenerator
     {
         public Lib.Project CurrentProject { get; set; }
 
+        public List<Lib.TraitRarityGroupItem> RarityGroupItems { get; set; }
+
         public Main()
         {
             InitializeComponent();
             CurrentProject = new Lib.Project();
+            RarityGroupItems = new List<Lib.TraitRarityGroupItem>();
             txtTotalItems.Text = this.CurrentProject.TotalItems.ToString();
+
+            // let the listview know that a TraitRarityGroupItem node can expand
+            rarityTreeListView.CanExpandGetter = delegate (object rowObject) {
+                return (rowObject is Lib.TraitRarityGroupItem);
+            };
+
+            // retrieving the "TraitRarityItems" from TraitRarityGroupItems
+            rarityTreeListView.ChildrenGetter = delegate (object rowObject) {
+                Lib.TraitRarityGroupItem traitRarityGroupItem = rowObject as Lib.TraitRarityGroupItem;
+                return traitRarityGroupItem.TraitRarityItems;
+            };
         }
 
         #region ADD FOLDER TO TREEVIEW (recursion)
@@ -349,6 +363,7 @@ namespace NFTGenerator
                 if (File.Exists(overlay.LocalPath))
                 {
                     pictureBox.Image = Image.FromFile(overlay.LocalPath);
+                    pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
                 }
                 else
                 {
@@ -555,6 +570,7 @@ namespace NFTGenerator
                 Lib.ProjectLayer lay = node.Tag as Lib.ProjectLayer;
 
                 TreeListNode tln = tlRT.AppendNode(new object[] { lay.Name, lay.ID, lay.Rarity, 0 }, parent);
+
                 tln.SetValue(3, lay.RarityPerc);
                 tln.Tag = node;
 
@@ -571,6 +587,35 @@ namespace NFTGenerator
             tlRT.BeginUnboundLoad();
             tlRT.Nodes.Clear();
             CreateRarityTableFromFolders();
+
+            var nodes = treeView1.Nodes;
+            foreach (TreeNode node in nodes)
+            {
+                Lib.ProjectLayer layGroup = node.Tag as Lib.ProjectLayer;
+                var traitRarityGroupItem = new Lib.TraitRarityGroupItem
+                {
+                    TraitName = layGroup.Name,
+                    TraitId = layGroup.ID,
+                    NumberOfOccurences = layGroup.Rarity,
+                    RarityPercentage = layGroup.RarityPerc,
+                    TraitRarityItems = new List<Lib.TraitRarityItem>()
+                };
+
+                RarityGroupItems.Add(traitRarityGroupItem);
+
+                foreach(TreeNode n in node.Nodes)
+                {
+                    Lib.ProjectLayer layChild = n.Tag as Lib.ProjectLayer;
+                    traitRarityGroupItem.TraitRarityItems.Add(new Lib.TraitRarityItem
+                    {
+                        TraitName = layChild.Name,
+                        TraitId = layChild.ID,
+                        NumberOfOccurences = layChild.Rarity,
+                        RarityPercentage = layChild.RarityPerc,
+                    });
+                }                  
+            }
+            rarityTreeListView.AddObjects(RarityGroupItems);
 
             tlRT.EndUnboundLoad();
 
@@ -696,7 +741,7 @@ namespace NFTGenerator
             statusInfo.Text = "Generating images...";
 
             generatedFiles = new List<Lib.NFTCollectionItem>();
-            outputDatalistView.DataSource = generatedFiles;
+            outputDataGridView.DataSource = generatedFiles;
             btnGenerateCancel.Enabled = true;
 
             //create collection with empty nft items (not blended yet!)
@@ -809,7 +854,8 @@ namespace NFTGenerator
                 }
             }
 
-            outputDatalistView.Refresh();
+            outputDataGridView.DataSource = generatedFiles;
+            outputDataGridView.Refresh();
 
             lblGenProgress.Text = $"{processed.Length}/{CurrentProject.TotalItems} ({Math.Round(processed.Length * 1.0 / CurrentProject.TotalItems * 100, 2)}%)";
 
@@ -883,7 +929,7 @@ namespace NFTGenerator
                 var proj = Lib.NFTCollectionProject.FromJSON(json);
 
                 generatedFiles = proj.Tokens;
-                outputDatalistView.DataSource = generatedFiles;
+                outputDataGridView.DataSource = generatedFiles;
 
             }
         }
@@ -892,6 +938,20 @@ namespace NFTGenerator
         {
             //show new project dialog on first load
             mnuNewProject_Click(null, null);
+        }
+
+        private void rarityTreeListView_CellEditFinishing(object sender, BrightIdeasSoftware.CellEditEventArgs e)
+        {
+            if (e.RowObject is Lib.TraitRarityGroupItem)
+            {
+                var x = e.RowObject as Lib.TraitRarityGroupItem;
+
+                var result = treeView1.Nodes.Cast<TreeNode>().FirstOrDefault(node => (node.Tag as Lib.ProjectLayer).ID == x.TraitId);
+
+                var test = result.Tag as Lib.ProjectLayer;
+
+                Console.WriteLine(test.Name);
+            }
         }
     }
 }
