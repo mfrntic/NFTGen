@@ -189,7 +189,7 @@ namespace NFTGenerator
             // 
             this.mnuProjectSettings.Image = global::NFTGenerator.Properties.Resources.settings_icon1;
             this.mnuProjectSettings.Name = "mnuProjectSettings";
-            this.mnuProjectSettings.Size = new System.Drawing.Size(165, 22);
+            this.mnuProjectSettings.Size = new System.Drawing.Size(180, 22);
             this.mnuProjectSettings.Text = "Project &Settings...";
             this.mnuProjectSettings.Click += new System.EventHandler(this.mnuProjectSettings_Click);
             // 
@@ -434,7 +434,6 @@ namespace NFTGenerator
             // 
             // txtTotalItems
             // 
-            this.txtTotalItems.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtTotalItems.Name = "txtTotalItems";
             this.txtTotalItems.Size = new System.Drawing.Size(75, 25);
             this.txtTotalItems.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTotalItems_KeyPress);
@@ -564,7 +563,6 @@ namespace NFTGenerator
             // 
             // txtStartTokenID
             // 
-            this.txtStartTokenID.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtStartTokenID.Name = "txtStartTokenID";
             this.txtStartTokenID.Size = new System.Drawing.Size(50, 25);
             this.txtStartTokenID.Text = "1";
