@@ -44,7 +44,7 @@ namespace NFTGenerator.Lib
 
         }
 
-        public static List<NFTCollectionItem> CreateCollection(Project proj)
+        public static List<NFTCollectionItem> CreateCollection(Project proj, int startTokenID)
         {
             List<NFTCollectionItem> files = new List<NFTCollectionItem>();
 
@@ -54,7 +54,7 @@ namespace NFTGenerator.Lib
             if (baseLayer == null)
                 return files;
 
-            int id = 0;
+            int id = startTokenID;
 
             //create base collection without traits
             foreach (var layer in baseLayer.Overlays)
