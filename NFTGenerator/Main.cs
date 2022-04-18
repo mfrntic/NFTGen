@@ -1,5 +1,4 @@
-﻿using DevExpress.XtraBars.Ribbon;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -14,7 +13,6 @@ namespace NFTGenerator
     public partial class Main : Form
     {
         public Lib.Project CurrentProject { get; set; }
-
         public List<Lib.TraitRarityGroupItem> RarityGroupItems { get; set; }
 
         public Main()
@@ -34,6 +32,27 @@ namespace NFTGenerator
                 Lib.TraitRarityGroupItem traitRarityGroupItem = rowObject as Lib.TraitRarityGroupItem;
                 return traitRarityGroupItem.TraitRarityItems;
             };
+        }
+
+        private void LoadGenerated(string path)
+        {
+            if (!string.IsNullOrEmpty(path))
+            {
+                var json = File.ReadAllText(path);
+                var proj = Lib.NFTCollectionProject.FromJSON(json);
+
+                generatedFiles = proj.Tokens;
+                outputDataGridView.DataSource = generatedFiles;
+
+            }
+        }
+
+        private void Main_Shown(object sender, EventArgs e)
+        {
+            //show new project dialog on first load
+
+            // TODO disabled for testing
+            // mnuNewProject_Click(null, null);
         }
 
         #region ADD FOLDER TO TREEVIEW (recursion)
@@ -186,7 +205,7 @@ namespace NFTGenerator
         {
             this.Text = $"{ this.CurrentProject.ProjectName}";
             treeView1.Nodes.Clear();
-            //tlRT.Nodes.Clear();
+            rarityTreeListView.ClearObjects();
             txtTotalItems.Text = this.CurrentProject.TotalItems.ToString();
             statusInfo.Text = "New project is created";
         }
@@ -301,7 +320,7 @@ namespace NFTGenerator
 
         private void mnuProjectSettings_Click(object sender, EventArgs e)
         {
-            //show setting
+            // show setting
             ProjectForm sett = new ProjectForm();
             sett.Text = "Project Settings";
             sett.Project = CurrentProject.Copy();
@@ -313,7 +332,7 @@ namespace NFTGenerator
         #endregion
 
         #region TREEVIEW / FOLDER ACTIONS
-        //button remove selected item
+        // button remove selected item
         private void btnRemoveFolder_Click(object sender, EventArgs e)
         {
             statusInfo.Text = "Removing item from tree...";
@@ -322,7 +341,7 @@ namespace NFTGenerator
             statusInfo.Text = "Ready";
         }
 
-        //action after treeview select
+        // action after treeview select
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
             btnAddFile.Enabled = btnUp.Enabled = btnDown.Enabled = btnRemoveFolder.Enabled = e.Node != null;
@@ -333,7 +352,7 @@ namespace NFTGenerator
             if (lay.IsGroup)
             {
                 pnlImageHolder.Visible = false;
-                GalleryItemGroup group = new GalleryItemGroup();
+                /*GalleryItemGroup group = new GalleryItemGroup();
                 group.Caption = lay.Name;
 
                 foreach (TreeNode tn in e.Node.Nodes)
@@ -353,7 +372,7 @@ namespace NFTGenerator
                             break;
                         }
                     }
-                }
+                }*/
             }
             else
             {
@@ -374,7 +393,7 @@ namespace NFTGenerator
 
         }
 
-        //button move item up the tree
+        // button move item up the tree
         private void btnUp_Click(object sender, EventArgs e)
         {
             statusInfo.Text = "Moving item up the tree...";
@@ -390,7 +409,7 @@ namespace NFTGenerator
             statusInfo.Text = "Ready";
         }
 
-        //button move item down the tree
+        // button move item down the tree
         private void btnDown_Click(object sender, EventArgs e)
         {
             statusInfo.Text = "Moving item down the tree...";
@@ -407,7 +426,7 @@ namespace NFTGenerator
         }
 
 
-        //button add file
+        // button add file
         private void btnAddFile_Click(object sender, EventArgs e)
         {
             if (dlgAddFile.ShowDialog(this) == DialogResult.OK)
@@ -546,47 +565,11 @@ namespace NFTGenerator
         }
         #endregion
 
-        #region IMAGE VIEWER
-        private void gallery1_Gallery_ItemClick(object sender, GalleryItemClickEventArgs e)
-        {
-            TreeNode tn = e.Item.Tag as TreeNode;
-            treeView1.SelectedNode = tn;
-
-        }
-
-        #endregion
-
         #region RARITY TABLE
-
-        /// <summary>
-        /// Load Rarity table from treeview folder structure
-        /// </summary>
-        /*private void CreateRarityTableFromFolders(TreeNode tn = null, TreeListNode parent = null)
-        {
-            var nodes = (tn == null ? treeView1.Nodes : tn.Nodes);
-            foreach (TreeNode node in nodes)
-            {
-                Lib.ProjectLayer lay = node.Tag as Lib.ProjectLayer;
-
-                TreeListNode tln = tlRT.AppendNode(new object[] { lay.Name, lay.ID, lay.Rarity, 0 }, parent);
-
-                tln.SetValue(3, lay.RarityPerc);
-                tln.Tag = node;
-
-                if (node.Nodes.Count > 0)
-                {
-                    CreateRarityTableFromFolders(node, tln);
-                }
-            }
-        }*/
 
         private void btnReloadRarityTable_Click(object sender, EventArgs e)
         {
             statusInfo.Text = "Loading rarity table...";
-            //tlRT.BeginUnboundLoad();
-            //tlRT.Nodes.Clear();            
-
-            //CreateRarityTableFromFolders();
 
             var nodes = treeView1.Nodes;
             foreach (TreeNode node in nodes)
@@ -617,43 +600,8 @@ namespace NFTGenerator
             }
             rarityTreeListView.AddObjects(RarityGroupItems);
 
-            //tlRT.EndUnboundLoad();
-
             statusInfo.Text = "Ready";
-        }
-
-        //calculate percentage
-        /*private void tlRT_CellValueChanged(object sender, DevExpress.XtraTreeList.CellValueChangedEventArgs e)
-        {            
-            Lib.ProjectLayer lay = ((TreeNode)e.Node.Tag).Tag as Lib.ProjectLayer;
-            if (e.Column.FieldName == "Name")
-            {
-                lay.Name = e.Value.ToString();
-            }
-            else if (e.Column.FieldName == "Rarity")
-            {
-                statusInfo.Text = "Computing rarity percentage...";
-                lay.Rarity = int.Parse(e.Value.ToString());
-                if (lay.IsGroup)
-                {
-                    //update all children
-                    foreach (TreeListNode item in e.Node.Nodes)
-                    {
-                        Lib.ProjectLayer l = ((TreeNode)item.Tag).Tag as Lib.ProjectLayer;
-                        l.RarityPerc = Math.Round(l.Rarity * 1.0 / lay.Rarity * 100, 2);
-                        item.SetValue(3, l.RarityPerc);
-                    }
-                }
-                else
-                {
-                    Lib.ProjectLayer l = ((TreeNode)e.Node.ParentNode.Tag).Tag as Lib.ProjectLayer;
-                    lay.RarityPerc = Math.Round(lay.Rarity * 1.0 / l.Rarity * 100, 2);
-                    e.Node.SetValue(3, lay.RarityPerc);
-                }
-                // calcPerc();
-            }
-            statusInfo.Text = "Ready";
-        }*/
+        }        
 
         private void rarityTreeListView_CellEditFinishing(object sender, BrightIdeasSoftware.CellEditEventArgs e)
         {
@@ -702,7 +650,7 @@ namespace NFTGenerator
             statusInfo.Text = "Ready";
         }
 
-        //set total number of items
+        // set total number of tokens
         private void txtTotalItems_TextChanged(object sender, EventArgs e)
         {
             this.CurrentProject.TotalItems = int.Parse(txtTotalItems.Text);
@@ -710,7 +658,7 @@ namespace NFTGenerator
 
         private void txtTotalItems_KeyPress(object sender, KeyPressEventArgs e)
         {
-            //allow numbers only
+            // allow numbers only
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
             {
                 e.Handled = true;
@@ -747,7 +695,7 @@ namespace NFTGenerator
 
                     var delFiles = Directory.GetFileSystemEntries(outputPath);
 
-                    //delete from output folder
+                    // delete from output folder
                     this.Invoke(new Action(() =>
                     {
                         prg1.Visible = true;
@@ -760,14 +708,14 @@ namespace NFTGenerator
                         var attr = File.GetAttributes(delfl);
                         if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
                         {
-                            //dir
+                            // dir
                             Directory.Delete(delfl, true);
                         }
                         else
                         {
                             try
                             {
-                                //file
+                                // file
                                 File.Delete(delfl);
 
                             }
@@ -791,7 +739,7 @@ namespace NFTGenerator
             outputDataGridView.DataSource = generatedFiles;
             btnGenerateCancel.Enabled = true;
 
-            //create collection with empty nft items (not blended yet!)
+            // create collection with empty nft items
             allFiles = Lib.NFTCollectionItem.CreateCollection(CurrentProject, int.Parse(txtStartTokenID.Text));
 
             metaList = new List<Lib.NFTMetaCollectionItem>();
@@ -966,27 +914,6 @@ namespace NFTGenerator
             lblGenProgress.Text = "";
         }
 
-        #endregion
-
-        private void LoadGenerated(string path)
-        {
-            if (!string.IsNullOrEmpty(path))
-            {
-                var json = File.ReadAllText(path);
-                var proj = Lib.NFTCollectionProject.FromJSON(json);
-
-                generatedFiles = proj.Tokens;
-                outputDataGridView.DataSource = generatedFiles;
-
-            }
-        }
-
-        private void Main_Shown(object sender, EventArgs e)
-        {
-            //show new project dialog on first load
-            
-            // TODO disabled for testing
-            //mnuNewProject_Click(null, null);
-        }        
+        #endregion        
     }
 }
