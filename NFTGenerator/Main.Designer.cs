@@ -32,8 +32,8 @@ namespace NFTGenerator
             this.components = new System.ComponentModel.Container();
             DevExpress.XtraSplashScreen.SplashScreenManager splashScreenManager1 = new DevExpress.XtraSplashScreen.SplashScreenManager(this, null, true, true);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
-            DevExpress.XtraTreeList.StyleFormatConditions.TreeListFormatRule treeListFormatRule4 = new DevExpress.XtraTreeList.StyleFormatConditions.TreeListFormatRule();
-            DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar4 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
+            DevExpress.XtraTreeList.StyleFormatConditions.TreeListFormatRule treeListFormatRule1 = new DevExpress.XtraTreeList.StyleFormatConditions.TreeListFormatRule();
+            DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar1 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
             this.treeListColumn4 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -405,14 +405,14 @@ namespace NFTGenerator
             this.TraitName.AspectName = "TraitName";
             this.TraitName.IsEditable = false;
             this.TraitName.Text = "Trait Name";
-            this.TraitName.Width = 91;
+            this.TraitName.Width = 150;
             // 
             // RarityPercentage
             // 
             this.RarityPercentage.AspectName = "RarityPercentage";
             this.RarityPercentage.IsEditable = false;
-            this.RarityPercentage.Text = "Rarity Percentage";
-            this.RarityPercentage.Width = 155;
+            this.RarityPercentage.Text = "Rarity %";
+            this.RarityPercentage.Width = 80;
             // 
             // TraitId
             // 
@@ -423,8 +423,8 @@ namespace NFTGenerator
             // NumberOfOccurences
             // 
             this.NumberOfOccurences.AspectName = "NumberOfOccurences";
-            this.NumberOfOccurences.Text = "Number of occurences";
-            this.NumberOfOccurences.Width = 153;
+            this.NumberOfOccurences.Text = "# of occurences";
+            this.NumberOfOccurences.Width = 100;
             // 
             // tlRT
             // 
@@ -434,20 +434,20 @@ namespace NFTGenerator
             this.treeListColumn3,
             this.treeListColumn4});
             this.tlRT.Dock = System.Windows.Forms.DockStyle.Right;
-            treeListFormatRule4.Column = this.treeListColumn4;
-            treeListFormatRule4.Name = "Format0";
-            formatConditionRuleDataBar4.AllowNegativeAxis = false;
-            formatConditionRuleDataBar4.DrawAxis = false;
-            formatConditionRuleDataBar4.Maximum = new decimal(new int[] {
+            treeListFormatRule1.Column = this.treeListColumn4;
+            treeListFormatRule1.Name = "Format0";
+            formatConditionRuleDataBar1.AllowNegativeAxis = false;
+            formatConditionRuleDataBar1.DrawAxis = false;
+            formatConditionRuleDataBar1.Maximum = new decimal(new int[] {
             100,
             0,
             0,
             0});
-            formatConditionRuleDataBar4.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
-            formatConditionRuleDataBar4.MinimumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
-            formatConditionRuleDataBar4.PredefinedName = "Mint";
-            treeListFormatRule4.Rule = formatConditionRuleDataBar4;
-            this.tlRT.FormatRules.Add(treeListFormatRule4);
+            formatConditionRuleDataBar1.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
+            formatConditionRuleDataBar1.MinimumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
+            formatConditionRuleDataBar1.PredefinedName = "Mint";
+            treeListFormatRule1.Rule = formatConditionRuleDataBar1;
+            this.tlRT.FormatRules.Add(treeListFormatRule1);
             this.tlRT.Location = new System.Drawing.Point(483, 28);
             this.tlRT.Name = "tlRT";
             this.tlRT.OptionsView.ShowRowFooterSummary = true;

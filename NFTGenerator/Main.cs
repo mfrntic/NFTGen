@@ -655,6 +655,53 @@ namespace NFTGenerator
             statusInfo.Text = "Ready";
         }
 
+        private void rarityTreeListView_CellEditFinishing(object sender, BrightIdeasSoftware.CellEditEventArgs e)
+        {
+            var allNodes = treeView1.Descendants();
+            statusInfo.Text = "Computing rarity percentage...";
+
+            if (e.RowObject is Lib.TraitRarityGroupItem)
+            { 
+                var traitRarityGroupItemObject = e.RowObject as Lib.TraitRarityGroupItem;
+                var treeViewGroupNode = allNodes.FirstOrDefault(node => (node.Tag as Lib.ProjectLayer).ID == traitRarityGroupItemObject.TraitId);
+
+                if(treeViewGroupNode != null)
+                {
+                    Lib.ProjectLayer currentLayer = treeViewGroupNode.Tag as Lib.ProjectLayer;
+                    currentLayer.Rarity = int.Parse(e.NewValue.ToString());
+
+                    // update all children
+                    foreach (Lib.TraitRarityItem traitRarityItem in traitRarityGroupItemObject.TraitRarityItems)
+                    {
+                        var treeViewChildNode = allNodes.FirstOrDefault(node => (node.Tag as Lib.ProjectLayer).ID == traitRarityItem.TraitId);
+                        if (treeViewChildNode != null)
+                        {
+                            Lib.ProjectLayer childLayer = treeViewChildNode.Tag as Lib.ProjectLayer;
+                            childLayer.RarityPerc = Math.Round(childLayer.Rarity * 1.0 / currentLayer.Rarity * 100, 2);
+                            traitRarityItem.RarityPercentage = childLayer.RarityPerc;
+                        }                                   
+                    }
+                }
+            }
+            else if(e.RowObject is Lib.TraitRarityItem)
+            {
+                var traitRarityItemObject = e.RowObject as Lib.TraitRarityItem;
+
+                var treeViewChildNode = allNodes.FirstOrDefault(node => (node.Tag as Lib.ProjectLayer).ID == traitRarityItemObject.TraitId);
+                if (treeViewChildNode != null)
+                {
+                    Lib.ProjectLayer currentLayer = treeViewChildNode.Tag as Lib.ProjectLayer;
+                    currentLayer.Rarity = int.Parse(e.NewValue.ToString());
+
+                    Lib.ProjectLayer parentLayer = treeViewChildNode.Parent.Tag as Lib.ProjectLayer;
+                    currentLayer.RarityPerc = Math.Round(currentLayer.Rarity * 1.0 / parentLayer.Rarity * 100, 2);
+                    traitRarityItemObject.RarityPercentage = currentLayer.RarityPerc;
+                }
+            }
+
+            statusInfo.Text = "Ready";
+        }
+
         //set total number of items
         private void txtTotalItems_TextChanged(object sender, EventArgs e)
         {
@@ -780,7 +827,6 @@ namespace NFTGenerator
             timerGen.Enabled = true;
             prg1.Visible = true;
             lblGenProgress.Text = $"{0}/{allFiles.Count} ({Math.Round(0 * 1.0 / allFiles.Count * 100, 2)}%)";
-
 
             await Task.Run(() =>
             {
@@ -937,21 +983,9 @@ namespace NFTGenerator
         private void Main_Shown(object sender, EventArgs e)
         {
             //show new project dialog on first load
-            mnuNewProject_Click(null, null);
-        }
-
-        private void rarityTreeListView_CellEditFinishing(object sender, BrightIdeasSoftware.CellEditEventArgs e)
-        {
-            if (e.RowObject is Lib.TraitRarityGroupItem)
-            {
-                var x = e.RowObject as Lib.TraitRarityGroupItem;
-
-                var result = treeView1.Nodes.Cast<TreeNode>().FirstOrDefault(node => (node.Tag as Lib.ProjectLayer).ID == x.TraitId);
-
-                var test = result.Tag as Lib.ProjectLayer;
-
-                Console.WriteLine(test.Name);
-            }
-        }
+            
+            // TODO disabled for testing
+            //mnuNewProject_Click(null, null);
+        }        
     }
 }
